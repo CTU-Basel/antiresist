@@ -1,5 +1,20 @@
 var nccrid = function() {
 
+    var generateId = function(event) {
+
+        var btn = event.target;
+        var inputField = btn.previousSibling();
+
+        var samplingNo = 'ff_nsmpl_smplid_[0-9]+'; // übergeordnet
+        var stType = '...';
+        var sampleNo = '...';
+        var tapa = 'ff_nsmpl_tapa_[0-9]+'; // übergeordnet
+        var mopo = 'ff_nsmpl_mopo_[0-9]+'; // nachschauen, ob korrekt; übergeordnet
+        var tapaNg = 'ff_nsmpl_nt_tapa_[0-9]+';
+        var ng = 'ff_nsmpl_ng_[0-9]+'; // nachschauen, ob korrekt; übergeordnet
+
+    };
+
     // add a new button to every nccr id field
     var addButtons = function(){
 
@@ -14,14 +29,13 @@ var nccrid = function() {
                 return;
             }
 
-            if (item.nextSibling) {
-                console.log(item.nextSibling.tagName);
-            }
-
             // create a new button and append it after the text input field
             var btn = document.createElement('button');
             btn.innerHTML = 'Generate ID';
             btn.style.marginLeft = '8px';
+
+            btn.onclick = generateId;
+
             item.parentNode.appendChild(btn);
         })
     };
@@ -48,7 +62,6 @@ var nccrid = function() {
             // react to field changes, as this changes the number of 
             // available samples and accordingly the available sample id fields
             fields[i].onchange = function() {
-                console.log('select field changed');
                 updateFn();
             };
 
@@ -72,7 +85,6 @@ var nccrid = function() {
 }
 
 // add custom nccrid functionality as soon as windows is completely loaded
-window.onload = function() {
-    console.log('add custom buttons');
-    nccrid();
-};
+// window.onload = function() {
+//     nccrid();
+// };
