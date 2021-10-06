@@ -1,6 +1,14 @@
+// custom scope to generate sample ids
+// note: jquery must be loaded beforehand
+// which is done already by secutrial
 var nccrid = function() {
 
+    // generate the id for an nccr sample
     var generateId = function(event) {
+
+        // prevent the browser from firing the default events
+        event.preventDefault();
+        event.stopPropagation();
 
         // get button as jquery element
         var btn = $(event.target);
