@@ -2,16 +2,28 @@ var nccrid = function() {
 
     var generateId = function(event) {
 
-        var btn = event.target;
-        var inputField = btn.previousSibling();
+        // get button as jquery element
+        var btn = $(event.target);
 
-        var samplingNo = 'ff_nsmpl_smplid_[0-9]+'; // übergeordnet
-        var stType = '...';
-        var sampleNo = '...';
-        var tapa = 'ff_nsmpl_tapa_[0-9]+'; // übergeordnet
-        var mopo = 'ff_nsmpl_mopo_[0-9]+'; // nachschauen, ob korrekt; übergeordnet
-        var tapaNg = 'ff_nsmpl_nt_tapa_[0-9]+';
-        var ng = 'ff_nsmpl_ng_[0-9]+'; // nachschauen, ob korrekt; übergeordnet
+        // get the input field that belongs to the button
+        var inputField = btn.prev();
+        inputField.css('background', '#c9c9ff');
+  
+        // get the sample group for this sample id
+        var sampleGroup = btn.closest('div').prev();
+        sampleGroup.css('color', '#be29ec');
+
+        // get the current sample repetition group for this id
+        var repetitionGroup = btn.closest('div').closest('td');
+        repetitionGroup.css('color', '#660066');
+
+        // var samplingNo = 'ff_nsmpl_smplid_[0-9]+'; // übergeordnet
+        // var stType = '...';
+        // var sampleNo = '...';
+        // var tapa = 'ff_nsmpl_tapa_[0-9]+'; // übergeordnet
+        // var mopo = 'ff_nsmpl_mopo_[0-9]+'; // nachschauen, ob korrekt; übergeordnet
+        // var tapaNg = 'ff_nsmpl_nt_tapa_[0-9]+';
+        // var ng = 'ff_nsmpl_ng_[0-9]+'; // nachschauen, ob korrekt; übergeordnet
 
     };
 
