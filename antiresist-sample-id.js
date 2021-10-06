@@ -85,6 +85,8 @@ var nccrid = function() {
 }
 
 // add custom nccrid functionality as soon as windows is completely loaded
-// window.onload = function() {
-//     nccrid();
-// };
+// note: secutrial is using the window load event itself, so we must
+// ensure, that this does not overwrite the respective event listener
+$(window).load(function() {
+    nccrid();
+});
