@@ -25,15 +25,44 @@ var nccrid = function() {
         var repetitionGroup = btn.closest('div').closest('td');
         repetitionGroup.css('color', '#660066');
 
-        // var samplingNo = 'ff_nsmpl_smplid_[0-9]+'; // übergeordnet
-        // var stType = '...';
-        // var sampleNo = '...';
-        // var tapa = 'ff_nsmpl_tapa_[0-9]+'; // übergeordnet
-        // var mopo = 'ff_nsmpl_mopo_[0-9]+'; // nachschauen, ob korrekt; übergeordnet
-        // var tapaNg = 'ff_nsmpl_nt_tapa_[0-9]+';
-        // var ng = 'ff_nsmpl_ng_[0-9]+'; // nachschauen, ob korrekt; übergeordnet
-
+        // var samplingNo = '[name^=ff_nsmpl_smplid]'; // übergeordnet
+        // var stType = 'ff_nsmpl_store1_1041309926_1297094049_0'; // doesn't work with starts with, there is also *store_oth*
+        // var sampleNo = '...'; // define by count (01 to 15)
+        // var tapa = 'ff_nsmpl_tapa_[0-9]+'; // übergeordnet; doesn't work with starts with, needs to be selected with regex
+        // var mopo = 'id^=ff_nsmpl_mopo]'; // übergeordnet; finds three elements, the two radiobuttons and the id
+        // var tapaNg = '[name^=ff_nsmpl_nt_tapa]'; // doesnt work, there is also an nt_tapa_oth
+        // var ng = '[id^=ff_nsmpl_ng]'; // übergeordnet; finds three elements, the two radiobuttons and the id$
+        
+        // CASE WHEN nsmpl_tapa = 1 THEN 'SA'
+        // WHEN nsmpl_tapa = 2 THEN 'PA'
+        // WHEN nsmpl_tapa = 3 THEN 'EC'
+        // WHEN nsmpl_tapa = 4 THEN 'KS'
+        // WHEN nsmpl_tapa = 5 THEN 'OS'
+        // WHEN nsmpl_tapa = 6 THEN 'NG'
+        // WHEN nsmpl_tapa = 7 THEN 'ND'
+        // END AS TAPA
     };
+
+    var selectField = function(start) {
+        // use jquery to select all fields that have a name starting with our expression
+        var items = $('[name^=' + start + ']');
+
+        // create a regular expression matcher that allows 
+        var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
+        var selectedItems = items.filter(function(index) {
+            return nameMatcher.test(this.name);
+        });
+
+        return selectedItems;
+    }
+
+    var selectedText = function(selectElement) {
+        var selectedOption = $('option:selected', selectElement);
+        if (selectedOption.length == 0) {
+            return '';
+        }
+        return selectedOption.text()
+    }
 
     // add a new button to every nccr id field
     var addButtons = function(){
