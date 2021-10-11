@@ -102,7 +102,7 @@ var nccrid = function() {
         var mopo = function(parent) {
             var fields = $('input[name^=ff_nsmpl_mopo]', parent);
             var selectedFields = fields.filter(function(){
-                return this.prop('checked') === true;
+                return $(this).prop('checked') === true;
             });
 
             // return empty string if no checked fields were found
