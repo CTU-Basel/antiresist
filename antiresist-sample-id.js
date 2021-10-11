@@ -30,22 +30,19 @@ var nccrid = function() {
         // samplingNo is an text input field
         var samplingNo = function(parent) {
             var fields = selectField('ff_nsmpl_smplid', parent);
-            // return value of input field
             return fields.val();
         }(repetitionGroup);
-        console.log('samplingNo', samplingNo);
-
+        
         // stType is a select field in the same sample as the button
         var stType = function(parent){
             var fields = $('[name^=ff_nsmpl_store]', parent);
             return selectedText(fields);
         }(sampleGroup);
-        console.log('stType', stType);
-
+        
         // sampleNo is generated as incremeting number partitioned
         // on the storage type and sample
         var sampleNo = function(parent, currentType){
-
+            
             // the current type of the sample storage must be specified
             if (!currentType || currentType == '< Please choose >' || currentType == '') {
                 return '';
@@ -54,49 +51,46 @@ var nccrid = function() {
             // get all fields starting with ff_nsmpl_store in the
             // same sampling (repetitionGroup)
             var fields = $('[name^=ff_nsmpl_store]', parent);
-
+            
             // ensure that we have only the store fields (no _oth fields)
             var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
             var selectedItems = fields.filter(function(index) {
                 return nameMatcher.test(this.name);
             });
-
+            
             // get the selected text of each field
             var selectedOptions = $.map(selectedItems, function(item, index) {
                 return selectedText(item);
             });
-
+            
             // filter for our matching type
             var matchingTypes = selectedOptions.filter(function(item) {
                 return item.toLowerCase() == currentType.toLowerCase()
             });
-
+            
             // get the number of samples that are currently specified with
             // the same type
             var count = matchingTypes.length;
             
             // our current sample has the same type, therefore we do not 
             // need to increase the counter
-
+            
             // but we need to add a left padding with zeros
             if (count < 10) {
                 return '0' + count;
             }
-
+            
             // return the count as text
             return count + '';
-
+            
         }(repetitionGroup, stType);
-        console.log('sampleNo', sampleNo);
 
-    
         // tapa is a select field
         var tapa = function(parent) {
             var fields = selectField('ff_nsmpl_tapa', parent);
             // return selected option of select field
             return selectedText(fields);
         }(repetitionGroup);
-        console.log('tapa', tapa);
 
         // mopo is a radio button field
         var mopo = function(parent) {
@@ -104,36 +98,54 @@ var nccrid = function() {
             var selectedFields = fields.filter(function(){
                 return $(this).prop('checked') === true;
             });
-
+            
             // return empty string if no checked fields were found
             if (!selectedFields || selectedFields.length == 0) {
                 return '';
             }
-
+            
             // use the id of the checked field, to find a corresponding label
             // and extract the text content of the label
             var fieldId = selectedFields.attr('id');
             var label = $('label[for='+ fieldId +']', parent);
             var txt = label.text();
-
+            
             return txt;
-
         }(repetitionGroup);
-        console.log('mopo', mopo);
 
         // tapaNg is a select field
         var tapaNg = function(parent) {
             var fields = selectField('ff_nsmpl_nt_tapa', parent);
             return selectedText(fields);
         }(repetitionGroup);
-        console.log('tapaNg', tapaNg);
 
         // ng is a radio button
         var ng = function(parent){
-            var fields = selectField('ff_nsmpl_ng', parent);
-            // TODO: return selected text of radio buttons (doesnt work yet) -> possible with i, has _1 and _2 at the end
-
+            var fields = $('input[name^=ff_nsmpl_ng]', parent);
+            var selectedFields = fields.filter(function(){
+                return $(this).prop('checked') === true;
+            });
+            
+            // return empty string if no checked fields were found
+            if (!selectedFields || selectedFields.length == 0) {
+                return '';
+            }
+            
+            // use the id of the checked field, to find a corresponding label
+            // and extract the text content of the label
+            var fieldId = selectedFields.attr('id');
+            var label = $('label[for='+ fieldId +']', parent);
+            var txt = label.text();
+            
+            return txt;  
         }(repetitionGroup);
+        
+        console.log('samplingNo', samplingNo);
+        console.log('sampleNo', sampleNo);
+        console.log('stType', stType);
+        console.log('mopo', mopo);
+        console.log('tapa', tapa);
+        console.log('tapaNg', tapaNg);
         console.log('ng', ng);
 
         // var samplingNo = '[name^=ff_nsmpl_smplid]'; // works within one sampling
