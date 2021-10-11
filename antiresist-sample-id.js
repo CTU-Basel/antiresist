@@ -31,7 +31,7 @@ var nccrid = function() {
             // return value of input field
             return fields.val();
         }(repetitionGroup);
-        console.log('samplingNo', sampleNo);
+        console.log('samplingNo', samplingNo);
 
         // stType is a select field in the same sample as the button
         var stType = function(parent){
