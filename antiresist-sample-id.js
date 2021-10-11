@@ -60,6 +60,8 @@ var nccrid = function() {
             items = $('[name^=' + start + ']');
         }
 
+        console.log(items);
+
         // create a regular expression matcher that allows 
         var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
         var selectedItems = items.filter(function(index) {
