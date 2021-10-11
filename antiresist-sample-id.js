@@ -11,9 +11,6 @@ var nccrid = function() {
         if (value === '< Please choose >') {
             return true;
         }
-        if (value === 'Other') {
-            return true;
-        }
         if (value === '') {
             return true;
         }
