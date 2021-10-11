@@ -48,8 +48,7 @@ var nccrid = function() {
 
             // the current type of the sample storage must be specified
             if (!currentType || currentType == '< Please choose >' || currentType == '') {
-                alert('Please specify the primary storage type of the sample first');
-                return;
+                return '';
             }
             
             // get all fields starting with ff_nsmpl_store in the
@@ -69,8 +68,7 @@ var nccrid = function() {
 
             // filter for our matching type
             var matchingTypes = selectedOptions.filter(function(item) {
-                console.log('match types', item, currentType);
-                return item == currentType
+                return item.toLowerCase() == currentType.toLowerCase()
             });
 
             // get the number of samples that are currently specified with
@@ -102,8 +100,24 @@ var nccrid = function() {
 
         // mopo is a radio button field
         var mopo = function(parent) {
-            var fields = selectField('ff_nsmpl_mopo', parent);
-            // TODO: return selected text of radio buttons (doesnt work yet) -> possible with i, has _1 and _2 at the end
+            var fields = $('input[name^=ff_nsmpl_mopo]', parent);
+            var selectedFields = fields.filter(function(item){
+                return item.prop('checked') === true;
+            });
+
+            // return empty string if no checked fields were found
+            if (!selectedFields || selectedFields.length == 0) {
+                return '';
+            }
+
+            // use the id of the checked field, to find a corresponding label
+            // and extract the text content of the label
+            var fieldId = selectedFields.attr('id');
+            var label = $('label[for='+ fieldId +']', parent);
+            var txt = label.text();
+
+            return txt;
+
         }(repetitionGroup);
         console.log('mopo', mopo);
 
