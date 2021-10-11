@@ -20,6 +20,8 @@ var nccrid = function() {
     // generate the id for an nccr sample
     var generateId = function(event) {
 
+        //TODO: remove colors for production
+
         console.log('generate id');
 
         // prevent the browser from firing the default events
@@ -181,7 +183,7 @@ var nccrid = function() {
         }
 
        
-        // TODO:--- encode the sample id ---
+        // --- encode the sample id ---
 
         // initialize the sample id
         var sampleId = '';
@@ -232,12 +234,6 @@ var nccrid = function() {
         var mopoMap = {
             'Monomicrobial': 'm',
             'Polymicrobial': 'p',
-            isEmpty() : ''
-        }
-
-        if (Object.keys(tapaMap).indexOf(tapa) == -1) {
-            alert('Target pathogen not found');
-            return;
         }
 
         var tapaNgMap = {
@@ -248,22 +244,47 @@ var nccrid = function() {
             'Other' : 'os'
         }
 
-        if (Object.keys(tapaMap).indexOf(tapa) == -1) {
-            alert('Target pathogen not found');
-            return;
-        }
-
         var ngMap = {
             'control (no infection)': 'co',
             'infection with target pathogen (within prior 3 months or 10 days after sampling': 'inf'
         }
 
-        if (Object.keys(tapaMap).indexOf(tapa) == -1) {
-            alert('Target pathogen not found');
+        if(tapa != 'No growth' && tapa != 'No data from routine microbiology'){
+            
+            if (Object.keys(mopoMap).indexOf(mopo) == -1) {
+                alert('Monomicrobial or polymicrobial growth not found');
+                return;
+            }
+
+            sampleId += mopoMap[mopo];
+
+        } else if((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection')){
+
+            if (Object.keys(tapaNgMap).indexOf(tapaNg) == -1) {
+                alert('Target pathogen responsible for infection not found');
+                return;
+            }
+
+            sampleId += tapaMap[tapaNg];
+
+        } else if((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('control')){
+            
+            if (Object.keys(ngMap).indexOf(ng) == -1) {
+                alert('Sample event control or infection not found');
+                return;
+            }
+
+            sampleId += ngMap[ng];
+
+        } else {
+
+            // If needed info is not there (i.e., values could not be matched), throw this alert
+            alert('Additional information needed for sample ID is missing!');
             return;
+            
         }
 
-        sampleId += tapaMap[tapa];
+        }
 
     };
 
