@@ -25,13 +25,18 @@ var nccrid = function() {
         var repetitionGroup = btn.closest('div').closest('td');
         repetitionGroup.css('color', '#660066');
 
-        // var samplingNo = '[name^=ff_nsmpl_smplid]'; // übergeordnet
+        var samplingNo = function(parent) {
+            var fields = selectField('ff_nsmpl_smplid', parent);
+            console.log(fields);
+        }(repetitionGroup);
+
+        // var samplingNo = '[name^=ff_nsmpl_smplid]'; // works within one sampling
         // var stType = 'ff_nsmpl_store1_1041309926_1297094049_0'; // doesn't work with starts with, there is also *store_oth*
         // var sampleNo = '...'; // define by count (01 to 15)
-        // var tapa = 'ff_nsmpl_tapa_[0-9]+'; // übergeordnet; doesn't work with starts with, needs to be selected with regex
+        // var tapa = 'ff_nsmpl_tapa_[0-9]+'; // übergeordnet, works within one sampling
         // var mopo = 'id^=ff_nsmpl_mopo]'; // übergeordnet; finds three elements, the two radiobuttons and the id
-        // var tapaNg = '[name^=ff_nsmpl_nt_tapa]'; // doesnt work, there is also an nt_tapa_oth
-        // var ng = '[id^=ff_nsmpl_ng]'; // übergeordnet; finds three elements, the two radiobuttons and the id$
+        // var tapaNg = '[name^=ff_nsmpl_nt_tapa]'; // works within one sampling
+        // var ng = '[id^=ff_nsmpl_ng]'; // übergeordnet; finds three elements, the two radiobuttons and the id
         
         // CASE WHEN nsmpl_tapa = 1 THEN 'SA'
         // WHEN nsmpl_tapa = 2 THEN 'PA'
@@ -43,9 +48,16 @@ var nccrid = function() {
         // END AS TAPA
     };
 
-    var selectField = function(start) {
+    var selectField = function(start, parent) {
         // use jquery to select all fields that have a name starting with our expression
-        var items = $('[name^=' + start + ']');
+        var items = []
+
+        // scope the search to a parent dom element, if specified
+        if (parent) {
+            items = $('[name^=' + start + ']', parent);
+        } else {
+            items = $('[name^=' + start + ']');
+        }
 
         // create a regular expression matcher that allows 
         var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
