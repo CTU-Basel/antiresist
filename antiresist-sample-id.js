@@ -287,7 +287,7 @@ var nccrid = function() {
 
     };
 
-    console.log('sampleId', sampleId)
+    //console.log('sampleId', sampleId)
 
     var selectField = function(start, parent) {
         // use jquery to select all fields that have a name starting with our expression
