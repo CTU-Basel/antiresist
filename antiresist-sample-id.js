@@ -164,14 +164,18 @@ var nccrid = function() {
 
         // --- check if all required values have been provided ---
 
+        // TODO: If statement (only if one variable is missing)
+
         // check for each value if it is not empty (or < Please choose > )
         // and inform the user if the value is empty
         alert('ID for NCCR sample could not be generated. Some input is missing:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? 'missing' : 'ok') + 
         '\n- Main target pathogen: ' + (isEmpty(tapa) ? 'missing' : 'ok') + 
-        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Target pathogen responsible for infection: ' + (isEmpty(mopo) ? 'missing' : 'ok') : '') +
+        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? 'missing' : 'ok') : '') +
+        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing' : 'ok') : '') +
+        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(ng) ? 'missing' : 'ok') : '') +
         '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing' : 'ok'));
 
-        // --- encode the sample id ---
+        // TODO:--- encode the sample id ---
 
         // initialize the sample id
         var sampleId = '';
