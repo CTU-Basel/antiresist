@@ -35,7 +35,7 @@ var nccrid = function() {
 
         // stType is a select field in the same sample as the button
         var stType = function(parent){
-            var fields = selectField('ff_nsmpl_smplid', parent);
+            var fields = selectField('ff_nsmpl_store', parent);
             // return value of input field
             return selectedText(fields);
         }(sampleGroup);
