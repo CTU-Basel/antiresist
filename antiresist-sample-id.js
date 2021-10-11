@@ -34,38 +34,60 @@ var nccrid = function() {
         console.log('samplingNo', samplingNo);
 
         // stType is a select field in the same sample as the button
-        // TODO: need a different regex, store_oth also matched this way, and sampleGroup does not work this way
         var stType = function(parent){
             var fields = $('[name^=ff_nsmpl_store]', parent);
-            // return value of input field
             return selectedText(fields);
         }(sampleGroup);
         console.log('stType', stType);
 
         // sampleNo is generated as incremeting number partitioned
         // on the storage type and sample
-        var sampleNo = function(parent){
+        var sampleNo = function(parent, currentType){
 
+            // the current type of the sample storage must be specified
+            if (!currentType || currentType == '< Please choose >' || currentType == '') {
+                alert('Please specify the primary storage type of the sample first');
+                return;
+            }
+            
             // get all fields starting with ff_nsmpl_store in the
             // same sampling (repetitionGroup)
             var fields = $('[name^=ff_nsmpl_store]', parent);
-            console.log(fields);
 
-            // extract the value of each field
+            // ensure that we have only the store fields (no _oth fields)
+            var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
+            var selectedItems = items.filter(function(index) {
+                return nameMatcher.test(this.name);
+            });
 
-            // devise the next increment for each type
+            // get the selected text of each field
+            var selectedOptions = $.map(selectedItems, function(item, index) {
+                return selectedText(item);
+            });
 
-            // match the type with the current storage type
+            // filter for our matching type
+            var matchingTypes = selectedOptions.filter(function(item) {
+                console.log('match types', item, currentType);
+                return item == currentType
+            });
 
-            // return the storage number of the new sample
+            // get the number of samples that are currently specified with
+            // the same type
+            var count = matchingTypes.length;
+            
+            // our current sample has the same type, therefore we do not 
+            // need to increase the counter
 
-            // // create a regular expression matcher that allows 
-            // var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
-            // var selectedItems = items.filter(function(index) {
-            //     return nameMatcher.test(this.name);
-            // });
+            // but we need to add a left padding with zeros
+            if (count < 10) {
+                return '0' + count;
+            }
 
-        }(repetitionGroup);
+            // return the count as text
+            return count + '';
+
+        }(repetitionGroup, stType);
+        console.log('sampleNo', sampleNo);
 
     
         // tapa is a select field
@@ -79,7 +101,7 @@ var nccrid = function() {
         // mopo is a radio button field
         var mopo = function(parent) {
             var fields = selectField('ff_nsmpl_mopo', parent);
-            // TODO: return selected text of radio buttons
+            // TODO: return selected text of radio buttons (doesnt work yet) -> possible with i, has _1 and _2 at the end
         }(repetitionGroup);
         console.log('mopo', mopo);
 
@@ -93,7 +115,7 @@ var nccrid = function() {
         // ng is a radio button
         var ng = function(parent){
             var fields = selectField('ff_nsmpl_ng', parent);
-            // TODO: return selected text of radio buttons
+            // TODO: return selected text of radio buttons (doesnt work yet) -> possible with i, has _1 and _2 at the end
 
         }(repetitionGroup);
         console.log('ng', ng);
