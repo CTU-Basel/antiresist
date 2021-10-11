@@ -3,6 +3,20 @@
 // which is done already by secutrial
 var nccrid = function() {
 
+    // check if a field value is empty
+    var isEmpty = function(value) {
+        if (!value) {
+            return true;
+        }
+        if (value === '< Please choose >') {
+            return true;
+        }
+        if (value === '') {
+            return true;
+        }
+        return false;
+    }
+
     // generate the id for an nccr sample
     var generateId = function(event) {
 
@@ -148,13 +162,33 @@ var nccrid = function() {
         console.log('tapaNg', tapaNg);
         console.log('ng', ng);
 
-        // var samplingNo = '[name^=ff_nsmpl_smplid]'; // works within one sampling
-        // var stType = 'ff_nsmpl_store1_1041309926_1297094049_0'; // doesn't work with starts with, there is also *store_oth*
-        // var sampleNo = '...'; // define by count (01 to 15)
-        // var tapa = 'ff_nsmpl_tapa_[0-9]+'; // übergeordnet, works within one sampling
-        // var mopo = 'id^=ff_nsmpl_mopo]'; // übergeordnet; finds three elements, the two radiobuttons and the id
-        // var tapaNg = '[name^=ff_nsmpl_nt_tapa]'; // works within one sampling
-        // var ng = '[id^=ff_nsmpl_ng]'; // übergeordnet; finds three elements, the two radiobuttons and the id
+        // --- check if all required values have been provided ---
+
+        // check for each value if it is not empty (or < Please choose > )
+        // and inform the user if the value is empty
+        alert('ID for NCCR sample could not be generated. Some input is missing:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? 'missing' : 'ok') + 
+        '\n- Main target pathogen: ' + (isEmpty(tapa) ? 'missing' : 'ok') + (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing' : 'ok') : ''));
+
+        // --- encode the sample id ---
+
+        // initialize the sample id
+        var sampleId = '';
+
+        // start with the sampling number
+        sampleId += samplingNo;
+
+        // add the storage type
+        var stTypeMap = {
+            'Frozen': 'F',
+            '..': 'T'
+        }
+
+        if (Object.keys(stTypeMap).indexOf(stType) == -1) {
+            alert('st type not found');
+            return;
+        }
+
+        sampleId += stTypeMap[stType];
         
         // CASE WHEN nsmpl_tapa = 1 THEN 'SA'
         // WHEN nsmpl_tapa = 2 THEN 'PA'
