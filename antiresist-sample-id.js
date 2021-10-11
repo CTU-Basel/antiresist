@@ -6,6 +6,8 @@ var nccrid = function() {
     // generate the id for an nccr sample
     var generateId = function(event) {
 
+        console.log('generate id');
+
         // prevent the browser from firing the default events
         event.preventDefault();
         event.stopPropagation();
