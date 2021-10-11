@@ -192,25 +192,82 @@ var nccrid = function() {
         // add the storage type
         var stTypeMap = {
             'Frozen': 'F',
-            '..': 'T'
+            'Fixed': 'H',
+            'Native' : 'N',
+            'Whole blood' : 'B',
+            'RNA' : 'R',
+            'Other' : 'O'
         }
 
         if (Object.keys(stTypeMap).indexOf(stType) == -1) {
-            alert('st type not found');
+            alert('Sample storage type not found');
             return;
         }
 
         sampleId += stTypeMap[stType];
-        
-        // CASE WHEN nsmpl_tapa = 1 THEN 'SA'
-        // WHEN nsmpl_tapa = 2 THEN 'PA'
-        // WHEN nsmpl_tapa = 3 THEN 'EC'
-        // WHEN nsmpl_tapa = 4 THEN 'KS'
-        // WHEN nsmpl_tapa = 5 THEN 'OS'
-        // WHEN nsmpl_tapa = 6 THEN 'NG'
-        // WHEN nsmpl_tapa = 7 THEN 'ND'
-        // END AS TAPA
+
+
+        // add the sequential sample number
+        sampleId += sampleNo;
+
+        // add the target pathogen
+        var tapaMap = {
+            'S. aureus': 'SA',
+            'P. aeruginosa': 'PA',
+            'E. coli' : 'EC',
+            'Klebsiella spp.' : 'KS',
+            'Other' : 'OS',
+            'No growth' : 'NG',
+            'No data from routine microbiology' : 'ND'
+        }
+
+        if (Object.keys(tapaMap).indexOf(tapa) == -1) {
+            alert('Target pathogen not found');
+            return;
+        }
+
+        sampleId += tapaMap[tapa];
+
+        // add additional information
+        var mopoMap = {
+            'Monomicrobial': 'm',
+            'Polymicrobial': 'p',
+            isEmpty() : ''
+        }
+
+        if (Object.keys(tapaMap).indexOf(tapa) == -1) {
+            alert('Target pathogen not found');
+            return;
+        }
+
+        var tapaNgMap = {
+            'S. aureus': 'sa',
+            'P. aeruginosa': 'pa',
+            'E. coli' : 'ec',
+            'Klebsiella spp.' : 'ks',
+            'Other' : 'os'
+        }
+
+        if (Object.keys(tapaMap).indexOf(tapa) == -1) {
+            alert('Target pathogen not found');
+            return;
+        }
+
+        var ngMap = {
+            'control (no infection)': 'co',
+            'infection with target pathogen (within prior 3 months or 10 days after sampling': 'inf'
+        }
+
+        if (Object.keys(tapaMap).indexOf(tapa) == -1) {
+            alert('Target pathogen not found');
+            return;
+        }
+
+        sampleId += tapaMap[tapa];
+
     };
+
+    console.log('sampleId', sampleId)
 
     var selectField = function(start, parent) {
         // use jquery to select all fields that have a name starting with our expression
