@@ -172,7 +172,7 @@ var nccrid = function() {
         '\n- Main target pathogen: ' + (isEmpty(tapa) ? 'missing' : 'ok') + 
         (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? 'missing' : 'ok') : '') +
         (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing' : 'ok') : '') +
-        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(ng) ? 'missing' : 'ok') : '') +
+        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing' : 'ok') : '') +
         '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing' : 'ok'));
 
         // TODO:--- encode the sample id ---
