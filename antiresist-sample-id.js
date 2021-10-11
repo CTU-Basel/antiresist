@@ -67,8 +67,8 @@ var nccrid = function() {
             });
 
             // filter for our matching type
-            var matchingTypes = selectedOptions.filter(function(index) {
-                return this.toLowerCase() == currentType.toLowerCase()
+            var matchingTypes = selectedOptions.filter(function(item) {
+                return item.toLowerCase() == currentType.toLowerCase()
             });
 
             // get the number of samples that are currently specified with
