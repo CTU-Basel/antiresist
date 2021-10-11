@@ -56,7 +56,7 @@ var nccrid = function() {
 
             // ensure that we have only the store fields (no _oth fields)
             var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
-            var selectedItems = items.filter(function(index) {
+            var selectedItems = fields.filter(function(index) {
                 return nameMatcher.test(this.name);
             });
 
