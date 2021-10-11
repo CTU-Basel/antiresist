@@ -27,6 +27,7 @@ var nccrid = function() {
 
         var samplingNo = function(parent) {
             var fields = selectField('ff_nsmpl_smplid', parent);
+            fields.css('color', 'green');
             console.log(fields);
         }(repetitionGroup);
 
