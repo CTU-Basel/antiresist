@@ -184,6 +184,7 @@ var nccrid = function() {
 
        
         // --- encode the sample id ---
+        // TODO: see how these alerts can be improved such that there are no double alerts
 
         // initialize the sample id
         var sampleId = '';
@@ -284,10 +285,9 @@ var nccrid = function() {
             
         }
 
+    console.log('sampleId', sampleId)
 
     };
-
-    //console.log('sampleId', sampleId)
 
     var selectField = function(start, parent) {
         // use jquery to select all fields that have a name starting with our expression
