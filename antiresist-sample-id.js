@@ -284,7 +284,6 @@ var nccrid = function() {
             
         }
 
-        }
 
     };
 
