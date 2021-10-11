@@ -285,7 +285,12 @@ var nccrid = function() {
             
         }
 
+        // TODO: right now, everything is in upper case in console log. See if case is correct when field is filled with ID. 
     console.log('sampleId', sampleId)
+
+    // TODO: Insert sampleId in respective field for sample Id
+    //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
+    // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
 
     };
 
