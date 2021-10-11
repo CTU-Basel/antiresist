@@ -25,11 +25,77 @@ var nccrid = function() {
         var repetitionGroup = btn.closest('div').closest('td');
         repetitionGroup.css('color', '#660066');
 
+        // samplingNo is an text input field
         var samplingNo = function(parent) {
             var fields = selectField('ff_nsmpl_smplid', parent);
-            fields.css('color', 'green');
-            console.log(fields);
+            // return value of input field
+            return fields.val();
         }(repetitionGroup);
+        console.log('samplingNo', sampleNo);
+
+        // stType is a select field in the same sample as the button
+        var stType = function(parent){
+            var fields = selectField('ff_nsmpl_smplid', parent);
+            // return value of input field
+            return selectedText(fields);
+        }(sampleGroup);
+        console.log('stType', stType);
+
+        // sampleNo is generated as incremeting number partitioned
+        // on the storage type and sample
+        var sampleNo = function(parent){
+
+            // get all fields starting with ff_nsmpl_store in the
+            // same sampling (repetitionGroup)
+            var fields = $('[name^=ff_nsmpl_store]', parent);
+            console.log(fields);
+
+            // extract the value of each field
+
+            // devise the next increment for each type
+
+            // match the type with the current storage type
+
+            // return the storage number of the new sample
+
+            // // create a regular expression matcher that allows 
+            // var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
+            // var selectedItems = items.filter(function(index) {
+            //     return nameMatcher.test(this.name);
+            // });
+
+        }(repetitionGroup);
+
+    
+        // tapa is a select field
+        var tapa = function(parent) {
+            var fields = selectField('ff_nsmpl_tapa', parent);
+            // return selected option of select field
+            return selectedText(fields);
+        }(repetitionGroup);
+        console.log('tapa', tapa);
+
+        // mopo is a radio button field
+        var mopo = function(parent) {
+            var fields = selectField('ff_nsmpl_mopo', parent);
+            // TODO: return selected text of radio buttons
+        }(repetitionGroup);
+        console.log('mopo', mopo);
+
+        // tapaNg is a select field
+        var tapaNg = function(parent) {
+            var fields = selectField('ff_nsmpl_nt_tapa', parent);
+            return selectedText(fields);
+        }(repetitionGroup);
+        console.log('tapaNg', tapaNg);
+
+        // ng is a radio button
+        var ng = function(parent){
+            var fields = selectField('ff_nsmpl_ng', parent);
+            // TODO: return selected text of radio buttons
+
+        }(repetitionGroup);
+        console.log('ng', ng);
 
         // var samplingNo = '[name^=ff_nsmpl_smplid]'; // works within one sampling
         // var stType = 'ff_nsmpl_store1_1041309926_1297094049_0'; // doesn't work with starts with, there is also *store_oth*
@@ -59,8 +125,6 @@ var nccrid = function() {
         } else {
             items = $('[name^=' + start + ']');
         }
-
-        console.log(items);
 
         // create a regular expression matcher that allows 
         var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
