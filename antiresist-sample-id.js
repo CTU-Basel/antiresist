@@ -34,8 +34,9 @@ var nccrid = function() {
         console.log('samplingNo', samplingNo);
 
         // stType is a select field in the same sample as the button
+        // TODO: need a different regex, store_oth also matched this way, and sampleGroup does not work this way
         var stType = function(parent){
-            var fields = selectField('ff_nsmpl_store', parent);
+            var fields = $('[name^=ff_nsmpl_store]', parent);
             // return value of input field
             return selectedText(fields);
         }(sampleGroup);
