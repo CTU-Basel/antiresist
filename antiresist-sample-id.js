@@ -296,8 +296,6 @@ var nccrid = function() {
     var idGroup = btn.prev('table').prev('table');
     idGroup.css('color', '#be29ec');
 
-    console.log('idgroup', idGroup)
-
     //tryagain
     $(inputField.name).value = sampleId
 
