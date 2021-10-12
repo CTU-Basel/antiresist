@@ -296,13 +296,8 @@ var nccrid = function() {
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id
-    // samplingNo is an text input field
-    var output = function(parent) {
-        var fields = $('[name^=ff_nsmpl_nccrid]', parent);
-        return fields;
-    }(sampleGroup);
-
-    output.value = sampleId
+    // samplingNo is a text input field
+    $('[name^=ff_nsmpl_nccrid]').value = sampleId
 
     console.log('output', output);
     console.log('output', output.value);
