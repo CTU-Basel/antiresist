@@ -42,6 +42,7 @@ var nccrid = function() {
         repetitionGroup.css('color', '#660066');
 
         // samplingNo is an text input field
+        // TODO: Check if samplingNo conforms to defined Regex
         var samplingNo = function(parent) {
             var fields = selectField('ff_nsmpl_smplid', parent);
             return fields.val();
@@ -290,19 +291,17 @@ var nccrid = function() {
     // samplingNo is an text input field
     var output = function(parent) {
         var fields = $('[name^=ff_nsmpl_nccrid]', parent);
-        return fields.val();
+        return fields.value = sampleId;
     }(repetitionGroup);
-
-    output = sampleId;
 
     console.log('output', output);
 
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
     // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
 
-    // TODO: Check that the sample ID matches a certain regex, if not, throw an alert
-    var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O][0-9]{2}$');
-        
+    // Check that the sample ID matches a certain regex, if not, throw an alert
+    var checkId = new RegExp('[D|T|U]{1}-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}[SA|PA|EC|KS|OS|NG|ND][p|m|sa|pa|ec|ks|os|co]');
+    
     if(checkId.test(sampleId) == false){
 
         alert('The generated ID for this sample does not comply with the standard. Please make sure all variables (especially the ID for the sampling event) are specified correctly.');
