@@ -308,8 +308,6 @@ var nccrid = function() {
 
     }
 
-    }
-
     };
 
     var selectField = function(start, parent) {
