@@ -303,6 +303,10 @@ var nccrid = function() {
 
     console.log('idgroup', idGroup.value)
 
+    inputField.value = sampleId
+
+    console.log('infield', inputField.value)
+
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
 
     // Check that the sample ID matches a certain regex, if not, throw an alert
@@ -310,7 +314,7 @@ var nccrid = function() {
 
     if(checkId.test(sampleId) == false){
 
-        alert('The generated ID for this sample does not comply with the standard. Please make sure all variables (especially the ID for the sampling event) are specified correctly.');
+        alert('The generated ID for this sample does not comply with the standard. Please make sure all variables are specified correctly.');
         return;
 
     }
