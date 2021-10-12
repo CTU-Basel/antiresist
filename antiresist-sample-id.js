@@ -3,6 +3,8 @@
 // which is done already by secutrial
 var nccrid = function() {
 
+    //TODO: remove colors and console logs for production
+
     // check if a field value is empty
     var isEmpty = function(value) {
         if (!value) {
@@ -20,8 +22,6 @@ var nccrid = function() {
     // generate the id for an nccr sample
     var generateId = function(event) {
 
-        //TODO: remove colors and console logs for production
-
         // prevent the browser from firing the default events
         event.preventDefault();
         event.stopPropagation();
@@ -31,17 +31,12 @@ var nccrid = function() {
 
         // get the input field that belongs to the button
         var inputField = btn.prev();
-        inputField.css('background', '#c9c9ff');
-
-        console.log('inputField', inputField)
   
         // get the sample group for the storage type
         var sampleGroup = btn.closest('div').prev();
-        sampleGroup.css('color', '#772200');
 
         // get the current sample repetition group for this id
         var repetitionGroup = btn.closest('div').closest('td');
-        repetitionGroup.css('color', '#660066');
 
         // samplingNo is an text input field
         var samplingNo = function(parent) {
@@ -298,15 +293,15 @@ var nccrid = function() {
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id. This is the input field closest to the button.
-    var idGroup = btn.closest('td').prev('table').prev('table');
+    var idGroup = btn.prev('table').prev('table');
     idGroup.css('color', '#be29ec');
 
-    console.log('idgroup', idGroup.value)
+    console.log('idgroup', idGroup)
 
     //tryagain
     btn.prev().value = sampleId
 
-    console.log('infield', inputField.value)
+    console.log('infield', inputField)
 
     var fields = $('input[name^=ff_nsmpl_nccrid]', inputField);
     console.log('fields', fields)
