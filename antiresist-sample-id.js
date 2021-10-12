@@ -300,7 +300,7 @@ var nccrid = function() {
     var output = function(parent) {
         var fields = $('[name^=ff_nsmpl_nccrid]', parent);
         return fields;
-    }(repetitionGroup);
+    }(sampleGroup);
 
     output.value = sampleId
 
