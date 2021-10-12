@@ -287,12 +287,29 @@ var nccrid = function() {
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id
-    var output = selectField('ff_nsmpl_nccrid').value
-    console.log('output', output)
+    // samplingNo is an text input field
+    var output = function(parent) {
+        var fields = selectField('ff_nsmpl_nccrid', parent);
+        return fields.val();
+    }(repetitionGroup);
+
+    console.log('output', output);
+
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
     // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
 
     // TODO: Check that the sample ID matches a certain regex, if not, throw an alert
+    var checkId = new RegExp('^ff_nsmpl_amt_[0-9]+$');
+        
+    if(nameMatcher.test(sampleId) == false){
+
+        alert('The generated ID for this sample does not comply with the standard. \n Please make sure all variables (especially the ID for the sampling event) are specified correctly.');
+        return;
+
+    }
+
+    }
+
     };
 
     var selectField = function(start, parent) {
