@@ -288,6 +288,7 @@ var nccrid = function() {
 
     // TODO: Insert sampleId in respective field for sample Id
     var output = selectField('ff_nsmpl_nccrid').value
+    console.log('output', output)
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
     // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
 
