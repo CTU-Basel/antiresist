@@ -299,7 +299,8 @@ var nccrid = function() {
     //tryagain
     $(inputField.name).value = sampleId
 
-    console.log('infield', inputField.name)
+    console.log('infieldname', inputField.name)
+    console.log('infield', inputField)
 
     var fields = $(inputField.name);
     console.log('fields', fields)
