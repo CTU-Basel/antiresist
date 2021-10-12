@@ -297,9 +297,9 @@ var nccrid = function() {
     idGroup.css('color', '#be29ec');
 
     //tryagain
-    $(inputField.name).value = sampleId
+    btn.prev.val() = sampleId
 
-    console.log('infieldname', inputField.name)
+    console.log('infieldname', inputField.tagName)
     console.log('infield', inputField)
 
     var fields = $(inputField.name);
