@@ -179,13 +179,8 @@ var nccrid = function() {
         (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing' : 'ok') : '') +
         ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing' : 'ok') : '') +
         '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing' : 'ok'));
-
-        } else {
-
-            return
-            
+        return;
         }
-
        
         // --- encode the sample id ---
         // TODO: see how these alerts can be improved such that there are no double alerts
