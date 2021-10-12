@@ -303,6 +303,7 @@ var nccrid = function() {
 
     console.log('idgroup', idGroup.value)
 
+    //tryagain
     inputField.value = sampleId
 
     console.log('infield', inputField.value)
