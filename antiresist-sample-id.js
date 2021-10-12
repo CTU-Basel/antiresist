@@ -297,10 +297,10 @@ var nccrid = function() {
 
     // TODO: Insert sampleId in respective field for sample Id
     // samplingNo is a text input field
-    $('[name^=ff_nsmpl_nccrid]').value = sampleId
+    var x = $('[name^=ff_nsmpl_nccrid]', sampleGroup)
 
-    console.log('output', output);
-    console.log('output', output.value);
+    console.log('x', x);
+    console.log('xval', x.value);
 
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
     // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
