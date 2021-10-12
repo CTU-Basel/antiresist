@@ -293,11 +293,13 @@ var nccrid = function() {
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id. This is the input field closest to the button.
+
+    // Try out to get group where ID is in -> doesn't work
     var idGroup = btn.prev('table').prev('table');
     idGroup.css('color', '#be29ec');
 
-    //tryagain
-    btn.prev().val() = sampleId
+    //Try out to directly get the ID (as it is the input field immediatly before the button) -> doesn't work
+    inputField.val() = sampleId
 
     console.log('infieldname', inputField.tagName)
     console.log('infield', inputField)
