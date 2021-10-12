@@ -298,7 +298,7 @@ var nccrid = function() {
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id. This is the input field closest to the button.
-    var idGroup = btn.closest('input');
+    var idGroup = btn.closest('td');
     idGroup.css('color', '#be29ec');
 
     console.log('idgroup', idGroup.value)
