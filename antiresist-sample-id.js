@@ -39,10 +39,6 @@ var nccrid = function() {
         var sampleGroup = btn.closest('div').prev();
         sampleGroup.css('color', '#772200');
 
-        // get the sample group for the sample id
-        var idGroup = btn.closest('div');
-        idGroup.css('color', '#be29ec');
-
         // get the current sample repetition group for this id
         var repetitionGroup = btn.closest('div').closest('td');
         repetitionGroup.css('color', '#660066');
@@ -301,13 +297,11 @@ var nccrid = function() {
 
     console.log('sampleId', sampleId)
 
-    // TODO: Insert sampleId in respective field for sample Id
-    // samplingNo is a text input field
-    var x = $('[name^=ff_nsmpl_store]', idGroup)
-    x.value = sampleId
+    // TODO: Insert sampleId in respective field for sample Id. This is the input field closest to the button.
+    var idGroup = btn.closest('input');
+    idGroup.css('color', '#be29ec');
 
-    console.log('x', x);
-    console.log('xval', x.value);
+    console.log('idgroup', idGroup.value)
 
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
 
@@ -400,10 +394,6 @@ var nccrid = function() {
             fields[i].onchange = function() {
                 updateFn();
             };
-
-            // TODO: remove for production
-            // make the sample chooser red for us to see that it works
-            fields[i].style.color = 'red';
 
             // watch select field for changes
             selectedFields.push(fields[i]);
