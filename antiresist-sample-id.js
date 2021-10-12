@@ -3,8 +3,6 @@
 // which is done already by secutrial
 var nccrid = function() {
 
-    //TODO: remove colors and console logs for production
-
     // check if a field value is empty
     var isEmpty = function(value) {
         if (!value) {
@@ -161,15 +159,7 @@ var nccrid = function() {
             
             return txt;  
         }(repetitionGroup);
-        
-        console.log('samplingNo', samplingNo);
-        console.log('sampleNo', sampleNo);
-        console.log('stType', stType);
-        console.log('mopo', mopo);
-        console.log('tapa', tapa);
-        console.log('tapaNg', tapaNg);
-        console.log('ng', ng);
-
+    
         // --- check if all required values have been provided. If not, throw an alert message ---
 
         if(isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) ||
