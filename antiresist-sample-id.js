@@ -31,6 +31,7 @@ var nccrid = function() {
 
         // get the input field that belongs to the button
         var inputField = btn.prev();
+        var currentFieldContent = inputField.val();
   
         // get the sample group for the storage type
         var sampleGroup = btn.closest('div').prev();
@@ -290,27 +291,25 @@ var nccrid = function() {
             
         }
 
-    console.log('sampleId', sampleId)
+        if (currentFieldContent != '') {
+            var answer = prompt('Attention: A sample id is already specificed, please type OVERWRITE to overwrite the current sample id');
+            if (answer.toLowerCase() != 'overwrite') {
+                return;
+            }
+        }
+        
+        // set the value of the input field
+        inputField.val(sampleId);
 
-    // TODO: Insert sampleId in respective field for sample Id. This is the input field closest to the button.
+        // Check that the sample ID matches a certain regex, if not, throw an alert
+        var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
 
-    // Try out to get group where ID is in -> doesn't work
-    var idGroup = btn.prev('table').prev('table');
-    idGroup.css('color', '#be29ec');
+        if(checkId.test(sampleId) == false){
 
-    //Try out to directly get the ID (as it is the input field immediatly before the button) -> doesn't work
-    console.log('infield', inputField)
-    console.log('infieldval', inputField.val())
+            alert('The generated ID for this sample does not comply with the standard. Please make sure all variables are specified correctly.');
+            return;
 
-    // Check that the sample ID matches a certain regex, if not, throw an alert
-    var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
-
-    if(checkId.test(sampleId) == false){
-
-        alert('The generated ID for this sample does not comply with the standard. Please make sure all variables are specified correctly.');
-        return;
-
-    }
+        }
 
     };
 
