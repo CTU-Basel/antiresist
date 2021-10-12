@@ -297,13 +297,12 @@ var nccrid = function() {
 
     // TODO: Insert sampleId in respective field for sample Id
     // samplingNo is a text input field
-    var x = $('[name^=ff_nsmpl_nccrid]')
+    var x = selectField('[name^=ff_nsmpl_nccrid]')
 
     console.log('x', x);
     console.log('xval', x.value);
 
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
-    // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
 
     // Check that the sample ID matches a certain regex, if not, throw an alert
     var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
