@@ -179,7 +179,7 @@ var nccrid = function() {
         '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing' : 'ok'));
 
         return;
-        
+
         }
        
         // --- encode the sample id ---
@@ -287,7 +287,7 @@ var nccrid = function() {
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id
-    selectField('ff_nsmpl_nccrid').value = sampleId
+    var output = selectField('ff_nsmpl_nccrid').value
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
     // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
 
