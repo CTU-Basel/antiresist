@@ -32,6 +32,8 @@ var nccrid = function() {
         // get the input field that belongs to the button
         var inputField = btn.prev();
         inputField.css('background', '#c9c9ff');
+
+        console.log('inputField', inputField)
   
         // get the sample group for this sample id
         var sampleGroup = btn.closest('div').prev();
