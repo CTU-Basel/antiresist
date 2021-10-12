@@ -293,6 +293,8 @@ var nccrid = function() {
         return fields.val();
     }(repetitionGroup);
 
+    output = sampleId;
+
     console.log('output', output);
 
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
@@ -303,7 +305,7 @@ var nccrid = function() {
         
     if(checkId.test(sampleId) == false){
 
-        alert('The generated ID for this sample does not comply with the standard. \n Please make sure all variables (especially the ID for the sampling event) are specified correctly.');
+        alert('The generated ID for this sample does not comply with the standard. Please make sure all variables (especially the ID for the sampling event) are specified correctly.');
         return;
 
     }
