@@ -298,7 +298,7 @@ var nccrid = function() {
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id. This is the input field closest to the button.
-    var idGroup = btn.closest('table').prev();
+    var idGroup = btn.closest('td').prev('table').prev('table');
     idGroup.css('color', '#be29ec');
 
     console.log('idgroup', idGroup.value)
@@ -306,6 +306,9 @@ var nccrid = function() {
     inputField.value = sampleId
 
     console.log('infield', inputField.value)
+
+    var fields = $('input[name^=ff_nsmpl_ng]', inputField);
+    console.log('fields', fields)
 
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
 
