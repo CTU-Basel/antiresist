@@ -299,13 +299,8 @@ var nccrid = function() {
     idGroup.css('color', '#be29ec');
 
     //Try out to directly get the ID (as it is the input field immediatly before the button) -> doesn't work
-    inputField.val() = sampleId
-
-    console.log('infieldname', inputField.tagName)
     console.log('infield', inputField)
-
-    var fields = $(inputField.name);
-    console.log('fields', fields)
+    console.log('infieldval', inputField.val())
 
     // Check that the sample ID matches a certain regex, if not, throw an alert
     var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
