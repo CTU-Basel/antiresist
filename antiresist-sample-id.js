@@ -182,7 +182,7 @@ var nccrid = function() {
 
         }
 
-        // TODO: check if the sampling number was specified correctly (conforms to Regex)
+        // check if the sampling number was specified correctly (conforms to Regex)
         var checkNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
 
         if(checkNo.test(samplingNo) == false){
@@ -293,7 +293,6 @@ var nccrid = function() {
             
         }
 
-        // TODO: right now, everything is in upper case in console log. See if case is correct when field is filled with ID. 
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id
@@ -306,6 +305,7 @@ var nccrid = function() {
     output.value = sampleId
 
     console.log('output', output);
+    console.log('output', output.value);
 
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
     // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
