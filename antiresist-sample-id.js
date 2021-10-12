@@ -80,6 +80,16 @@ var nccrid = function() {
                 return item.toLowerCase() == currentType.toLowerCase()
             });
             
+            //TODO: This doesn't work, we need an increasing counter. 
+            // This inserts the number of samples of same type in every id, 
+            // instead of the number of the current sample.
+            // So for example, when selectedOptions is ["RNA", "RNA", "Fixed", "Frozen"], 
+            // then the sample numbers should be [1, 2, 1, 1], but the current 
+            // code working with length results in [2, 2, 1, 1].
+            // Maybe we could use selectedOptions, count there from 1 to n for each entry (how?),
+            // and index with the current sample number (e.g., extract from name)?
+
+
             // get the number of samples that are currently specified with
             // the same type
             var count = matchingTypes.length;
