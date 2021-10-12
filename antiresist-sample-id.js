@@ -20,9 +20,7 @@ var nccrid = function() {
     // generate the id for an nccr sample
     var generateId = function(event) {
 
-        //TODO: remove colors for production
-
-        console.log('generate id');
+        //TODO: remove colors and console logsfor production
 
         // prevent the browser from firing the default events
         event.preventDefault();
@@ -179,11 +177,12 @@ var nccrid = function() {
         (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing' : 'ok') : '') +
         ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing' : 'ok') : '') +
         '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing' : 'ok'));
+
         return;
+        
         }
        
         // --- encode the sample id ---
-        // TODO: see how these alerts can be improved such that there are no double alerts
 
         // initialize the sample id
         var sampleId = '';
@@ -288,9 +287,11 @@ var nccrid = function() {
     console.log('sampleId', sampleId)
 
     // TODO: Insert sampleId in respective field for sample Id
+    selectField('ff_nsmpl_nccrid').value = sampleId
     //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
     // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
 
+    // TODO: Check that the sample ID matches a certain regex, if not, throw an alert
     };
 
     var selectField = function(start, parent) {
