@@ -308,10 +308,8 @@ var nccrid = function() {
 
     console.log('infield', inputField.value)
 
-    var fields = $('input[name^=ff_nsmpl_ng]', inputField);
+    var fields = $('input[name^=ff_nsmpl_nccrid]', inputField);
     console.log('fields', fields)
-
-    //document.querySelectorAll('[name^=ff_nsmpl_nccrid]').value=sampleId
 
     // Check that the sample ID matches a certain regex, if not, throw an alert
     var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
