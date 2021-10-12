@@ -42,7 +42,6 @@ var nccrid = function() {
         repetitionGroup.css('color', '#660066');
 
         // samplingNo is an text input field
-        // TODO: Check if samplingNo conforms to defined Regex
         var samplingNo = function(parent) {
             var fields = selectField('ff_nsmpl_smplid', parent);
             return fields.val();
@@ -182,6 +181,16 @@ var nccrid = function() {
         return;
 
         }
+
+        // TODO: check if the sampling number was specified correctly (conforms to Regex)
+        var checkNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
+
+        if(checkNo.test(samplingNo) == false){
+    
+            alert('The entered ID for this sampling event does not comply with the standard. It should start with D, T or U, followed by the center abbreviation (e.g., USB) and a five-digit number.');
+            return;
+    
+        }
        
         // --- encode the sample id ---
 
@@ -291,8 +300,10 @@ var nccrid = function() {
     // samplingNo is an text input field
     var output = function(parent) {
         var fields = $('[name^=ff_nsmpl_nccrid]', parent);
-        return fields.value = sampleId;
+        return fields;
     }(repetitionGroup);
+
+    output.value = sampleId
 
     console.log('output', output);
 
@@ -300,8 +311,8 @@ var nccrid = function() {
     // DOES THIS NEED TO BE CONSTRAINED TO CURRENT SAMPLEGROUP?
 
     // Check that the sample ID matches a certain regex, if not, throw an alert
-    var checkId = new RegExp('[D|T|U]{1}-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}[SA|PA|EC|KS|OS|NG|ND][p|m|sa|pa|ec|ks|os|co]');
-    
+    var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
+
     if(checkId.test(sampleId) == false){
 
         alert('The generated ID for this sample does not comply with the standard. Please make sure all variables (especially the ID for the sampling event) are specified correctly.');
