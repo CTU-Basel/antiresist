@@ -35,9 +35,13 @@ var nccrid = function() {
 
         console.log('inputField', inputField)
   
-        // get the sample group for this sample id
+        // get the sample group for the storage type
         var sampleGroup = btn.closest('div').prev();
-        sampleGroup.css('color', '#be29ec');
+        sampleGroup.css('color', '#772200');
+
+        // get the sample group for the sample id
+        var idGroup = btn.closest('div');
+        idGroup.css('color', '#be29ec');
 
         // get the current sample repetition group for this id
         var repetitionGroup = btn.closest('div').closest('td');
