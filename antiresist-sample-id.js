@@ -20,7 +20,7 @@ var nccrid = function() {
     // generate the id for an nccr sample
     var generateId = function(event) {
 
-        //TODO: remove colors and console logsfor production
+        //TODO: remove colors and console logs for production
 
         // prevent the browser from firing the default events
         event.preventDefault();
@@ -303,8 +303,8 @@ var nccrid = function() {
 
     // TODO: Insert sampleId in respective field for sample Id
     // samplingNo is a text input field
-    var x = document.querySelector('[name^=ff_nsmpl_nccrid]')
-    inputField.value = sampleId
+    var x = $('[name^=ff_nsmpl_store]', idGroup)
+    x.value = sampleId
 
     console.log('x', x);
     console.log('xval', x.value);
