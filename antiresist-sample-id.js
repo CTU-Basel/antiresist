@@ -299,11 +299,11 @@ var nccrid = function() {
     console.log('idgroup', idGroup)
 
     //tryagain
-    btn.prev().value = sampleId
+    $(inputField.name).value = sampleId
 
-    console.log('infield', inputField)
+    console.log('infield', inputField.name)
 
-    var fields = $('input[name^=ff_nsmpl_nccrid]', inputField);
+    var fields = $(inputField.name);
     console.log('fields', fields)
 
     // Check that the sample ID matches a certain regex, if not, throw an alert
