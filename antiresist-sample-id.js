@@ -180,6 +180,10 @@ var nccrid = function() {
         ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing' : 'ok') : '') +
         '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing' : 'ok'));
 
+        } else {
+
+            return
+            
         }
 
        
