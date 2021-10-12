@@ -297,7 +297,7 @@ var nccrid = function() {
     idGroup.css('color', '#be29ec');
 
     //tryagain
-    btn.prev.val() = sampleId
+    btn.prev().val() = sampleId
 
     console.log('infieldname', inputField.tagName)
     console.log('infield', inputField)
