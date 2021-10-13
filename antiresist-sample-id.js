@@ -84,7 +84,7 @@ var nccrid = function () {
 
             console.log('currentindex', currentIndex)
 
-            //var existSampleNo = existSampleNo.splice(currentIndex + 1, 1)
+            existSampleNo.splice(currentIndex + 1, 1)
 
             console.log('existSampleNo', existSampleNo);
 
