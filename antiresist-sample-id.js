@@ -3,6 +3,8 @@
 // which is done already by secutrial
 var nccrid = function () {
 
+    // TODO: remove console logs at the end
+
     // check if a field value is empty
     var isEmpty = function (value) {
         if (!value) {
@@ -78,7 +80,8 @@ var nccrid = function () {
                 return item.value.substring(10, 13);
             });
 
-            // TODO: We need to make sure the sample Id (if already generated) is not included (remove it)
+            // We need to make sure the sample Id (if already generated) is not included
+            // Therefore remove number of current sample in existSampleNo
             var currentIndex = inputField.attr('name').replace(/ff_nsmpl_nccrid/, '')
             currentIndex = currentIndex.replace(/_[0-9]+/, '')
 
