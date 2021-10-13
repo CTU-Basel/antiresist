@@ -91,17 +91,16 @@ var nccrid = function() {
             // TO DEAL WITH: If we use existing IDs, it does only work if previous IDs were already generated
             var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
 
-            var nameMatcher2 = new RegExp('^ff_nsmpl_nccrid[0-9]+');
-            var nccrSampleID = fields2.filter(function(index) {
-                return nameMatcher2.test(this.name);
-            })
-
-            var nccrSampleIDval = $.map(nccrSampleID, function(item, index) {
+            var nccrSampleID = $.map(fields2, function(item, index) {
                 return selectedText(item);
             });
 
-            console.log('nccrid', nccrSampleIDval)
-            console.log('sampleno', nccrSampleID.substring(12, 13))
+            var existSampleID = $map(nccrSampleID, function(item){
+                return item.substring(12, 13)
+            })
+
+            console.log('nccrid', nccrSampleID)
+            console.log('sampleno', existSampleID)
 
 
 
