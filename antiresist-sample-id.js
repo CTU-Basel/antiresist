@@ -86,15 +86,15 @@ var nccrid = function() {
             var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
 
             var nccrSampleID = $.map(fields2, function(item, index) {
-                return selectedText(item);
+                return item.val();
             });
 
-            var existSampleID = $.map(nccrSampleID, function(item){
+            var existSampleNo = $.map(nccrSampleID, function(item){
                 return item.substring(11, 13)
             })
 
             console.log('nccrid', nccrSampleID)
-            console.log('sampleno', existSampleID)
+            console.log('sampleno', existSampleNo)
 
             // TODO: map first letter from string and current type -> keep only those strings where first letter matches
 
