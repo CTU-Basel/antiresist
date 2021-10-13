@@ -1,10 +1,10 @@
 // custom scope to generate sample ids
 // note: jquery must be loaded beforehand
 // which is done already by secutrial
-var nccrid = function() {
+var nccrid = function () {
 
     // check if a field value is empty
-    var isEmpty = function(value) {
+    var isEmpty = function (value) {
         if (!value) {
             return true;
         }
@@ -18,7 +18,7 @@ var nccrid = function() {
     }
 
     // generate the id for an nccr sample
-    var generateId = function(event) {
+    var generateId = function (event) {
 
         // prevent the browser from firing the default events
         event.preventDefault();
@@ -30,7 +30,7 @@ var nccrid = function() {
         // get the input field that belongs to the button
         var inputField = btn.prev();
         var currentFieldContent = inputField.val();
-  
+
         // get the sample group for the storage type
         var sampleGroup = btn.closest('div').prev();
 
@@ -38,46 +38,46 @@ var nccrid = function() {
         var repetitionGroup = btn.closest('div').closest('td');
 
         // samplingNo is an text input field
-        var samplingNo = function(parent) {
+        var samplingNo = function (parent) {
             var fields = selectField('ff_nsmpl_smplid', parent);
             return fields.val();
         }(repetitionGroup);
-        
+
         // stType is a select field in the same sample as the button
-        var stType = function(parent){
+        var stType = function (parent) {
             var fields = $('[name^=ff_nsmpl_store]', parent);
             return selectedText(fields);
         }(sampleGroup);
-        
+
         // sampleNo is generated as incremeting number partitioned
         // on the storage type and sample
-        var sampleNo = function(parent, currentType){
-            
+        var sampleNo = function (parent, currentType) {
+
             // the current type of the sample storage must be specified
             if (!currentType || currentType == '< Please choose >' || currentType == '') {
                 return '';
             }
-            
+
             // get all fields starting with ff_nsmpl_store in the
             // same sampling (repetitionGroup)
             var fields = $('[name^=ff_nsmpl_store]', parent);
-            
+
             // ensure that we have only the store fields (no _oth fields)
             var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
-            var selectedItems = fields.filter(function(index) {
+            var selectedItems = fields.filter(function (index) {
                 return nameMatcher.test(this.name);
             });
-            
+
             // get the selected text of each field
-            var selectedOptions = $.map(selectedItems, function(item, index) {
+            var selectedOptions = $.map(selectedItems, function (item, index) {
                 return selectedText(item);
             });
-            
+
             // filter for our matching type
-            var matchingTypes = selectedOptions.filter(function(item) {
+            var matchingTypes = selectedOptions.filter(function (item) {
                 return item.toLowerCase() == currentType.toLowerCase()
             });
-            
+
             //TODO: This doesn't work, we need an increasing counter. 
             // This inserts the number of samples of same type in every id, 
             // instead of the number of the current sample.
@@ -87,15 +87,15 @@ var nccrid = function() {
 
             console.log('fields', fields2)
 
-            var nccrSampleID = $.map(fields2, function(item) {
-                return item.value;
+            var nccrSampleID = $.map(fields2, function (item) {
+                return item.value.substring(10, 13);
             });
 
             console.log('nccrid', nccrSampleID)
 
-            var existSampleNo = $.map(nccrSampleID, function(item){
-                return item.substring(11, 13)
-            })
+            // var existSampleNo = $.map(nccrSampleID, function (item) {
+            //     return item.substring(10, 13)
+            // })
 
             console.log('sampleno', existSampleNo)
 
@@ -106,106 +106,106 @@ var nccrid = function() {
             // TODO: remove when above works: get the number of samples that are currently specified with
             // the same type
             var count = matchingTypes.length;
-            
+
             // our current sample has the same type, therefore we do not 
             // need to increase the counter
-            
+
             // but we need to add a left padding with zeros
             if (count < 10) {
                 return '0' + count;
             }
-            
+
             // return the count as text
             return count + '';
-            
+
         }(repetitionGroup, stType);
 
         // tapa is a select field
-        var tapa = function(parent) {
+        var tapa = function (parent) {
             var fields = selectField('ff_nsmpl_tapa', parent);
             // return selected option of select field
             return selectedText(fields);
         }(repetitionGroup);
 
         // mopo is a radio button field
-        var mopo = function(parent) {
+        var mopo = function (parent) {
             var fields = $('input[name^=ff_nsmpl_mopo]', parent);
-            var selectedFields = fields.filter(function(){
+            var selectedFields = fields.filter(function () {
                 return $(this).prop('checked') === true;
             });
-            
+
             // return empty string if no checked fields were found
             if (!selectedFields || selectedFields.length == 0) {
                 return '';
             }
-            
+
             // use the id of the checked field, to find a corresponding label
             // and extract the text content of the label
             var fieldId = selectedFields.attr('id');
-            var label = $('label[for='+ fieldId +']', parent);
+            var label = $('label[for=' + fieldId + ']', parent);
             var txt = label.text();
-            
+
             return txt;
         }(repetitionGroup);
 
         // tapaNg is a select field
-        var tapaNg = function(parent) {
+        var tapaNg = function (parent) {
             var fields = selectField('ff_nsmpl_nt_tapa', parent);
             return selectedText(fields);
         }(repetitionGroup);
 
         // ng is a radio button
-        var ng = function(parent){
+        var ng = function (parent) {
             var fields = $('input[name^=ff_nsmpl_ng]', parent);
-            var selectedFields = fields.filter(function(){
+            var selectedFields = fields.filter(function () {
                 return $(this).prop('checked') === true;
             });
-            
+
             // return empty string if no checked fields were found
             if (!selectedFields || selectedFields.length == 0) {
                 return '';
             }
-            
+
             // use the id of the checked field, to find a corresponding label
             // and extract the text content of the label
             var fieldId = selectedFields.attr('id');
-            var label = $('label[for='+ fieldId +']', parent);
+            var label = $('label[for=' + fieldId + ']', parent);
             var txt = label.text();
-            
-            return txt;  
+
+            return txt;
         }(repetitionGroup);
-    
+
 
         // --- check if all required values have been provided. If not, throw an alert message ---
 
-        if(isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) ||
-        (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) || 
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) || 
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
+        if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) ||
+            (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) ||
+            (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) ||
+            (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
 
-             // check for each value if it is not empty (or < Please choose > )
-        // and inform the user if the value is empty
-        alert('ID for NCCR sample could not be generated. Some input is missing:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? 'missing!' : 'ok') + 
-        '\n- Main target pathogen: ' + (isEmpty(tapa) ? 'missing!' : 'ok') + 
-        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? 'missing!' : 'ok') : '') +
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing!' : 'ok') : '') +
-        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing!' : 'ok') : '') +
-        '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing!' : 'ok'));
+            // check for each value if it is not empty (or < Please choose > )
+            // and inform the user if the value is empty
+            alert('ID for NCCR sample could not be generated. Some input is missing:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? 'missing!' : 'ok') +
+                '\n- Main target pathogen: ' + (isEmpty(tapa) ? 'missing!' : 'ok') +
+                (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? 'missing!' : 'ok') : '') +
+                (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing!' : 'ok') : '') +
+                ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing!' : 'ok') : '') +
+                '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing!' : 'ok'));
 
-        return;
+            return;
 
         }
 
         // check if the sampling number was specified correctly (conforms to Regex)
         var checkNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
 
-        if(checkNo.test(samplingNo) == false){
-    
+        if (checkNo.test(samplingNo) == false) {
+
             alert('The entered ID for this sampling event does not comply with the standard. It should start with D, T or U, followed by the center abbreviation (e.g., USB) and a five-digit number.');
             return;
-    
+
         }
-       
+
         // --- encode the sample id ---
 
         // initialize the sample id
@@ -218,10 +218,10 @@ var nccrid = function() {
         var stTypeMap = {
             'Frozen': 'F',
             'Fixed': 'H',
-            'Native' : 'N',
-            'Whole blood' : 'B',
-            'RNA' : 'R',
-            'Other' : 'O'
+            'Native': 'N',
+            'Whole blood': 'B',
+            'RNA': 'R',
+            'Other': 'O'
         }
 
         if (Object.keys(stTypeMap).indexOf(stType) == -1) {
@@ -239,11 +239,11 @@ var nccrid = function() {
         var tapaMap = {
             'S. aureus': 'SA',
             'P. aeruginosa': 'PA',
-            'E. coli' : 'EC',
-            'Klebsiella spp.' : 'KS',
-            'Other' : 'OS',
-            'No growth' : 'NG',
-            'No data from routine microbiology' : 'ND'
+            'E. coli': 'EC',
+            'Klebsiella spp.': 'KS',
+            'Other': 'OS',
+            'No growth': 'NG',
+            'No data from routine microbiology': 'ND'
         }
 
         if (Object.keys(tapaMap).indexOf(tapa) == -1) {
@@ -262,9 +262,9 @@ var nccrid = function() {
         var tapaNgMap = {
             'S. aureus': 'sa',
             'P. aeruginosa': 'pa',
-            'E. coli' : 'ec',
-            'Klebsiella spp.' : 'ks',
-            'Other' : 'os'
+            'E. coli': 'ec',
+            'Klebsiella spp.': 'ks',
+            'Other': 'os'
         }
 
         var ngMap = {
@@ -272,8 +272,8 @@ var nccrid = function() {
             'infection with target pathogen (within prior 3 months or 10 days after sampling': 'inf'
         }
 
-        if(tapa != 'No growth' && tapa != 'No data from routine microbiology'){
-            
+        if (tapa != 'No growth' && tapa != 'No data from routine microbiology') {
+
             if (Object.keys(mopoMap).indexOf(mopo) == -1) {
                 alert('Monomicrobial or polymicrobial growth not found');
                 return;
@@ -281,7 +281,7 @@ var nccrid = function() {
 
             sampleId += mopoMap[mopo];
 
-        } else if((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection')){
+        } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection')) {
 
             if (Object.keys(tapaNgMap).indexOf(tapaNg) == -1) {
                 alert('Target pathogen responsible for infection not found');
@@ -290,8 +290,8 @@ var nccrid = function() {
 
             sampleId += tapaMap[tapaNg];
 
-        } else if((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('control')){
-            
+        } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('control')) {
+
             if (Object.keys(ngMap).indexOf(ng) == -1) {
                 alert('Sample event control or infection not found');
                 return;
@@ -304,7 +304,7 @@ var nccrid = function() {
             // If needed info is not there (i.e., values could not be matched), throw this alert
             alert('Additional information needed for sample ID is missing!');
             return;
-            
+
         }
 
         if (currentFieldContent != '') {
@@ -313,11 +313,11 @@ var nccrid = function() {
                 return;
             }
         }
-        
+
         // Check that the sample ID matches a certain regex, if not, throw an alert
         var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
 
-        if(checkId.test(sampleId) == false){
+        if (checkId.test(sampleId) == false) {
 
             alert('The generated ID for this sample does not comply with the standard. Please make sure all variables are specified correctly.');
             return;
@@ -328,18 +328,18 @@ var nccrid = function() {
         // return if not entered ok
         // --- check if all required values have been provided. If not, throw an alert message ---
 
-        var answer = prompt('Before the sample ID is generated, please confirm that the following information is correct:\n\n- ID for sampling event: ' + samplingNo + 
-        '\n- Main target pathogen: ' + tapa + 
-        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + mopo : '') +
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng : '') +
-        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg : '') +
-        '\n- Primary storage type: ' + stType + 
-        '\n- Sample number: ' + sampleNo + 
-        '\n\nATTENTION: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
+        var answer = prompt('Before the sample ID is generated, please confirm that the following information is correct:\n\n- ID for sampling event: ' + samplingNo +
+            '\n- Main target pathogen: ' + tapa +
+            (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + mopo : '') +
+            (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng : '') +
+            ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg : '') +
+            '\n- Primary storage type: ' + stType +
+            '\n- Sample number: ' + sampleNo +
+            '\n\nATTENTION: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
 
-            if (answer.toLowerCase() != 'confirm') {
-                return;
-            }
+        if (answer.toLowerCase() != 'confirm') {
+            return;
+        }
 
 
         // set the value of the input field
@@ -352,7 +352,7 @@ var nccrid = function() {
 
     };
 
-    var selectField = function(start, parent) {
+    var selectField = function (start, parent) {
         // use jquery to select all fields that have a name starting with our expression
         var items = []
 
@@ -365,14 +365,14 @@ var nccrid = function() {
 
         // create a regular expression matcher that allows 
         var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
-        var selectedItems = items.filter(function(index) {
+        var selectedItems = items.filter(function (index) {
             return nameMatcher.test(this.name);
         });
 
         return selectedItems;
     }
 
-    var selectedText = function(selectElement) {
+    var selectedText = function (selectElement) {
         var selectedOption = $('option:selected', selectElement);
         if (selectedOption.length == 0) {
             return '';
@@ -381,13 +381,13 @@ var nccrid = function() {
     }
 
     // add a new button to every nccr id field
-    var addButtons = function(){
+    var addButtons = function () {
 
         // find all fields for nccrd id sample ids
         var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
 
         // go through all fields and append a button, if there is not already a button
-        idFields.forEach(function(item){
+        idFields.forEach(function (item) {
 
             // nothing to do, if there is already a button
             if (item.nextSibling && item.nextSibling.tagName == 'BUTTON') {
@@ -408,7 +408,7 @@ var nccrid = function() {
     // handle changes in the value of the select field to specify
     // the number of samples, since this will result
     // in new nccr id fields that need to be enhanced
-    var handleSampleChange = function(updateFn) {
+    var handleSampleChange = function (updateFn) {
 
         // find all select fields where the name starts with the given text
         var fields = document.querySelectorAll('select[name^=ff_nsmpl_amt]');
@@ -426,7 +426,7 @@ var nccrid = function() {
 
             // react to field changes, as this changes the number of 
             // available samples and accordingly the available sample id fields
-            fields[i].onchange = function() {
+            fields[i].onchange = function () {
                 updateFn();
             };
 
@@ -448,6 +448,6 @@ var nccrid = function() {
 // add custom nccrid functionality as soon as windows is completely loaded
 // note: secutrial is using the window load event itself, so we must
 // ensure, that this does not overwrite the respective event listener
-$(window).load(function() {
+$(window).load(function () {
     nccrid();
 });
