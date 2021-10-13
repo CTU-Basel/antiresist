@@ -131,7 +131,9 @@ var nccrid = function () {
 
             console.log('matchingtypes3', matchingNo);
 
-            // TODO: if array is not empty: take highest number from this array and add 1 to it to get current sample number, else, take 1
+            // if array is empty, set count to one (first sample of this type), 
+            // else, take highest number from this array and add 1 to it 
+            // to get current sample number
             if(matchingNo.length == 0){
 
                 var count2 = 1
@@ -143,10 +145,6 @@ var nccrid = function () {
             };
 
             console.log('count', count2);
-
-            // TODO: remove when above works: get the number of samples that are currently specified with
-            // the same type
-            var count = matchingTypes.length;
 
             // our current sample has the same type, therefore we do not 
             // need to increase the counter
