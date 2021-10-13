@@ -95,7 +95,7 @@ var nccrid = function() {
                 return selectedText(item);
             });
 
-            var existSampleID = $map(nccrSampleID, function(item){
+            var existSampleID = $.map(nccrSampleID, function(item){
                 return item.substring(12, 13)
             })
 
