@@ -79,7 +79,7 @@ var nccrid = function () {
             });
 
             // TODO: We need to make sure the sample Id (if already generated) is not included
-            var currentIndex = inputField.name.replace(/ff_nsmpl_nccrid/, '')
+            var currentIndex = inputField.attr('name').replace(/ff_nsmpl_nccrid/, '')
             currentIndex = currentIndex.replace(/_[0-9]+/, '')
 
             console.log('currentindex', currentIndex)
@@ -344,7 +344,7 @@ var nccrid = function () {
         }
 
         if (currentFieldContent != '') {
-            var answer = prompt('Attention: A sample id is already specificed, please type OVERWRITE to overwrite the current sample id');
+            var answer = prompt('Attention: A sample id is already specified, please type OVERWRITE to overwrite the current sample id');
             if (answer.toLowerCase() != 'overwrite') {
                 return;
             }
