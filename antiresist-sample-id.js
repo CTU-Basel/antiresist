@@ -326,7 +326,7 @@ var nccrid = function() {
         (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng.bold() : '') +
         ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg.bold() : '') +
         '\n- Primary storage type: ' + stType.bold() + 
-        '\n- Sample number: ' + sampleNo.bold()) + 
+        '\n- Sample number: ' + sampleNo.bold() + 
         '\nATTENTION: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
 
             if (answer.toLowerCase() != 'confirm') {
