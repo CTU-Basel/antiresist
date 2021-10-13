@@ -89,9 +89,9 @@ var nccrid = function() {
 
             // TO DEAL WITH: If ID of second sample is generated first, number will be 1 instead of 2..
             // TO DEAL WITH: If we use existing IDs, it does only work if previous IDs were already generated
-            var fields2 = $('[name^=ff_nsmpl_smplid]', parent);
+            var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
 
-            var nameMatcher2 = new RegExp('^ff_nsmpl_smplid[0-9]+');
+            var nameMatcher2 = new RegExp('^ff_nsmpl_nccrid[0-9]+');
             var nccrSampleID = fields2.filter(function(index) {
                 return nameMatcher2.test(this.name);
             })
@@ -340,6 +340,7 @@ var nccrid = function() {
         // set the value of the input field
         inputField.val(sampleId);
 
+        // remove the button and make field uneditable
         btn.css('display', 'none');
 
         inputField.prop('readonly', true)
