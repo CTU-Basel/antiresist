@@ -20,6 +20,8 @@ var nccrid = function() {
     // generate the id for an nccr sample
     var generateId = function(event) {
 
+        alert('clicked');
+
         // prevent the browser from firing the default events
         event.preventDefault();
         event.stopPropagation();
@@ -87,6 +89,9 @@ var nccrid = function() {
             // Maybe we could use selectedOptions, count there from 1 to n for each entry (how?),
             // and index with the current sample number (e.g., extract from name)?
 
+            // TO DEAL WITH: If ID of second sample is generated first, number will be 1 instead of 2..
+            // TO DEAL WITH: If we use existing IDs, it does only work if previous IDs were already generated
+            var nccrSampleID = selectField('ff_nsmpl_smplid', parent).val();
 
             // get the number of samples that are currently specified with
             // the same type
@@ -160,26 +165,7 @@ var nccrid = function() {
             return txt;  
         }(repetitionGroup);
     
-        // --- check if all required values have been provided. If not, throw an alert message ---
-
-        if(isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) ||
-        (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) || 
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) || 
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
-
-             // check for each value if it is not empty (or < Please choose > )
-        // and inform the user if the value is empty
-        alert('ID for NCCR sample could not be generated. Some input is missing:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? 'missing' : 'ok') + 
-        '\n- Main target pathogen: ' + (isEmpty(tapa) ? 'missing' : 'ok') + 
-        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? 'missing' : 'ok') : '') +
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing' : 'ok') : '') +
-        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing' : 'ok') : '') +
-        '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing' : 'ok'));
-
-        return;
-
-        }
-
+        
         // check if the sampling number was specified correctly (conforms to Regex)
         var checkNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
 
@@ -298,9 +284,6 @@ var nccrid = function() {
             }
         }
         
-        // set the value of the input field
-        inputField.val(sampleId);
-
         // Check that the sample ID matches a certain regex, if not, throw an alert
         var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
 
@@ -310,6 +293,30 @@ var nccrid = function() {
             return;
 
         }
+
+        // prompt user to check all values
+        // return if not entered ok
+        // --- check if all required values have been provided. If not, throw an alert message ---
+        var missing = 'missing!'
+
+        var answer = prompt('Before the sample ID is generated, please confirm that the following information is correct:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? missing.bold() : samplingNo.bold()) + 
+        '\n- Main target pathogen: ' + (isEmpty(tapa) ? missing.bold() : tapa) + 
+        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? missing.bold() : mopo) : '') +
+        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? missing.bold() : ng) : '') +
+        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? missing.bold() : tapaNg) : '') +
+        '\n- Primary storage type: ' + (isEmpty(stType) ? missing.bold() : stType) + 
+        '\n- Sample number: ' + (isEmpty(sampleNo) ? missing.bold() : sampleNo) + 
+        '\nATTENTION: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
+
+            if (answer.toLowerCase() != 'confirm') {
+                return;
+            }
+
+
+        // set the value of the input field
+        inputField.val(sampleId);
+
+        btn.css('display', 'none');
 
     };
 
