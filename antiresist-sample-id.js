@@ -87,19 +87,34 @@ var nccrid = function () {
 
             console.log('fields', fields2)
 
-            var nccrSampleID = $.map(fields2, function (item) {
+            // get existing storage types and sample numbers in repetition group
+            var existSampleNo = $.map(fields2, function (item) {
                 return item.value.substring(10, 13);
             });
 
-            console.log('nccrid', nccrSampleID)
+            console.log('nccrid', existSampleNo)
 
-            // var existSampleNo = $.map(nccrSampleID, function (item) {
-            //     return item.substring(10, 13)
-            // })
+            // TODO: map first letter from string and current type
+            var typeMap = {
+                'Frozen': 'F',
+                'Fixed': 'H',
+                'Native': 'N',
+                'Whole blood': 'B',
+                'RNA': 'R',
+                'Other': 'O'
+            }
 
-            console.log('sampleno', existSampleNo)
+            var currentTypeMap = typeMap[currentType]
 
-            // TODO: map first letter from string and current type -> keep only those strings where first letter matches
+            console.log('currentype', currentTypeMap)
+
+            // keep only those strings where first letter matches and TODO: remove the stType letter
+            var matchingNo = $.map(existSampleNo, function (item) {
+                return item.match(/currentTypeMap/g);
+            });
+
+            console.log('matchingtypes', matchingNo)
+
 
             // TODO: if array is not empty: take highest number from this array and add 1 to it to get current sample number, else, take 1
 
