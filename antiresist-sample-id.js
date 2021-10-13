@@ -92,7 +92,7 @@ var nccrid = function () {
                 return item.value.substring(10, 13);
             });
 
-            console.log('nccrid', existSampleNo)
+            console.log('existSampleNo', existSampleNo)
 
             // TODO: map first letter from string and current type
             var typeMap = {
@@ -110,7 +110,7 @@ var nccrid = function () {
 
             // keep only those strings where first letter matches and TODO: remove the stType letter
             var matchingNo = $.map(existSampleNo, function (item) {
-                return item.match(/currentTypeMap/g);
+                return item.match(/currentTypeMap[0-9]{2}/g);
             });
 
             console.log('matchingtypes', matchingNo)
