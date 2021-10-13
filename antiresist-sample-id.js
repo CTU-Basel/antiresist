@@ -87,7 +87,7 @@ var nccrid = function() {
 
             console.log('fields', fields2)
 
-            var nccrSampleID = $.map(fields2, function(item, index) {
+            var nccrSampleID = $.map(fields2, function(item) {
                 return item.val();
             });
 
