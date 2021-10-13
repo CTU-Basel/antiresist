@@ -81,14 +81,8 @@ var nccrid = function() {
             //TODO: This doesn't work, we need an increasing counter. 
             // This inserts the number of samples of same type in every id, 
             // instead of the number of the current sample.
-            // So for example, when selectedOptions is ["RNA", "RNA", "Fixed", "Frozen"], 
-            // then the sample numbers should be [1, 2, 1, 1], but the current 
-            // code working with length results in [2, 2, 1, 1].
-            // Maybe we could use selectedOptions, count there from 1 to n for each entry (how?),
-            // and index with the current sample number (e.g., extract from name)?
-
-            // TO DEAL WITH: If ID of second sample is generated first, number will be 1 instead of 2..
-            // TO DEAL WITH: If we use existing IDs, it does only work if previous IDs were already generated
+            // Try read out existing sample numbers for a type, pick highest number
+            // for current type, and add 1 to it 
             var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
 
             var nccrSampleID = $.map(fields2, function(item, index) {
@@ -96,15 +90,17 @@ var nccrid = function() {
             });
 
             var existSampleID = $.map(nccrSampleID, function(item){
-                return item.substring(12, 13)
+                return item.substring(11, 13)
             })
 
             console.log('nccrid', nccrSampleID)
             console.log('sampleno', existSampleID)
 
+            // TODO: map first letter from string and current type -> keep only those strings where first letter matches
 
+            // TODO: if array is not empty: take highest number from this array and add 1 to it to get current sample number, else, take 1
 
-            // get the number of samples that are currently specified with
+            // TODO: remove when above works: get the number of samples that are currently specified with
             // the same type
             var count = matchingTypes.length;
             
