@@ -92,8 +92,8 @@ var nccrid = function() {
             var fields2 = $('[name^=ff_nsmpl_smplid]', parent);
 
             var nameMatcher2 = new RegExp('^ff_nsmpl_smplid[0-9]+');
-            var nccrSampleID = fields.filter(function(index) {
-                return nameMatcher.test(this.name);
+            var nccrSampleID = fields2.filter(function(index) {
+                return nameMatcher2.test(this.name);
             })
 
             console.log('nccrid', nccrSampleID.val())
