@@ -85,16 +85,16 @@ var nccrid = function () {
             // for current type, and add 1 to it 
             var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
 
-            console.log('fields', fields2)
+            console.log('fields', fields2);
 
             // get existing storage types and sample numbers in repetition group
             var existSampleNo = $.map(fields2, function (item) {
                 return item.value.substring(10, 13);
             });
 
-            console.log('existSampleNo', existSampleNo)
+            console.log('existSampleNo', existSampleNo);
 
-            // TODO: map first letter from string and current type
+            // map first letter from string and current type
             var typeMap = {
                 'Frozen': 'F',
                 'Fixed': 'H',
@@ -104,18 +104,25 @@ var nccrid = function () {
                 'Other': 'O'
             }
 
-            var currentTypeMap = typeMap[currentType]
+            var currentTypeMap = typeMap[currentType];
 
-            console.log('currentype', currentTypeMap)
+            console.log('currentype', currentTypeMap);
 
-            // keep only those strings where first letter matches and TODO: remove the stType letter
+            // keep only those strings where first letter matches
             var matchingNo = existSampleNo.filter(function (item) {
                 return item.includes(currentTypeMap);
             });
 
-            console.log('trystring', existSampleNo[1].match(/^currentTypeMap[0-9]{2}$/g))
+            console.log('matchingtypes', matchingNo);
 
-            console.log('matchingtypes', matchingNo)
+            // remove the stType letter and convert to numeric variable
+            var matchingNo = $.map(matchingNo, function(item){
+
+                return item.replace(currentTypeMap, '');
+
+            })
+
+            console.log('matchingtypes2', matchingNo);
 
 
             // TODO: if array is not empty: take highest number from this array and add 1 to it to get current sample number, else, take 1
