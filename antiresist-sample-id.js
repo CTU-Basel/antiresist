@@ -88,14 +88,15 @@ var nccrid = function() {
             console.log('fields', fields2)
 
             var nccrSampleID = $.map(fields2, function(item) {
-                return item.val();
+                return item.value;
             });
+
+            console.log('nccrid', nccrSampleID)
 
             var existSampleNo = $.map(nccrSampleID, function(item){
                 return item.substring(11, 13)
             })
 
-            console.log('nccrid', nccrSampleID)
             console.log('sampleno', existSampleNo)
 
             // TODO: map first letter from string and current type -> keep only those strings where first letter matches
