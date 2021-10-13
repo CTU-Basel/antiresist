@@ -109,8 +109,8 @@ var nccrid = function () {
             console.log('currentype', currentTypeMap)
 
             // keep only those strings where first letter matches and TODO: remove the stType letter
-            var matchingNo = $.map(existSampleNo, function (item) {
-                return item.match(/^currentTypeMap[0-9]{2}$/g);
+            var matchingNo = existSampleNo.filter(function (item) {
+                return item.includes(currentTypeMap);
             });
 
             console.log('trystring', existSampleNo[1].match(/^currentTypeMap[0-9]{2}$/g))
