@@ -20,8 +20,6 @@ var nccrid = function() {
     // generate the id for an nccr sample
     var generateId = function(event) {
 
-        alert('clicked');
-
         // prevent the browser from firing the default events
         event.preventDefault();
         event.stopPropagation();
@@ -167,8 +165,6 @@ var nccrid = function() {
     
 
         // --- check if all required values have been provided. If not, throw an alert message ---
-        var missing = 'missing!'
-        var ok = 'ok'
 
         if(isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) ||
         (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) || 
@@ -177,12 +173,12 @@ var nccrid = function() {
 
              // check for each value if it is not empty (or < Please choose > )
         // and inform the user if the value is empty
-        alert('ID for NCCR sample could not be generated. Some input is missing:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? missing.bold() : ok.bold()) + 
-        '\n- Main target pathogen: ' + (isEmpty(tapa) ? missing.bold() : ok.bold()) + 
-        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? missing.bold() : ok.bold()) : '') +
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? missing.bold() : ok.bold()) : '') +
-        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? missing.bold() : ok.bold()) : '') +
-        '\n- Primary storage type: ' + (isEmpty(stType) ? missing.bold() : ok.bold()));
+        alert('ID for NCCR sample could not be generated. Some input is missing:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? 'missing!' : 'ok') + 
+        '\n- Main target pathogen: ' + (isEmpty(tapa) ? 'missing!' : 'ok') + 
+        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? 'missing!' : 'ok') : '') +
+        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing!' : 'ok') : '') +
+        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing!' : 'ok') : '') +
+        '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing!' : 'ok'));
 
         return;
 
@@ -321,13 +317,13 @@ var nccrid = function() {
         // --- check if all required values have been provided. If not, throw an alert message ---
 
         var answer = prompt('Before the sample ID is generated, please confirm that the following information is correct:\n\n- ID for sampling event: ' + samplingNo.bold() + 
-        '\n- Main target pathogen: ' + tapa.bold() + 
-        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + mopo.bold() : '') +
-        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng.bold() : '') +
+        '\n- Main target pathogen: ' + tapa + 
+        (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + mopo : '') +
+        (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng : '') +
         ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg.bold() : '') +
-        '\n- Primary storage type: ' + stType.bold() + 
-        '\n- Sample number: ' + sampleNo.bold() + 
-        '\nATTENTION: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
+        '\n- Primary storage type: ' + stType + 
+        '\n- Sample number: ' + sampleNo + 
+        '\n\n<b>ATTENTION<b>: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
 
             if (answer.toLowerCase() != 'confirm') {
                 return;
