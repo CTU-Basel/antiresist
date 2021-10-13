@@ -84,9 +84,10 @@ var nccrid = function () {
 
             console.log('currentindex', currentIndex)
 
-            existSampleNo.splice(currentIndex + 1, 1)
+            var removed = existSampleNo.splice(currentIndex + 1, 1)
 
             console.log('existSampleNo', existSampleNo);
+            console.log('removed', removed);
 
             // map first letter from string and current type
             var typeMap = {
