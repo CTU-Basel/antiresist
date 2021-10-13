@@ -89,7 +89,14 @@ var nccrid = function() {
 
             // TO DEAL WITH: If ID of second sample is generated first, number will be 1 instead of 2..
             // TO DEAL WITH: If we use existing IDs, it does only work if previous IDs were already generated
-            var nccrSampleID = selectField('ff_nsmpl_smplid', parent).val();
+            var fields2 = $('[name^=ff_nsmpl_smplid]', parent);
+
+            var nameMatcher2 = new RegExp('^ff_nsmpl_smplid[0-9]+');
+            var nccrSampleID = fields.filter(function(index) {
+                return nameMatcher.test(this.name);
+            })
+
+            console.log('nccrid', nccrSampleID.val())
 
             // get the number of samples that are currently specified with
             // the same type
@@ -335,7 +342,7 @@ var nccrid = function() {
 
         btn.css('display', 'none');
 
-        inputField.setAttribute('readonly', true)
+        inputField.prop('readonly', true)
 
     };
 
