@@ -78,16 +78,13 @@ var nccrid = function () {
                 return item.value.substring(10, 13);
             });
 
-            // TODO: We need to make sure the sample Id (if already generated) is not included
+            // TODO: We need to make sure the sample Id (if already generated) is not included (remove it)
             var currentIndex = inputField.attr('name').replace(/ff_nsmpl_nccrid/, '')
             currentIndex = currentIndex.replace(/_[0-9]+/, '')
 
             console.log('currentindex', currentIndex)
 
-            // var existSampleNo = existSampleNo.filter(function (item){
-
-            //     item
-            // })
+            var existSampleNo = existSampleNo.splice(currentIndex + 1, 1)
 
             console.log('existSampleNo', existSampleNo);
 
@@ -141,7 +138,7 @@ var nccrid = function () {
 
             };
 
-            console.log('count', count2);
+            console.log('count', count);
 
             // our current sample has the same type, therefore we do not 
             // need to increase the counter
