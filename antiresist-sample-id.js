@@ -108,6 +108,8 @@ var nccrid = function () {
 
             console.log('currentype', currentTypeMap);
 
+            // TODO: I think the three following steps could all be done in one step, but don't know how
+
             // keep only those strings where first letter matches
             var matchingNo = existSampleNo.filter(function (item) {
                 return item.includes(currentTypeMap);
@@ -115,7 +117,7 @@ var nccrid = function () {
 
             console.log('matchingtypes', matchingNo);
 
-            // remove the stType letter and convert to numeric variable
+            // remove the stType letter
             var matchingNo = $.map(matchingNo, function(item){
 
                 return item.replace(currentTypeMap, '');
@@ -124,8 +126,23 @@ var nccrid = function () {
 
             console.log('matchingtypes2', matchingNo);
 
+            // convert to numeric variable
+            var matchingNo = matchingNo.map(Number);
+
+            console.log('matchingtypes3', matchingNo);
 
             // TODO: if array is not empty: take highest number from this array and add 1 to it to get current sample number, else, take 1
+            if(matchingNo.length == 0){
+
+                var count2 = 1
+
+            } else {
+
+                var count2 = Math.max(...matchingNo) + 1
+
+            };
+
+            console.log('count', count2);
 
             // TODO: remove when above works: get the number of samples that are currently specified with
             // the same type
