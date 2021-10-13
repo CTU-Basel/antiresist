@@ -136,11 +136,11 @@ var nccrid = function () {
             // to get current sample number
             if(matchingNo.length == 0){
 
-                var count2 = 1
+                var count = 1
 
             } else {
 
-                var count2 = Math.max(...matchingNo) + 1
+                var count = Math.max(...matchingNo) + 1
 
             };
 
