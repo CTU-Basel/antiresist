@@ -316,14 +316,14 @@ var nccrid = function() {
         // return if not entered ok
         // --- check if all required values have been provided. If not, throw an alert message ---
 
-        var answer = prompt('Before the sample ID is generated, please confirm that the following information is correct:\n\n- ID for sampling event: ' + samplingNo.bold() + 
+        var answer = prompt('Before the sample ID is generated, please confirm that the following information is correct:\n\n- ID for sampling event: ' + samplingNo + 
         '\n- Main target pathogen: ' + tapa + 
         (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + mopo : '') +
         (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng : '') +
-        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg.bold() : '') +
+        ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg : '') +
         '\n- Primary storage type: ' + stType + 
         '\n- Sample number: ' + sampleNo + 
-        '\n\n<b>ATTENTION<b>: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
+        '\n\nATTENTION: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
 
             if (answer.toLowerCase() != 'confirm') {
                 return;
