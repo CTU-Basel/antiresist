@@ -85,6 +85,8 @@ var nccrid = function() {
             // for current type, and add 1 to it 
             var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
 
+            console.log('fields', fields2)
+
             var nccrSampleID = $.map(fields2, function(item, index) {
                 return item.val();
             });
