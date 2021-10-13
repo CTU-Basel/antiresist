@@ -335,6 +335,8 @@ var nccrid = function() {
 
         btn.css('display', 'none');
 
+        inputField.setAttribute('readonly', true)
+
     };
 
     var selectField = function(start, parent) {
