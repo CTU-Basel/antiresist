@@ -96,7 +96,14 @@ var nccrid = function() {
                 return nameMatcher2.test(this.name);
             })
 
-            console.log('nccrid', nccrSampleID.val())
+            var nccrSampleIDval = $.map(nccrSampleID, function(item, index) {
+                return selectedText(item);
+            });
+
+            console.log('nccrid', nccrSampleIDval)
+            console.log('sampleno', nccrSampleID.substring(12, 13))
+
+
 
             // get the number of samples that are currently specified with
             // the same type
