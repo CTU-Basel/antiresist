@@ -68,29 +68,26 @@ var nccrid = function () {
                 return nameMatcher.test(this.name);
             });
 
-            // get the selected text of each field
-            var selectedOptions = $.map(selectedItems, function (item, index) {
-                return selectedText(item);
-            });
-
-            // filter for our matching type
-            var matchingTypes = selectedOptions.filter(function (item) {
-                return item.toLowerCase() == currentType.toLowerCase()
-            });
-
-            //TODO: This doesn't work, we need an increasing counter. 
-            // This inserts the number of samples of same type in every id, 
-            // instead of the number of the current sample.
-            // Try read out existing sample numbers for a type, pick highest number
-            // for current type, and add 1 to it 
+            // Get all nccrids in this repetition group
             var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
 
             console.log('fields', fields2);
 
-            // get existing storage types and sample numbers in repetition group
+            // get existing storage types and sample numbers in this repetition group
             var existSampleNo = $.map(fields2, function (item) {
                 return item.value.substring(10, 13);
             });
+
+            // TODO: We need to make sure the sample Id (if already generated) is not included
+            var currentIndex = inputField.name.replace(/ff_nsmpl_nccrid/, '')
+            currentIndex = currentIndex.replace(/_[0-9]+/, '')
+
+            console.log('currentindex', currentIndex)
+
+            // var existSampleNo = existSampleNo.filter(function (item){
+
+            //     item
+            // })
 
             console.log('existSampleNo', existSampleNo);
 
