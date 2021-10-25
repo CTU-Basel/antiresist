@@ -222,12 +222,12 @@ var nccrid = function () {
 
             // check for each value if it is not empty (or < Please choose > )
             // and inform the user if the value is empty
-            alert('ID for NCCR sample could not be generated. Some input is missing:\n\n' + (isEmpty(samplingNo) ? '!! Missing: ' : 'OK:') + 'ID for sampling event\n' +
-                (isEmpty(tapa) ? '!! Missing: ' : 'OK:') + 'Main target pathogen\n' +
-                (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmpty(mopo) ? '!! Missing: ' : 'OK:') + 'Monomicrobial or polymicrobial growth\n' : '') +
-                (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmpty(ng) ? '!! Missing: ' : 'OK:') + 'Sample event control or infection\n' : '') +
-                ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmpty(tapaNg) ? '!! Missing: ' : 'OK:') + 'Target pathogen responsible for infection\n' : '') +
-                (isEmpty(stType) ? '!! Missing: ' : 'OK:') + 'Primary storage type');
+            alert('ID for NCCR sample could not be generated. Some input is missing:\n\n' + (isEmpty(samplingNo) ? '!! Missing: ' : 'OK: ') + 'ID for sampling event\n' +
+                (isEmpty(tapa) ? '!! Missing: ' : 'OK: ') + 'Main target pathogen\n' +
+                (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmpty(mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
+                (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmpty(ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
+                ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmpty(tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
+                (isEmpty(stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type');
 
             return;
 
