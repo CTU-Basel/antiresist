@@ -222,12 +222,12 @@ var nccrid = function () {
 
             // check for each value if it is not empty (or < Please choose > )
             // and inform the user if the value is empty
-            alert('ID for NCCR sample could not be generated. Some input is missing:\n\n- ID for sampling event: ' + (isEmpty(samplingNo) ? 'missing!' : 'ok') +
-                '\n- Main target pathogen: ' + (isEmpty(tapa) ? 'missing!' : 'ok') +
-                (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + (isEmpty(mopo) ? 'missing!' : 'ok') : '') +
-                (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + (isEmpty(ng) ? 'missing!' : 'ok') : '') +
-                ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + (isEmpty(tapaNg) ? 'missing!' : 'ok') : '') +
-                '\n- Primary storage type: ' + (isEmpty(stType) ? 'missing!' : 'ok'));
+            alert('ID for NCCR sample could not be generated. Some input is missing:\n\n' + (isEmpty(samplingNo) ? '!! Missing: ' : 'OK:         ') + 'ID for sampling event\n' +
+                (isEmpty(tapa) ? '!! Missing: ' : 'OK:         ') + 'Main target pathogen\n' +
+                (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmpty(mopo) ? '!! Missing: ' : 'OK:         ') + 'Monomicrobial or polymicrobial growth\n' : '') +
+                (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmpty(ng) ? '!! Missing: ' : 'OK:         ') + 'Sample event control or infection\n' : '') +
+                ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmpty(tapaNg) ? '!! Missing: ' : 'OK:         ') + 'Target pathogen responsible for infection\n' : '') +
+                (isEmpty(stType) ? '!! Missing: ' : 'OK:         ') + 'Primary storage type');
 
             return;
 
@@ -345,11 +345,15 @@ var nccrid = function () {
         }
 
         if (currentFieldContent != '') {
-            var answer = prompt('Attention: A sample id is already specified, please type OVERWRITE to overwrite the current sample id');
+            var answer = prompt('Attention: A sample ID is already specified, please type OVERWRITE to overwrite the current sample ID');
             if (answer.toLowerCase() != 'overwrite') {
                 return;
             }
         }
+
+        // make field editable again
+        // TODO: Maybe remove this and keep field editable at all times
+        inputField.prop('readonly', false)
 
         // Check that the sample ID matches a certain regex, if not, throw an alert
         var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
@@ -372,9 +376,9 @@ var nccrid = function () {
             ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg : '') +
             '\n- Primary storage type: ' + stType +
             '\n- Sample number: ' + sampleNo +
-            '\n\nATTENTION: By typing "confirm", you confirm that the information is correct. With this, the sample ID is generated and NOT modifiable afterwards.');
+            '\n\nATTENTION: By typing "ok", you confirm that the information is correct. With this, the sample ID is generated.');
 
-        if (answer.toLowerCase() != 'confirm') {
+        if (answer.toLowerCase() != 'ok') {
             return;
         }
 
@@ -382,9 +386,8 @@ var nccrid = function () {
         // set the value of the input field
         inputField.val(sampleId);
 
-        // remove the button and make field uneditable
-        btn.css('display', 'none');
-
+        // make field uneditable 
+        //TODO: Maybe remove this and keep field editable at all times
         inputField.prop('readonly', true)
 
     };
