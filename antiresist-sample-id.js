@@ -325,7 +325,7 @@ var nccrid = function () {
                 return;
             }
 
-            sampleId += tapaMap[tapaNg];
+            sampleId += tapaNgMap[tapaNg];
 
         } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('control')) {
 
