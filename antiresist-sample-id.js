@@ -382,7 +382,7 @@ var nccrid = function () {
 
         // Get all sample IDs in the repetition group
         var sampleIds = function (parent) {
-            
+
             var selected = $('[name^=ff_nsmpl_nccrid]', parent).map(function(){
                 return $(this).val();
             }).get();
@@ -391,15 +391,10 @@ var nccrid = function () {
 
         }(repetitionGroup);
 
-        console.log('sampleId', sampleId)
-        console.log('sampleIds', sampleIds)
-
-        console.log('sampleIds array', sampleIds.isArray)
-
         // Check that the current ID is unique (not already used)
         // If it is not: The sample number is not unique within this storage type and needs to be changed
 
-        if (jQuery.inArray(sampleId, sampleIds) == 0 || sampleId == sampleIds) {
+        if (jQuery.inArray(sampleId, sampleIds) == 0) {
 
             alert('The generated ID for this sample is already used. Please check that the combination of storage type and sample number is unique within this sampling event.');
             return;
