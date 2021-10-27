@@ -378,6 +378,24 @@ var nccrid = function () {
 
         }
 
+        // Check that the sample storage and sample number combination is unique within one sampling event
+
+        // Get all sample IDs in the repetition group
+        var sampleIds = function (parent) {
+            var fields = $('[name^=ff_nsmpl_nccrid]', parent);
+            return fields.val();
+        }(repetitionGroup);
+
+        // Check that the current ID is unique (not already used)
+        // If it is not: The sample number is not unique within this storage type and needs to be changed
+
+        if ($.inArray(sampleId, sampleIds) == 0) {
+
+            alert('The generated ID for this sample is already used. Please check that the combination of storage type and sample number is unique within this sampling event.');
+            return;
+
+        }
+
         // prompt user to check all values
         // return if not entered ok
         // --- check if all required values have been provided. If not, throw an alert message ---
