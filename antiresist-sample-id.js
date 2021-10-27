@@ -35,9 +35,11 @@ var nccrid = function () {
 
         // get the sample group for the storage type
         var sampleGroup = btn.closest('div').prev();
+        sampleGroup.style.color = 'red'
 
         // get the current sample repetition group for this id
         var repetitionGroup = btn.closest('div').closest('td');
+        repetitionGroup.style.color = 'blue'
 
         // samplingNo is an text input field
         var samplingNo = function (parent) {
@@ -51,111 +53,117 @@ var nccrid = function () {
             return selectedText(fields);
         }(sampleGroup);
 
-        // sampleNo is generated as incremeting number partitioned
-        // on the storage type and sample
-        var sampleNo = function (parent, currentType) {
+        // sampleNo is an input field in the same sample as the button
+        var sampleNo = function (parent) {
+            var fields = $('[name^=ff_nsmpl_store_nb]', parent);
+            return fields.val();
+        }(sampleGroup);
 
-            // the current type of the sample storage must be specified
-            if (!currentType || currentType == '< Please choose >' || currentType == '') {
-                return '';
-            }
+        // // OLD: sampleNo is generated as incremeting number partitioned
+        // // on the storage type and sample
+        // var sampleNo = function (parent, currentType) {
 
-            // get all fields starting with ff_nsmpl_store in the
-            // same sampling (repetitionGroup)
-            var fields = $('[name^=ff_nsmpl_store]', parent);
+        //     // the current type of the sample storage must be specified
+        //     if (!currentType || currentType == '< Please choose >' || currentType == '') {
+        //         return '';
+        //     }
 
-            // ensure that we have only the store fields (no _oth fields)
-            var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
-            var selectedItems = fields.filter(function (index) {
-                return nameMatcher.test(this.name);
-            });
+        //     // get all fields starting with ff_nsmpl_store in the
+        //     // same sampling (repetitionGroup)
+        //     var fields = $('[name^=ff_nsmpl_store]', parent);
 
-            // Get all nccrids in this repetition group
-            var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
+        //     // ensure that we have only the store fields (no _oth fields)
+        //     var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
+        //     var selectedItems = fields.filter(function (index) {
+        //         return nameMatcher.test(this.name);
+        //     });
 
-            console.log('fields', fields2);
+        //     // Get all nccrids in this repetition group
+        //     var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
 
-            // get existing storage types and sample numbers in this repetition group
-            var existSampleNo = $.map(fields2, function (item) {
-                return item.value.substring(10, 13);
-            });
+        //     console.log('fields', fields2);
 
-            // We need to make sure the sample Id (if already generated) is not included
-            // Therefore remove number of current sample in existSampleNo
-            var currentIndex = inputField.attr('name').replace(/ff_nsmpl_nccrid/, '')
-            currentIndex = currentIndex.replace(/_[0-9]+/, '')
+        //     // get existing storage types and sample numbers in this repetition group
+        //     var existSampleNo = $.map(fields2, function (item) {
+        //         return item.value.substring(10, 13);
+        //     });
 
-            console.log('currentindex', currentIndex)
+        //     // We need to make sure the sample Id (if already generated) is not included
+        //     // Therefore remove number of current sample in existSampleNo
+        //     var currentIndex = inputField.attr('name').replace(/ff_nsmpl_nccrid/, '')
+        //     currentIndex = currentIndex.replace(/_[0-9]+/, '')
 
-            var removed = existSampleNo.splice((currentIndex - 1), 1)
+        //     console.log('currentindex', currentIndex)
 
-            console.log('existSampleNo', existSampleNo);
-            console.log('removed', removed);
+        //     var removed = existSampleNo.splice((currentIndex - 1), 1)
 
-            // map first letter from string and current type
-            var typeMap = {
-                'Frozen': 'F',
-                'Fixed': 'H',
-                'Native': 'N',
-                'Whole blood': 'B',
-                'RNA': 'R',
-                'Other': 'O'
-            }
+        //     console.log('existSampleNo', existSampleNo);
+        //     console.log('removed', removed);
 
-            var currentTypeMap = typeMap[currentType];
+        //     // map first letter from string and current type
+        //     var typeMap = {
+        //         'Frozen': 'F',
+        //         'Fixed': 'H',
+        //         'Native': 'N',
+        //         'Whole blood': 'B',
+        //         'RNA': 'R',
+        //         'Other': 'O'
+        //     }
 
-            console.log('currentype', currentTypeMap);
+        //     var currentTypeMap = typeMap[currentType];
 
-            // TODO: I think the three following steps could all be done in one step, but don't know how
+        //     console.log('currentype', currentTypeMap);
 
-            // keep only those strings where first letter matches
-            var matchingNo = existSampleNo.filter(function (item) {
-                return item.includes(currentTypeMap);
-            });
+        //     // TODO: I think the three following steps could all be done in one step, but don't know how
 
-            console.log('matchingtypes', matchingNo);
+        //     // keep only those strings where first letter matches
+        //     var matchingNo = existSampleNo.filter(function (item) {
+        //         return item.includes(currentTypeMap);
+        //     });
 
-            // remove the stType letter
-            var matchingNo = $.map(matchingNo, function(item){
+        //     console.log('matchingtypes', matchingNo);
 
-                return item.replace(currentTypeMap, '');
+        //     // remove the stType letter
+        //     var matchingNo = $.map(matchingNo, function(item){
 
-            })
+        //         return item.replace(currentTypeMap, '');
 
-            console.log('matchingtypes2', matchingNo);
+        //     })
 
-            // convert to numeric variable
-            var matchingNo = matchingNo.map(Number);
+        //     console.log('matchingtypes2', matchingNo);
 
-            console.log('matchingtypes3', matchingNo);
+        //     // convert to numeric variable
+        //     var matchingNo = matchingNo.map(Number);
 
-            // if array is empty, set count to one (first sample of this type), 
-            // else, take highest number from this array and add 1 to it 
-            // to get current sample number
-            if(matchingNo.length == 0){
+        //     console.log('matchingtypes3', matchingNo);
 
-                var count = 1
+        //     // if array is empty, set count to one (first sample of this type), 
+        //     // else, take highest number from this array and add 1 to it 
+        //     // to get current sample number
+        //     if(matchingNo.length == 0){
 
-            } else {
+        //         var count = 1
 
-                var count = Math.max(...matchingNo) + 1
+        //     } else {
 
-            };
+        //         var count = Math.max(...matchingNo) + 1
 
-            console.log('count', count);
+        //     };
 
-            // our current sample has the same type, therefore we do not 
-            // need to increase the counter
+        //     console.log('count', count);
 
-            // but we need to add a left padding with zeros
-            if (count < 10) {
-                return '0' + count;
-            }
+        //     // our current sample has the same type, therefore we do not 
+        //     // need to increase the counter
 
-            // return the count as text
-            return count + '';
+        //     // but we need to add a left padding with zeros
+        //     if (count < 10) {
+        //         return '0' + count;
+        //     }
 
-        }(repetitionGroup, stType);
+        //     // return the count as text
+        //     return count + '';
+
+        // }(repetitionGroup, stType);
 
         // tapa is a select field
         var tapa = function (parent) {
@@ -215,7 +223,7 @@ var nccrid = function () {
 
         // --- check if all required values have been provided. If not, throw an alert message ---
 
-        if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) ||
+        if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) || isEmpty(sampleNo)
             (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) ||
             (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) ||
             (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
@@ -227,7 +235,8 @@ var nccrid = function () {
                 (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmpty(mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
                 (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmpty(ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
                 ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmpty(tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
-                (isEmpty(stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type');
+                (isEmpty(stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type\n' +
+                (isEmpty(sampleNo) ? '!! Missing: ' : 'OK: ') + 'Number of sample storage type\n');
 
             return;
 
@@ -269,7 +278,7 @@ var nccrid = function () {
         sampleId += stTypeMap[stType];
 
 
-        // add the sequential sample number
+        // add the sample number
         sampleId += sampleNo;
 
         // add the target pathogen
@@ -351,9 +360,6 @@ var nccrid = function () {
             }
         }
 
-        // make field editable again
-        // TODO: Maybe remove this and keep field editable at all times
-        inputField.prop('readonly', false)
 
         // Check that the sample ID matches a certain regex, if not, throw an alert
         var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
@@ -375,19 +381,20 @@ var nccrid = function () {
             (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng : '') +
             ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg : '') +
             '\n- Primary storage type: ' + stType +
-            '\n- Sample number: ' + sampleNo +
+            '\n- Number of sample storage type: ' + sampleNo +
             '\n\nATTENTION: By typing "ok", you confirm that the information is correct. With this, the sample ID is generated.');
 
         if (answer.toLowerCase() != 'ok') {
             return;
         }
 
-
+        // make field editable again
+        inputField.prop('readonly', false)
+        
         // set the value of the input field
         inputField.val(sampleId);
 
         // make field uneditable 
-        //TODO: Maybe remove this and keep field editable at all times
         inputField.prop('readonly', true)
 
     };
