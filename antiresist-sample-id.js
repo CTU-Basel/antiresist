@@ -389,10 +389,12 @@ var nccrid = function () {
         console.log('sampleId', sampleId)
         console.log('sampleIds', sampleIds)
 
+        console.log('sampleIds array', sampleIds.isArray)
+
         // Check that the current ID is unique (not already used)
         // If it is not: The sample number is not unique within this storage type and needs to be changed
 
-        if ($.inArray(sampleId, sampleIds) == 0) {
+        if ($.inArray(sampleId, sampleIds) == 0 || sampleId == sampleIds) {
 
             alert('The generated ID for this sample is already used. Please check that the combination of storage type and sample number is unique within this sampling event.');
             return;
