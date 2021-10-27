@@ -52,11 +52,11 @@ var nccrid = function () {
 
             //ensure that we have only the store field (not the store_nb field)
             var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
-            var selectedField = fields.filter(function (index) {
+            var selectedItem = fields.filter(function (index) {
                 return nameMatcher.test(this.name);
             });
 
-            return selectedField.val();
+            return selectedText(selectedItem);
 
         }(sampleGroup);
 
