@@ -382,9 +382,13 @@ var nccrid = function () {
 
         // Get all sample IDs in the repetition group
         var sampleIds = function (parent) {
+            
             var selected = $('[name^=ff_nsmpl_nccrid]', parent).map(function(){
                 return $(this).val();
-            }).get()
+            }).get();
+
+            return selected
+
         }(repetitionGroup);
 
         console.log('sampleId', sampleId)
