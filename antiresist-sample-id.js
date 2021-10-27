@@ -386,6 +386,9 @@ var nccrid = function () {
             return fields.val();
         }(repetitionGroup);
 
+        console.log('sampleId', sampleId)
+        console.log('sampleIds', sampleIds)
+
         // Check that the current ID is unique (not already used)
         // If it is not: The sample number is not unique within this storage type and needs to be changed
 
@@ -419,7 +422,8 @@ var nccrid = function () {
         // set the value of the input field
         inputField.val(sampleId);
 
-        // make field uneditable 
+        // make field uneditable
+        // TODO: maybe we need to add this also in general, such that it is also readonly when page is loaded again or one enters the form again
         inputField.prop('readonly', true)
 
     };
@@ -508,7 +512,7 @@ var nccrid = function () {
 
     }
 
-    // initialize the script to handlle changes when the number
+    // initialize the script to handle changes when the number
     // of samples is changed
     handleSampleChange(addButtons);
 
