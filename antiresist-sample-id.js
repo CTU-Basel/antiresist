@@ -35,11 +35,9 @@ var nccrid = function () {
 
         // get the sample group for the storage type
         var sampleGroup = btn.closest('div').prev();
-        sampleGroup.css('color', 'red')
 
         // get the current sample repetition group for this id
         var repetitionGroup = btn.closest('div').closest('td');
-        repetitionGroup.css('color', 'blue')
 
         // samplingNo is an text input field
         var samplingNo = function (parent) {
@@ -49,8 +47,17 @@ var nccrid = function () {
 
         // stType is a select field in the same sample as the button
         var stType = function (parent) {
+
             var fields = $('[name^=ff_nsmpl_store]', parent);
-            return selectedText(fields);
+
+            //ensure that we have only the store field (not the store_nb field)
+            var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
+            var selectedField = fields.filter(function (index) {
+                return nameMatcher.test(this.name);
+            });
+
+            return selectedField.val();
+
         }(sampleGroup);
 
         // sampleNo is an input field in the same sample as the button
@@ -223,7 +230,7 @@ var nccrid = function () {
 
         // --- check if all required values have been provided. If not, throw an alert message ---
 
-        if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) || isEmpty(sampleNo)
+        if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) || isEmpty(sampleNo) ||
             (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) ||
             (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) ||
             (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
