@@ -35,11 +35,11 @@ var nccrid = function () {
 
         // get the sample group for the storage type
         var sampleGroup = btn.closest('div').prev();
-        sampleGroup.style.color = 'red'
+        sampleGroup.css('color', 'red')
 
         // get the current sample repetition group for this id
         var repetitionGroup = btn.closest('div').closest('td');
-        repetitionGroup.style.color = 'blue'
+        repetitionGroup.css('color', 'blue')
 
         // samplingNo is an text input field
         var samplingNo = function (parent) {
