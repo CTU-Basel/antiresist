@@ -286,6 +286,15 @@ var nccrid = function () {
 
 
         // add the sample number
+        var checkSampleNo = new RegExp('^[0-9]{2}$');
+
+        if (checkSampleNo.test(sampleNo) == false) {
+
+            alert('The number of the sample storage type is not correct. This needs to be a two-digit number (e.g., 01, 02 ... 10, 11, etc.).');
+            return;
+
+        }
+
         sampleId += sampleNo;
 
         // add the target pathogen
