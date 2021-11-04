@@ -19,10 +19,42 @@ var nccrid = function () {
         return false;
     }
 
-    var alertOnChange = function(event){
-        console.log(event);
-        var triggeredOn = event.target;
-        alert('whoaaa..')
+    var alertInfo = 'Attention: You changed a variable that is relevant for the NCCR Sample ID, but an NCCR Sample ID was already generated. You now have two options:\n\n 1) If the NCCR Sample ID is already used (i.e., printed and pasted on the sample), DO NOT generate the NCCR Sample ID again!!!\n\n 2) If ';
+
+    var alertOnChangeRepetition = function(event){
+        var triggeredOn = $(this);
+        
+        // get the current sample repetition group for this id
+        var repetitionGroup = triggeredOn.closest('div').closest('td');
+
+        // check if any sampleId is defined
+        var nccridFields = $('input[name^=ff_nsmpl_nccrid]', repetitionGroup);
+        var sampleIdUsed = false;
+        nccridFields.each(function(){
+            var fieldValue = $(this).val();
+            if (isEmpty(fieldValue) === false) {
+                sampleIdUsed = true;
+            }
+        });
+
+        if (sampleIdUsed) {
+            alert(alertInfo);
+        }
+        
+    }
+
+    var alertOnChangeSampleGroup = function(event){
+        var triggeredOn = $(this);
+        // get the sample group for the storage type
+        var sampleGroup = triggeredOn.closest('div').next();
+        var nccrid = $('input[name^=ff_nsmpl_nccrid]', sampleGroup).val();
+
+        // nothing to do, if nccrid is empty
+        if (isEmpty(nccrid)) {
+            return;
+        }
+
+        alert(alertInfo);
     }
 
     // watch changes in any fields that have an
@@ -30,7 +62,7 @@ var nccrid = function () {
     var watchChanges = function(value) {
 
         var samplingNumbers = selectField('ff_nsmpl_smplid', null);
-        samplingNumbers.on('change', alertOnChange);
+        samplingNumbers.on('change', alertOnChangeRepetition);
 
         var stType = function() {
             var fields = $('[name^=ff_nsmpl_store]');
@@ -40,22 +72,22 @@ var nccrid = function () {
             });
             return selectedItems;
         }();
-        stType.on('change', alertOnChange);
+        stType.on('change', alertOnChangeSampleGroup);
 
         var sampleNo = $('[name^=ff_nsmpl_store_nb]');
-        sampleNo.on('change', alertOnChange);
+        sampleNo.on('change', alertOnChangeSampleGroup);
 
         var tapa = selectField('ff_nsmpl_tapa', null);
-        tapa.on('change', alertOnChange);
+        tapa.on('change', alertOnChangeRepetition);
 
         var mopo = $('input[name^=ff_nsmpl_mopo]', null);
-        mopo.on('change', alertOnChange);
+        mopo.on('change', alertOnChangeRepetition);
 
         var tapaNg = selectField('ff_nsmpl_nt_tapa', null);
-        tapaNg.on('change', alertOnChange);
+        tapaNg.on('change', alertOnChangeRepetition);
 
         var ng = $('input[name^=ff_nsmpl_ng]', null);
-        ng.on('change', alertOnChange);
+        ng.on('change', alertOnChangeRepetition);
 
     }
 
