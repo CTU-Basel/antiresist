@@ -571,6 +571,9 @@ var nccrid = function () {
     // ensure that buttons are added from the start
     addButtons();
 
+    // watch all changes in sample id related fields
+    watchChanges();
+
 }
 
 // add custom nccrid functionality as soon as windows is completely loaded
