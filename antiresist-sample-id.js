@@ -30,7 +30,7 @@ var nccrid = function () {
     var watchChanges = function(value) {
 
         var samplingNumbers = selectField('ff_nsmpl_smplid', null);
-        samplingNumbers.bind('change', alertOnChange);
+        samplingNumbers.on('change', alertOnChange);
 
         var stType = function() {
             var fields = $('[name^=ff_nsmpl_store]');
@@ -40,23 +40,22 @@ var nccrid = function () {
             });
             return selectedItems;
         }();
-        stType.bind('change', alertOnChange);
+        stType.on('change', alertOnChange);
 
         var sampleNo = $('[name^=ff_nsmpl_store_nb]');
-        sampleNo.bind('change', alertOnChange);
+        sampleNo.on('change', alertOnChange);
 
         var tapa = selectField('ff_nsmpl_tapa', null);
-        tapa.bind('change', alertOnChange);
+        tapa.on('change', alertOnChange);
 
-        // mopo is a radio button field
         var mopo = $('input[name^=ff_nsmpl_mopo]', null);
-        mopo.bind('change', alertOnChange);
+        mopo.on('change', alertOnChange);
 
         var tapaNg = selectField('ff_nsmpl_nt_tapa', null);
-        tapaNg.bind('change', alertOnChange);
+        tapaNg.on('change', alertOnChange);
 
         var ng = $('input[name^=ff_nsmpl_ng]', null);
-        ng.bind('change', alertOnChange);
+        ng.on('change', alertOnChange);
 
     }
 
