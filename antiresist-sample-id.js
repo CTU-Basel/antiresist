@@ -19,8 +19,49 @@ var nccrid = function () {
         return false;
     }
 
+    var alertOnChange = function(event){
+        console(event);
+        var triggeredOn = event.target;
+        alert('whoaaa..')
+    }
+
+    // watch changes in any fields that have an
+    // influence on the sample id
+    var watchChanges = function(value) {
+
+        var samplingNumbers = selectField('ff_nsmpl_smplid', null);
+        samplingNumbers.bind('change', alertOnChange);
+
+        var stType = function() {
+            var fields = $('[name^=ff_nsmpl_store]');
+            var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
+            var selectedItems = fields.filter(function (index) {
+                return nameMatcher.test(this.name);
+            });
+            return selectedItems;
+        };
+        stType.bind('change', alertOnChange);
+
+        var sampleNo = $('[name^=ff_nsmpl_store_nb]');
+        sampleNo.bind('change', alertOnChange);
+
+        var tapa = selectField('ff_nsmpl_tapa', null);
+        tapa.bind('change', alertOnChange);
+
+        // mopo is a radio button field
+        var mopo = $('input[name^=ff_nsmpl_mopo]', null);
+        mopo.bind('change', alertOnChange);
+
+        var tapaNg = selectField('ff_nsmpl_nt_tapa', null);
+        tapaNg.bind('change', alertOnChange);
+
+        var ng = $('input[name^=ff_nsmpl_ng]', null);
+        ng.bind('change', alertOnChange);
+
+    }
+
     // generate the id for an nccr sample
-    var generateId = function (event) {
+    var generateId = function(event) {
 
         // prevent the browser from firing the default events
         event.preventDefault();
@@ -50,7 +91,7 @@ var nccrid = function () {
 
             var fields = $('[name^=ff_nsmpl_store]', parent);
 
-            //ensure that we have only the store field (not the store_nb field)
+            // ensure that we have only the store field (not the store_nb field)
             var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
             var selectedItem = fields.filter(function (index) {
                 return nameMatcher.test(this.name);
@@ -513,9 +554,9 @@ var nccrid = function () {
 
             // react to field changes, as this changes the number of 
             // available samples and accordingly the available sample id fields
-            fields[i].onchange = function () {
+            fields[i].addEventListener('onchange', function () {
                 updateFn();
-            };
+            });
 
             // watch select field for changes
             selectedFields.push(fields[i]);
