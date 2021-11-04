@@ -62,7 +62,10 @@ var nccrid = function () {
     var watchChanges = function(value) {
 
         var samplingNumbers = selectField('ff_nsmpl_smplid', null);
-        samplingNumbers.on('change', alertOnChangeRepetition);
+        samplingNumbers.each(function(){
+            $(this).on('change', alertOnChangeRepetition)
+        })
+        // samplingNumbers.on('change', alertOnChangeRepetition);
 
         var stType = function() {
             var fields = $('[name^=ff_nsmpl_store]');
