@@ -27,7 +27,7 @@ var nccrid = function () {
         return false;
     }
 
-    var alertInfo = 'Attention: You changed a variable that is relevant for the NCCR Sample ID, but an NCCR Sample ID was already generated. You now have two options:\n\n 1) If the NCCR Sample ID is already used (i.e., printed and pasted on the sample), DO NOT generate the NCCR Sample ID again!!!\n\n 2) If ';
+    var alertInfo = 'Attention: You changed a variable that is relevant for the NCCR Sample ID, but an NCCR Sample ID was already generated. You now have two options:\n\n 1) If the NCCR Sample ID is already used (i.e., printed and pasted on the sample), DO NOT generate the NCCR Sample ID again!!!\n\n 2) If the NCCR Sample ID is NOT already used (i.e., printed and pasted on the sample), you should generate the NCCR Sample ID again now by clicking again on the "Generate ID"-Button. \n\nIf in doubt about which applies (1 or 2), also DO NOT generate the NCCR Sample ID again.';
 
     var alertOnChangeRepetition = function(event){
         var triggeredOn = $(this);
@@ -146,112 +146,6 @@ var nccrid = function () {
             return fields.val();
         }(sampleGroup);
 
-        // // OLD: sampleNo is generated as incremeting number partitioned
-        // // on the storage type and sample
-        // var sampleNo = function (parent, currentType) {
-
-        //     // the current type of the sample storage must be specified
-        //     if (!currentType || currentType == '< Please choose >' || currentType == '') {
-        //         return '';
-        //     }
-
-        //     // get all fields starting with ff_nsmpl_store in the
-        //     // same sampling (repetitionGroup)
-        //     var fields = $('[name^=ff_nsmpl_store]', parent);
-
-        //     // ensure that we have only the store fields (no _oth fields)
-        //     var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
-        //     var selectedItems = fields.filter(function (index) {
-        //         return nameMatcher.test(this.name);
-        //     });
-
-        //     // Get all nccrids in this repetition group
-        //     var fields2 = $('[name^=ff_nsmpl_nccrid]', parent);
-
-        //     console.log('fields', fields2);
-
-        //     // get existing storage types and sample numbers in this repetition group
-        //     var existSampleNo = $.map(fields2, function (item) {
-        //         return item.value.substring(10, 13);
-        //     });
-
-        //     // We need to make sure the sample Id (if already generated) is not included
-        //     // Therefore remove number of current sample in existSampleNo
-        //     var currentIndex = inputField.attr('name').replace(/ff_nsmpl_nccrid/, '')
-        //     currentIndex = currentIndex.replace(/_[0-9]+/, '')
-
-        //     console.log('currentindex', currentIndex)
-
-        //     var removed = existSampleNo.splice((currentIndex - 1), 1)
-
-        //     console.log('existSampleNo', existSampleNo);
-        //     console.log('removed', removed);
-
-        //     // map first letter from string and current type
-        //     var typeMap = {
-        //         'Frozen': 'F',
-        //         'Fixed': 'H',
-        //         'Native': 'N',
-        //         'Whole blood': 'B',
-        //         'RNA': 'R',
-        //         'Other': 'O'
-        //     }
-
-        //     var currentTypeMap = typeMap[currentType];
-
-        //     console.log('currentype', currentTypeMap);
-
-        //     // TODO: I think the three following steps could all be done in one step, but don't know how
-
-        //     // keep only those strings where first letter matches
-        //     var matchingNo = existSampleNo.filter(function (item) {
-        //         return item.includes(currentTypeMap);
-        //     });
-
-        //     console.log('matchingtypes', matchingNo);
-
-        //     // remove the stType letter
-        //     var matchingNo = $.map(matchingNo, function(item){
-
-        //         return item.replace(currentTypeMap, '');
-
-        //     })
-
-        //     console.log('matchingtypes2', matchingNo);
-
-        //     // convert to numeric variable
-        //     var matchingNo = matchingNo.map(Number);
-
-        //     console.log('matchingtypes3', matchingNo);
-
-        //     // if array is empty, set count to one (first sample of this type), 
-        //     // else, take highest number from this array and add 1 to it 
-        //     // to get current sample number
-        //     if(matchingNo.length == 0){
-
-        //         var count = 1
-
-        //     } else {
-
-        //         var count = Math.max(...matchingNo) + 1
-
-        //     };
-
-        //     console.log('count', count);
-
-        //     // our current sample has the same type, therefore we do not 
-        //     // need to increase the counter
-
-        //     // but we need to add a left padding with zeros
-        //     if (count < 10) {
-        //         return '0' + count;
-        //     }
-
-        //     // return the count as text
-        //     return count + '';
-
-        // }(repetitionGroup, stType);
-
         // tapa is a select field
         var tapa = function (parent) {
             var fields = selectField('ff_nsmpl_tapa', parent);
@@ -330,9 +224,9 @@ var nccrid = function () {
         }
 
         // check if the sampling number was specified correctly (conforms to Regex)
-        var checkNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
+        var checkSamplingNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
 
-        if (checkNo.test(samplingNo) == false) {
+        if (checkSamplingNo.test(samplingNo) == false) {
 
             alert('The entered ID for this sampling event does not comply with the standard. It should start with D, T or U, followed by the center abbreviation (e.g., USB) and a five-digit number.');
             return;
@@ -514,7 +408,7 @@ var nccrid = function () {
         inputField.val(sampleId);
 
         // make field uneditable
-        // TODO: maybe we need to add this also in general, such that it is also readonly when page is loaded again or one enters the form again
+        // TODO: maybe we need to add this also in general, such that it is also readonly when page is loaded again or one enters the form again (and only briefly allowed to input within our function)
         inputField.prop('readonly', true)
 
     };
