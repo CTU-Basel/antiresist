@@ -63,7 +63,7 @@ var nccrid = function () {
 
         var samplingNumbers = selectField('ff_nsmpl_smplid', null);
         samplingNumbers.each(function(){
-            $(this).on('change', alertOnChangeRepetition)
+            $(this).on('change', alertOnChangeRepetition);
         })
         // samplingNumbers.on('change', alertOnChangeRepetition);
 
