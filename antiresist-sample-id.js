@@ -1,7 +1,15 @@
+var nccridInitialized = false;
+
 // custom scope to generate sample ids
 // note: jquery must be loaded beforehand
 // which is done already by secutrial
 var nccrid = function () {
+
+    // ensure that function is only initialized once
+    if (nccridInitialized === true) {
+        return;
+    }
+    nccridInitialized = true;
 
     // TODO: remove console logs at the end
 
@@ -59,13 +67,10 @@ var nccrid = function () {
 
     // watch changes in any fields that have an
     // influence on the sample id
-    var watchChanges = function(value) {
+    var watchChanges = function() {
 
         var samplingNumbers = selectField('ff_nsmpl_smplid', null);
-        samplingNumbers.each(function(){
-            $(this).on('change', alertOnChangeRepetition);
-        })
-        // samplingNumbers.on('change', alertOnChangeRepetition);
+        samplingNumbers.on('change', alertOnChangeRepetition);
 
         var stType = function() {
             var fields = $('[name^=ff_nsmpl_store]');
