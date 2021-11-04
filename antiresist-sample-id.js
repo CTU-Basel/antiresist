@@ -39,7 +39,7 @@ var nccrid = function () {
                 return nameMatcher.test(this.name);
             });
             return selectedItems;
-        };
+        }();
         stType.bind('change', alertOnChange);
 
         var sampleNo = $('[name^=ff_nsmpl_store_nb]');
