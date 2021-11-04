@@ -20,7 +20,7 @@ var nccrid = function () {
     }
 
     var alertOnChange = function(event){
-        console(event);
+        console.log(event);
         var triggeredOn = event.target;
         alert('whoaaa..')
     }
