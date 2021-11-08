@@ -1,11 +1,11 @@
 var nccridInitialized = false;
 
 // make NCCR ID fields readonly
-var idFields = $('[name^=ff_nsmpl_nccrid]').prop('readonly', true);
+var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
 
 idFields.forEach(function (item) {
     item.prop('readonly', true)
-})
+});
 
 // custom scope to generate sample ids
 // note: jquery must be loaded beforehand
