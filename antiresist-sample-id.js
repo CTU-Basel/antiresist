@@ -1,11 +1,12 @@
 var nccridInitialized = false;
 
-// make NCCR ID fields readonly
-var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
+// TODO: I tried something here, but it did not work (I'm sure you know how to do it :))
+// // make NCCR ID fields readonly from the beginning
+// var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
 
-idFields.forEach(function (item) {
-    item.prop('readonly', true)
-});
+// idFields.forEach(function (item) {
+//     item.prop('readonly', true)
+// });
 
 // custom scope to generate sample ids
 // note: jquery must be loaded beforehand
@@ -17,8 +18,6 @@ var nccrid = function () {
         return;
     }
     nccridInitialized = true;
-
-    // TODO: remove console logs at the end
 
     // check if a field value is empty
     var isEmpty = function (value) {
@@ -414,8 +413,7 @@ var nccrid = function () {
         // set the value of the input field
         inputField.val(sampleId);
 
-        // make field uneditable
-        // TODO: maybe we need to add this also in general, such that it is also readonly when page is loaded again or one enters the form again (and only briefly allowed to input within our function)
+        // make field uneditable again
         inputField.prop('readonly', true)
 
     };
