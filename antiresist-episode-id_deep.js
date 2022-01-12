@@ -132,6 +132,13 @@ var episodeIdDeep = function () {
         //     return fields.val();
         // };
 
+        // // episode class is a select field
+        // var mainGroup = function() {
+        //     var fields = selectField('ff_episode_class');
+        //     // return selected option of select field
+        //     return selectedText(fields);
+        // };
+
         // infection type is a select field
         var infType = function(parent) {
             var fields = selectField('ff_inf_type', parent);
@@ -139,12 +146,27 @@ var episodeIdDeep = function () {
             return selectedText(fields);
         }(repetitionGroup);
 
-        // // infection type is a select field
-        // var infType = function(parent) {
-        //     var fields = selectField('ff_inf_bji_loc', parent);
-        //     // return selected option of select field
-        //     return selectedText(fields);
-        // }(repetitionGroup);
+        // infection location is a select field
+        var bji_loc = function(parent) {
+            var fields = selectField('ff_inf_bji_loc', parent);
+            // return selected option of select field
+            return selectedText(fields);
+        }(repetitionGroup);
+
+        // infection location side is a select field
+        var bji_side = function(parent) {
+            var fields = selectField('ff_inf_bji_side', parent);
+            // return selected option of select field
+            return selectedText(fields);
+        }(repetitionGroup);
+
+        // infection site a select field
+        var infColsite = function(parent) {
+            var fields = selectField('ff_inf_d_colsite', parent);
+            // return selected option of select field
+            return selectedText(fields);
+        }(repetitionGroup);
+
 
     //     // --- check if all required values have been provided. If not, throw an alert message ---
 
@@ -177,13 +199,17 @@ var episodeIdDeep = function () {
 
     //     }
 
-    //     // --- encode the sample id ---
+        // --- encode the episode id PLUS site---
 
-    //     // initialize the sample id
-    //     var sampleId = '';
+        // initialize the episode id PLUS site
+        var epiIdDeep = '';
 
-    //     // start with the sampling number
-    //     sampleId += samplingNo;
+        // TRY OUT:
+
+        // start with the infection type
+        epiIdDeep += infType;
+
+    // OLD FROM SAMPLE ID:
 
     //     // add the storage type
     //     var stTypeMap = {
@@ -345,14 +371,14 @@ var episodeIdDeep = function () {
     //         return;
     //     }
 
-    //     // make field editable again
-    //     inputField.prop('readonly', false)
+        // make field editable again
+        inputField.prop('readonly', false)
         
-    //     // set the value of the input field
-    //     inputField.val(sampleId);
+        // set the value of the input field
+        inputField.val(epiIdDeep);
 
-    //     // make field uneditable again
-    //     inputField.prop('readonly', true)
+        // make field uneditable again
+        inputField.prop('readonly', true)
 
     };
 
