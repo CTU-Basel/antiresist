@@ -33,7 +33,6 @@ var episodeidInitialized = false;
         return false;
     }
 
-
 var alertInfo = 'Attention: You changed a variable that is relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button.';
 
     var alertOnChange = function(event){
