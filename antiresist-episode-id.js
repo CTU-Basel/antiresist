@@ -1,8 +1,8 @@
-// var nccridInitialized = false;
+var episodeidInitialized = false;
 
 // // TODO: I tried something here, but it did not work (I'm sure you know how to do it :))
-// // // make NCCR ID fields readonly from the beginning
-// // var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
+// // // make episode ID fields readonly from the beginning
+// // var idFields = document.querySelectorAll('[name^=ff_episode_uniqid_2]');
 
 // // idFields.forEach(function (item) {
 // //     item.prop('readonly', true)
@@ -11,65 +11,49 @@
 // // custom scope to generate sample ids
 // // note: jquery must be loaded beforehand
 // // which is done already by secutrial
-// var nccrid = function () {
+// var episodeid = function () {
 
-//     // ensure that function is only initialized once
-//     if (nccridInitialized === true) {
-//         return;
-//     }
-//     nccridInitialized = true;
+    // ensure that function is only initialized once
+    if (episodeidInitialized === true) {
+        return;
+    }
+    episodeidInitialized = true;
 
-//     // check if a field value is empty
-//     var isEmpty = function (value) {
-//         if (!value) {
-//             return true;
-//         }
-//         if (value === '< Please choose >') {
-//             return true;
-//         }
-//         if (value === '') {
-//             return true;
-//         }
-//         return false;
-//     }
+    // check if a field value is empty
+    var isEmpty = function (value) {
+        if (!value) {
+            return true;
+        }
+        if (value === '< Please choose >') {
+            return true;
+        }
+        if (value === '') {
+            return true;
+        }
+        return false;
+    }
 
-//     var alertInfo = 'Attention: You changed a variable that is relevant for the NCCR Sample ID, but an NCCR Sample ID was already generated. You now have two options:\n\n 1) If the NCCR Sample ID is already used (i.e., printed and pasted on the sample), DO NOT generate the NCCR Sample ID again!!!\n\n 2) If the NCCR Sample ID is NOT already used (i.e., printed and pasted on the sample), you should generate the NCCR Sample ID again now by clicking again on the "Generate ID"-Button. \n\nIf in doubt about which applies (1 or 2), also DO NOT generate the NCCR Sample ID again.';
 
-//     var alertOnChangeRepetition = function(event){
-//         var triggeredOn = $(this);
+var alertInfo = 'Attention: You changed a variable that is relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button.';
+
+    var alertOnChange = function(event){
+        var triggeredOn = $(this);
+
+        // check if the episode ID is already defined
+        var episodeid = $('input[name^=ff_episode_uniqid_2]');
+        var episodeIdUsed = false;
+        episodeid(function(){
+            var fieldValue = $(this).val();
+            if (isEmpty(fieldValue) === false) {
+                episodeIdUsed = true;
+            }
+        });
+
+        if (episodeIdUsed) {
+            alert(alertInfo);
+        }
         
-//         // get the current sample repetition group for this id
-//         var repetitionGroup = triggeredOn.closest('div').closest('td');
-
-//         // check if any sampleId is defined
-//         var nccridFields = $('input[name^=ff_nsmpl_nccrid]', repetitionGroup);
-//         var sampleIdUsed = false;
-//         nccridFields.each(function(){
-//             var fieldValue = $(this).val();
-//             if (isEmpty(fieldValue) === false) {
-//                 sampleIdUsed = true;
-//             }
-//         });
-
-//         if (sampleIdUsed) {
-//             alert(alertInfo);
-//         }
-        
-//     }
-
-//     var alertOnChangeSampleGroup = function(event){
-//         var triggeredOn = $(this);
-//         // get the sample group for the storage type
-//         var sampleGroup = triggeredOn.closest('div').next();
-//         var nccrid = $('input[name^=ff_nsmpl_nccrid]', sampleGroup).val();
-
-//         // nothing to do, if nccrid is empty
-//         if (isEmpty(nccrid)) {
-//             return;
-//         }
-
-//         alert(alertInfo);
-//     }
+    }
 
 //     // watch changes in any fields that have an
 //     // influence on the sample id
