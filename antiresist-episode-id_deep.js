@@ -443,30 +443,30 @@ var episodeIdDeep = function () {
 //         return selectedOption.text()
 //     }
 
-    // add a new button to every nccr id field
-    var addButtons = function () {
+    // // add a new button to every nccr id field
+    // var addButtons = function () {
 
-        // find all fields for nccrd id sample ids
-        var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
+    //     // find all fields for nccrd id sample ids
+    //     var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
 
-        // go through all fields and append a button, if there is not already a button
-        idFields.forEach(function (item) {
+    //     // go through all fields and append a button, if there is not already a button
+    //     idFields.forEach(function (item) {
 
-            // nothing to do, if there is already a button
-            if (item.nextSibling && item.nextSibling.tagName == 'BUTTON') {
-                return;
-            }
+    //         // nothing to do, if there is already a button
+    //         if (item.nextSibling && item.nextSibling.tagName == 'BUTTON') {
+    //             return;
+    //         }
 
-            // create a new button and append it after the text input field
-            var btn = document.createElement('button');
-            btn.innerHTML = 'Generate ID';
-            btn.style.marginLeft = '8px';
+    //         // create a new button and append it after the text input field
+    //         var btn = document.createElement('button');
+    //         btn.innerHTML = 'Generate ID';
+    //         btn.style.marginLeft = '8px';
 
-            btn.onclick = generateId;
+    //         btn.onclick = generateId;
 
-            item.parentNode.appendChild(btn);
-        })
-    };
+    //         item.parentNode.appendChild(btn);
+    //     })
+    // };
 
     // // handle changes in the value of the select field to specify
     // // the number of samples, since this will result
@@ -503,8 +503,8 @@ var episodeIdDeep = function () {
     // // of samples is changed
     // handleSampleChange(addButtons);
 
-    // ensure that buttons are added from the start
-    addButtons();
+    // // ensure that buttons are added from the start
+    // addButtons();
 
     // watch all changes in episode id PLUS site related fields
     watchChanges();
