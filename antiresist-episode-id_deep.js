@@ -20,7 +20,7 @@ var episodeIdDeep = function () {
     episodeIdDeepInitialized = true;
 
     // check if a field value is empty
-    var isEmpty = function (value) {
+    var isEmptyDeep = function (value) {
         if (!value) {
             return true;
         }
@@ -35,7 +35,7 @@ var episodeIdDeep = function () {
 
     var alertInfoDeep = 'Attention: You changed a variable that is potentially relevant for the Episode ID PLUS site, but an Episode ID PLUS site was already generated. Please generate the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
 
-    var alertOnChange = function(event){
+    var alertOnChangeDeep = function(event){
 
         // check if any episode ID PLUS site is defined
         var episodeIdDeepFields = $('input[name^=ff_episode_uniqidsit]');
@@ -53,7 +53,7 @@ var episodeIdDeep = function () {
         
     }
 
-    var alertOnChangeRepetition = function(event){
+    var alertOnChangeRepetitionDeep = function(event){
         var triggeredOn = $(this);
         
         // get the current repetition group for this id
@@ -64,7 +64,7 @@ var episodeIdDeep = function () {
         var episodeIdDeepUsed = false;
         episodeIdDeepFields.each(function(){
             var fieldValue = $(this).val();
-            if (isEmpty(fieldValue) === false) {
+            if (isEmptyDeep(fieldValue) === false) {
                 episodeIdDeepUsed = true;
             }
         });
@@ -77,33 +77,33 @@ var episodeIdDeep = function () {
 
     // watch changes in any fields that have an
     // influence on the Episode Id PLUS site for Deep-seated infections
-    var watchChanges = function() {
+    var watchChangesDeep = function() {
 
         var mainGroup = selectField('ff_episode_maingrp', null);
-        mainGroup.on('change', alertOnChange);
+        mainGroup.on('change', alertOnChangeDeep);
 
         var episodeNo = $('[name^=ff_episode_nmb]');
-        episodeNo.on('change', alertOnChange);
+        episodeNo.on('change', alertOnChangeDeep);
 
         var episodeClass = selectField('ff_episode_class', null);
-        episodeClass.on('change', alertOnChange);
+        episodeClass.on('change', alertOnChangeDeep);
 
         var infType = selectField('ff_inf_type', null);
-        infType.on('change', alertOnChangeRepetition);
+        infType.on('change', alertOnChangeRepetitionDeep);
 
         var bji_loc = selectField('ff_inf_bji_loc', null);
-        bji_loc.on('change', alertOnChangeRepetition);
+        bji_loc.on('change', alertOnChangeRepetitionDeep);
 
         var bji_side = selectField('ff_inf_bji_side', null);
-        bji_side.on('change', alertOnChangeRepetition);
+        bji_side.on('change', alertOnChangeRepetitionDeep);
 
         var infColsite = selectField('ff_inf_d_colsite', null);
-        infColsite.on('change', alertOnChangeRepetition);
+        infColsite.on('change', alertOnChangeRepetitionDeep);
 
     }
 
     // generate the id for a deep seated episode PLUS site
-    var generateId = function(event) {
+    var generateIdDeep = function(event) {
 
         // prevent the browser from firing the default events
         event.preventDefault();
@@ -170,20 +170,20 @@ var episodeIdDeep = function () {
 
     //     // --- check if all required values have been provided. If not, throw an alert message ---
 
-    //     if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) || isEmpty(sampleNo) ||
-    //         (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) ||
-    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) ||
-    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
+    //     if (isEmptyDeep(samplingNo) || isEmptyDeep(stType) || isEmptyDeep(tapa) || isEmptyDeep(sampleNo) ||
+    //         (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmptyDeep(mopo) ||
+    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmptyDeep(ng) ||
+    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmptyDeep(tapaNg)) {
 
     //         // check for each value if it is not empty (or < Please choose > )
     //         // and inform the user if the value is empty
-    //         alert('ID for NCCR sample could not be generated. Some input is missing:\n\n' + (isEmpty(samplingNo) ? '!! Missing: ' : 'OK: ') + 'ID for sampling event\n' +
-    //             (isEmpty(tapa) ? '!! Missing: ' : 'OK: ') + 'Main target pathogen\n' +
-    //             (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmpty(mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
-    //             (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmpty(ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
-    //             ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmpty(tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
-    //             (isEmpty(stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type\n' +
-    //             (isEmpty(sampleNo) ? '!! Missing: ' : 'OK: ') + 'Number of sample storage type\n');
+    //         alert('ID for NCCR sample could not be generated. Some input is missing:\n\n' + (isEmptyDeep(samplingNo) ? '!! Missing: ' : 'OK: ') + 'ID for sampling event\n' +
+    //             (isEmptyDeep(tapa) ? '!! Missing: ' : 'OK: ') + 'Main target pathogen\n' +
+    //             (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmptyDeep(mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
+    //             (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmptyDeep(ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
+    //             ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmptyDeep(tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
+    //             (isEmptyDeep(stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type\n' +
+    //             (isEmptyDeep(sampleNo) ? '!! Missing: ' : 'OK: ') + 'Number of sample storage type\n');
 
     //         return;
 
@@ -206,7 +206,7 @@ var episodeIdDeep = function () {
 
         // TRY OUT:
 
-        // start with the infection type
+        // start with the infection type (NOT FINAL VERSION!)
         epiIdDeep += infType;
 
     // OLD FROM SAMPLE ID:
@@ -411,7 +411,7 @@ var episodeIdDeep = function () {
     }
 
     // add a new button to every episode id PLUS site field
-    var addButtons = function () {
+    var addButtonsDeep = function () {
 
         // find all fields for episdoe Ids PLUS site
         var idFields = document.querySelectorAll('[name^=ff_episode_uniqidsit]');
@@ -429,7 +429,7 @@ var episodeIdDeep = function () {
             btn.innerHTML = 'Generate ID';
             btn.style.marginLeft = '8px';
 
-            btn.onclick = generateId;
+            btn.onclick = generateIdDeep;
 
             item.parentNode.appendChild(btn);
         })
@@ -471,10 +471,10 @@ var episodeIdDeep = function () {
     // handleSampleChange(addButtons);
 
     // ensure that buttons are added from the start
-    addButtons();
+    addButtonsDeep();
 
     // watch all changes in episode id PLUS site related fields
-    watchChanges();
+    watchChangesDeep();
 
 }
 
