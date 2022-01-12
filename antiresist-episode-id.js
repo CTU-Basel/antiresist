@@ -1,4 +1,4 @@
-var episodeidInitialized = false;
+var episodeIdInitialized = false;
 
 // // TODO: I tried something here, but it did not work (I'm sure you know how to do it :))
 // // // make episode ID fields readonly from the beginning
@@ -14,10 +14,10 @@ var episodeidInitialized = false;
 // var episodeid = function () {
 
     // ensure that function is only initialized once
-    if (episodeidInitialized === true) {
+    if (episodeIdInitialized === true) {
         return;
     }
-    episodeidInitialized = true;
+    episodeIdInitialized = true;
 
     // check if a field value is empty
     var isEmpty = function (value) {
@@ -39,14 +39,12 @@ var alertInfo = 'Attention: You changed a variable that is relevant for the Epis
         var triggeredOn = $(this);
 
         // check if the episode ID is already defined
-        var episodeid = $('input[name^=ff_episode_uniqid_2]');
+        var episodeId = $('input[name=ff_episode_uniqid_2]');
         var episodeIdUsed = false;
-        episodeid(function(){
-            var fieldValue = $(this).val();
-            if (isEmpty(fieldValue) === false) {
-                episodeIdUsed = true;
-            }
-        });
+        var fieldValue = episodeId.val();
+        if (isEmpty(fieldValue) === false) {
+            episodeIdUsed = true;
+        };
 
         if (episodeIdUsed) {
             alert(alertInfo);
