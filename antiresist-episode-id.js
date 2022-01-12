@@ -480,5 +480,5 @@ var episodeId = function () {
 // note: secutrial is using the window load event itself, so we must
 // ensure, that this does not overwrite the respective event listener
 $(window).load(function () {
-    nccrid();
+    episodeId();
 });
