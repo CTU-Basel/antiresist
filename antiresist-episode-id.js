@@ -471,14 +471,14 @@ var episodeId = function () {
 //     // ensure that buttons are added from the start
 //     addButtons();
 
-    // watch all changes in sample id related fields
+    // watch all changes in episode id related fields
     watchChanges();
 
 }
 
-// // add custom functionality as soon as windows is completely loaded
-// // note: secutrial is using the window load event itself, so we must
-// // ensure, that this does not overwrite the respective event listener
-// $(window).load(function () {
-//     nccrid();
-// });
+// add custom functionality as soon as windows is completely loaded
+// note: secutrial is using the window load event itself, so we must
+// ensure, that this does not overwrite the respective event listener
+$(window).load(function () {
+    nccrid();
+});

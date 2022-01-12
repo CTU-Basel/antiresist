@@ -33,32 +33,33 @@ var episodeIdDeep = function () {
         return false;
     }
 
-    var alertInfoDeep = 'Attention: You changed a variable that is relevant for the Episode ID PLUS site, but an Episode ID PLUS site was already generated. Please generate the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
+    var alertInfoDeep = 'Attention: You changed a variable that is potentially relevant for the Episode ID PLUS site, but an Episode ID PLUS site was already generated. Please generate the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
 
     var alertOnChange = function(event){
-        var triggeredOn = $(this);
 
-        // check if the episode ID is already defined
-        var episodeId = $('input[name=ff_episode_uniqid_2]');
-        var episodeIdUsed = false;
-        var fieldValue = episodeId.val();
-        if (isEmpty(fieldValue) === false) {
-            episodeIdUsed = true;
-        };
+        // check if any episode ID PLUS site is defined
+        var episodeIdDeepFields = $('input[name^=ff_episode_uniqidsit]');
+        var episodeIdDeepUsed = false;
+        episodeIdDeepFields.each(function(){
+            var fieldValue = $(this).val();
+            if (isEmpty(fieldValue) === false) {
+                episodeIdDeepUsed = true;
+            }
+        });
 
-        if (episodeIdUsed) {
+        if (episodeIdDeepUsed) {
             alert(alertInfoDeep);
         }
         
     }
-    
+
     var alertOnChangeRepetition = function(event){
         var triggeredOn = $(this);
         
-        // get the current sample repetition group for this id
+        // get the current repetition group for this id
         var repetitionGroup = triggeredOn.closest('div').closest('td');
 
-        // check if any sampleId is defined
+        // check if any episode ID PLUS site is defined
         var episodeIdDeepFields = $('input[name^=ff_episode_uniqidsit]', repetitionGroup);
         var episodeIdDeepUsed = false;
         episodeIdDeepFields.each(function(){
@@ -442,75 +443,75 @@ var episodeIdDeep = function () {
 //         return selectedOption.text()
 //     }
 
-//     // add a new button to every nccr id field
-//     var addButtons = function () {
+    // add a new button to every nccr id field
+    var addButtons = function () {
 
-//         // find all fields for nccrd id sample ids
-//         var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
+        // find all fields for nccrd id sample ids
+        var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
 
-//         // go through all fields and append a button, if there is not already a button
-//         idFields.forEach(function (item) {
+        // go through all fields and append a button, if there is not already a button
+        idFields.forEach(function (item) {
 
-//             // nothing to do, if there is already a button
-//             if (item.nextSibling && item.nextSibling.tagName == 'BUTTON') {
-//                 return;
-//             }
+            // nothing to do, if there is already a button
+            if (item.nextSibling && item.nextSibling.tagName == 'BUTTON') {
+                return;
+            }
 
-//             // create a new button and append it after the text input field
-//             var btn = document.createElement('button');
-//             btn.innerHTML = 'Generate ID';
-//             btn.style.marginLeft = '8px';
+            // create a new button and append it after the text input field
+            var btn = document.createElement('button');
+            btn.innerHTML = 'Generate ID';
+            btn.style.marginLeft = '8px';
 
-//             btn.onclick = generateId;
+            btn.onclick = generateId;
 
-//             item.parentNode.appendChild(btn);
-//         })
-//     };
+            item.parentNode.appendChild(btn);
+        })
+    };
 
-//     // handle changes in the value of the select field to specify
-//     // the number of samples, since this will result
-//     // in new nccr id fields that need to be enhanced
-//     var handleSampleChange = function (updateFn) {
+    // // handle changes in the value of the select field to specify
+    // // the number of samples, since this will result
+    // // in new nccr id fields that need to be enhanced
+    // var handleSampleChange = function (updateFn) {
 
-//         // find all select fields where the name starts with the given text
-//         var fields = document.querySelectorAll('select[name^=ff_nsmpl_amt]');
+    //     // find all select fields where the name starts with the given text
+    //     var fields = document.querySelectorAll('select[name^=ff_nsmpl_amt]');
 
-//         // filter out all items that do not match ^ff_nsmpl_amt_[0-9]+$
-//         var nameMatcher = new RegExp('^ff_nsmpl_amt_[0-9]+$');
-//         var selectedFields = [];
+    //     // filter out all items that do not match ^ff_nsmpl_amt_[0-9]+$
+    //     var nameMatcher = new RegExp('^ff_nsmpl_amt_[0-9]+$');
+    //     var selectedFields = [];
 
-//         for (var i = 0; i < fields.length; i++) {
+    //     for (var i = 0; i < fields.length; i++) {
 
-//             // nothing to do, if the field name does not match our criteria
-//             if (nameMatcher.test(fields[i].name) == false) {
-//                 continue;
-//             }
+    //         // nothing to do, if the field name does not match our criteria
+    //         if (nameMatcher.test(fields[i].name) == false) {
+    //             continue;
+    //         }
 
-//             // react to field changes, as this changes the number of 
-//             // available samples and accordingly the available sample id fields
-//             fields[i].addEventListener('onchange', function () {
-//                 updateFn();
-//             });
+    //         // react to field changes, as this changes the number of 
+    //         // available samples and accordingly the available sample id fields
+    //         fields[i].addEventListener('onchange', function () {
+    //             updateFn();
+    //         });
 
-//             // watch select field for changes
-//             selectedFields.push(fields[i]);
-//         }
+    //         // watch select field for changes
+    //         selectedFields.push(fields[i]);
+    //     }
 
-//     }
+    // }
 
-//     // initialize the script to handle changes when the number
-//     // of samples is changed
-//     handleSampleChange(addButtons);
+    // // initialize the script to handle changes when the number
+    // // of samples is changed
+    // handleSampleChange(addButtons);
 
-//     // ensure that buttons are added from the start
-//     addButtons();
+    // ensure that buttons are added from the start
+    addButtons();
 
-    // watch all changes in sample id related fields
+    // watch all changes in episode id PLUS site related fields
     watchChanges();
 
 }
 
-// add custom nccrid functionality as soon as windows is completely loaded
+// add custom functionality as soon as windows is completely loaded
 // note: secutrial is using the window load event itself, so we must
 // ensure, that this does not overwrite the respective event listener
 $(window).load(function () {
