@@ -412,7 +412,7 @@ var episodeIdDeep = function () {
     //     // make field uneditable again
     //     inputField.prop('readonly', true)
 
-    };
+    //};
 
     var selectField = function (start, parent) {
         // use jquery to select all fields that have a name starting with our expression
@@ -505,14 +505,14 @@ var episodeIdDeep = function () {
 //     // ensure that buttons are added from the start
 //     addButtons();
 
-//     // watch all changes in sample id related fields
-//     watchChanges();
+    // watch all changes in sample id related fields
+    watchChanges();
 
-// }
+}
 
-// // add custom nccrid functionality as soon as windows is completely loaded
-// // note: secutrial is using the window load event itself, so we must
-// // ensure, that this does not overwrite the respective event listener
-// $(window).load(function () {
-//     nccrid();
-// });
+// add custom nccrid functionality as soon as windows is completely loaded
+// note: secutrial is using the window load event itself, so we must
+// ensure, that this does not overwrite the respective event listener
+$(window).load(function () {
+    episodeIdDeep();
+});
