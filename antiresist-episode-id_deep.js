@@ -47,7 +47,7 @@ var episodeIdDeep = function () {
         };
 
         if (episodeIdUsed) {
-            alert(alertInfo);
+            alert(alertInfoDeep);
         }
         
     }
@@ -69,7 +69,7 @@ var episodeIdDeep = function () {
         });
 
         if (episodeIdDeepUsed) {
-            alert(alertInfo);
+            alert(alertInfoDeep);
         }
         
     }
