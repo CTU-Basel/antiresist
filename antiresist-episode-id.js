@@ -11,7 +11,7 @@ var episodeIdInitialized = false;
 // // custom scope to generate sample ids
 // // note: jquery must be loaded beforehand
 // // which is done already by secutrial
-// var episodeid = function () {
+var episodeId = function () {
 
     // ensure that function is only initialized once
     if (episodeIdInitialized === true) {
@@ -52,352 +52,333 @@ var alertInfo = 'Attention: You changed a variable that is relevant for the Epis
         
     }
 
-//     // watch changes in any fields that have an
-//     // influence on the sample id
-//     var watchChanges = function() {
-
-//         var samplingNumbers = selectField('ff_nsmpl_smplid', null);
-//         samplingNumbers.on('change', alertOnChangeRepetition);
-
-//         var stType = function() {
-//             var fields = $('[name^=ff_nsmpl_store]');
-//             var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
-//             var selectedItems = fields.filter(function (index) {
-//                 return nameMatcher.test(this.name);
-//             });
-//             return selectedItems;
-//         }();
-//         stType.on('change', alertOnChangeSampleGroup);
-
-//         var sampleNo = $('[name^=ff_nsmpl_store_nb]');
-//         sampleNo.on('change', alertOnChangeSampleGroup);
-
-//         var tapa = selectField('ff_nsmpl_tapa', null);
-//         tapa.on('change', alertOnChangeRepetition);
-
-//         var mopo = $('input[name^=ff_nsmpl_mopo]', null);
-//         mopo.on('change', alertOnChangeRepetition);
-
-//         var tapaNg = selectField('ff_nsmpl_nt_tapa', null);
-//         tapaNg.on('change', alertOnChangeRepetition);
-
-//         var ng = $('input[name^=ff_nsmpl_ng]', null);
-//         ng.on('change', alertOnChangeRepetition);
-
-//     }
-
-//     // generate the id for an nccr sample
-//     var generateId = function(event) {
-
-//         // prevent the browser from firing the default events
-//         event.preventDefault();
-//         event.stopPropagation();
-
-//         // get button as jquery element
-//         var btn = $(event.target);
-
-//         // get the input field that belongs to the button
-//         var inputField = btn.prev();
-//         var currentFieldContent = inputField.val();
-
-//         // get the sample group for the storage type
-//         var sampleGroup = btn.closest('div').prev();
-
-//         // get the current sample repetition group for this id
-//         var repetitionGroup = btn.closest('div').closest('td');
-
-//         // samplingNo is an text input field
-//         var samplingNo = function (parent) {
-//             var fields = selectField('ff_nsmpl_smplid', parent);
-//             return fields.val();
-//         }(repetitionGroup);
-
-//         // stType is a select field in the same sample as the button
-//         var stType = function (parent) {
-
-//             var fields = $('[name^=ff_nsmpl_store]', parent);
-
-//             // ensure that we have only the store field (not the store_nb field)
-//             var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
-//             var selectedItem = fields.filter(function (index) {
-//                 return nameMatcher.test(this.name);
-//             });
+    // watch changes in any fields that have an
+    // influence on the sample id
+    var watchChanges = function() {
+
+        var mainGroup = selectField('ff_episode_maingrp_2', null);
+        mainGroup.on('change', alertOnChange);
+
+        var episodeNo = $('[name^=ff_episode_nmb_2]');
+        episodeNo.on('change', alertOnChange);
+
+        var episodeClass = selectField('ff_episode_class_2', null);
+        episodeClass.on('change', alertOnChange);
+
+    }
+
+    // // generate the id for an nccr sample
+    // var generateId = function(event) {
+
+    //     // prevent the browser from firing the default events
+    //     event.preventDefault();
+    //     event.stopPropagation();
+
+    //     // get button as jquery element
+    //     var btn = $(event.target);
+
+    //     // get the input field that belongs to the button
+    //     var inputField = btn.prev();
+    //     var currentFieldContent = inputField.val();
+
+    //     // get the sample group for the storage type
+    //     var sampleGroup = btn.closest('div').prev();
+
+    //     // get the current sample repetition group for this id
+    //     var repetitionGroup = btn.closest('div').closest('td');
+
+    //     // samplingNo is an text input field
+    //     var samplingNo = function (parent) {
+    //         var fields = selectField('ff_nsmpl_smplid', parent);
+    //         return fields.val();
+    //     }(repetitionGroup);
+
+    //     // stType is a select field in the same sample as the button
+    //     var stType = function (parent) {
+
+    //         var fields = $('[name^=ff_nsmpl_store]', parent);
+
+    //         // ensure that we have only the store field (not the store_nb field)
+    //         var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
+    //         var selectedItem = fields.filter(function (index) {
+    //             return nameMatcher.test(this.name);
+    //         });
 
-//             return selectedText(selectedItem);
+    //         return selectedText(selectedItem);
 
-//         }(sampleGroup);
+    //     }(sampleGroup);
 
-//         // sampleNo is an input field in the same sample as the button
-//         var sampleNo = function (parent) {
-//             var fields = $('[name^=ff_nsmpl_store_nb]', parent);
-//             return fields.val();
-//         }(sampleGroup);
+    //     // sampleNo is an input field in the same sample as the button
+    //     var sampleNo = function (parent) {
+    //         var fields = $('[name^=ff_nsmpl_store_nb]', parent);
+    //         return fields.val();
+    //     }(sampleGroup);
 
-//         // tapa is a select field
-//         var tapa = function (parent) {
-//             var fields = selectField('ff_nsmpl_tapa', parent);
-//             // return selected option of select field
-//             return selectedText(fields);
-//         }(repetitionGroup);
-
-//         // mopo is a radio button field
-//         var mopo = function (parent) {
-//             var fields = $('input[name^=ff_nsmpl_mopo]', parent);
-//             var selectedFields = fields.filter(function () {
-//                 return $(this).prop('checked') === true;
-//             });
+    //     // tapa is a select field
+    //     var tapa = function (parent) {
+    //         var fields = selectField('ff_nsmpl_tapa', parent);
+    //         // return selected option of select field
+    //         return selectedText(fields);
+    //     }(repetitionGroup);
 
-//             // return empty string if no checked fields were found
-//             if (!selectedFields || selectedFields.length == 0) {
-//                 return '';
-//             }
+    //     // mopo is a radio button field
+    //     var mopo = function (parent) {
+    //         var fields = $('input[name^=ff_nsmpl_mopo]', parent);
+    //         var selectedFields = fields.filter(function () {
+    //             return $(this).prop('checked') === true;
+    //         });
 
-//             // use the id of the checked field, to find a corresponding label
-//             // and extract the text content of the label
-//             var fieldId = selectedFields.attr('id');
-//             var label = $('label[for=' + fieldId + ']', parent);
-//             var txt = label.text();
+    //         // return empty string if no checked fields were found
+    //         if (!selectedFields || selectedFields.length == 0) {
+    //             return '';
+    //         }
 
-//             return txt;
-//         }(repetitionGroup);
+    //         // use the id of the checked field, to find a corresponding label
+    //         // and extract the text content of the label
+    //         var fieldId = selectedFields.attr('id');
+    //         var label = $('label[for=' + fieldId + ']', parent);
+    //         var txt = label.text();
 
-//         // tapaNg is a select field
-//         var tapaNg = function (parent) {
-//             var fields = selectField('ff_nsmpl_nt_tapa', parent);
-//             return selectedText(fields);
-//         }(repetitionGroup);
+    //         return txt;
+    //     }(repetitionGroup);
 
-//         // ng is a radio button
-//         var ng = function (parent) {
-//             var fields = $('input[name^=ff_nsmpl_ng]', parent);
-//             var selectedFields = fields.filter(function () {
-//                 return $(this).prop('checked') === true;
-//             });
-
-//             // return empty string if no checked fields were found
-//             if (!selectedFields || selectedFields.length == 0) {
-//                 return '';
-//             }
+    //     // tapaNg is a select field
+    //     var tapaNg = function (parent) {
+    //         var fields = selectField('ff_nsmpl_nt_tapa', parent);
+    //         return selectedText(fields);
+    //     }(repetitionGroup);
 
-//             // use the id of the checked field, to find a corresponding label
-//             // and extract the text content of the label
-//             var fieldId = selectedFields.attr('id');
-//             var label = $('label[for=' + fieldId + ']', parent);
-//             var txt = label.text();
+    //     // ng is a radio button
+    //     var ng = function (parent) {
+    //         var fields = $('input[name^=ff_nsmpl_ng]', parent);
+    //         var selectedFields = fields.filter(function () {
+    //             return $(this).prop('checked') === true;
+    //         });
 
-//             return txt;
-//         }(repetitionGroup);
-
-
-//         // --- check if all required values have been provided. If not, throw an alert message ---
-
-//         if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) || isEmpty(sampleNo) ||
-//             (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) ||
-//             (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) ||
-//             (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
-
-//             // check for each value if it is not empty (or < Please choose > )
-//             // and inform the user if the value is empty
-//             alert('ID for NCCR sample could not be generated. Some input is missing:\n\n' + (isEmpty(samplingNo) ? '!! Missing: ' : 'OK: ') + 'ID for sampling event\n' +
-//                 (isEmpty(tapa) ? '!! Missing: ' : 'OK: ') + 'Main target pathogen\n' +
-//                 (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmpty(mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
-//                 (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmpty(ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
-//                 ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmpty(tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
-//                 (isEmpty(stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type\n' +
-//                 (isEmpty(sampleNo) ? '!! Missing: ' : 'OK: ') + 'Number of sample storage type\n');
-
-//             return;
+    //         // return empty string if no checked fields were found
+    //         if (!selectedFields || selectedFields.length == 0) {
+    //             return '';
+    //         }
 
-//         }
-
-//         // check if the sampling number was specified correctly (conforms to Regex)
-//         var checkSamplingNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
+    //         // use the id of the checked field, to find a corresponding label
+    //         // and extract the text content of the label
+    //         var fieldId = selectedFields.attr('id');
+    //         var label = $('label[for=' + fieldId + ']', parent);
+    //         var txt = label.text();
 
-//         if (checkSamplingNo.test(samplingNo) == false) {
+    //         return txt;
+    //     }(repetitionGroup);
 
-//             alert('The entered ID for this sampling event does not comply with the standard. It should start with D, T or U, followed by the center abbreviation (e.g., USB) and a five-digit number.');
-//             return;
 
-//         }
+    //     // --- check if all required values have been provided. If not, throw an alert message ---
 
-//         // --- encode the sample id ---
+    //     if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) || isEmpty(sampleNo) ||
+    //         (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) ||
+    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) ||
+    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
 
-//         // initialize the sample id
-//         var sampleId = '';
+    //         // check for each value if it is not empty (or < Please choose > )
+    //         // and inform the user if the value is empty
+    //         alert('ID for NCCR sample could not be generated. Some input is missing:\n\n' + (isEmpty(samplingNo) ? '!! Missing: ' : 'OK: ') + 'ID for sampling event\n' +
+    //             (isEmpty(tapa) ? '!! Missing: ' : 'OK: ') + 'Main target pathogen\n' +
+    //             (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmpty(mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
+    //             (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmpty(ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
+    //             ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmpty(tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
+    //             (isEmpty(stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type\n' +
+    //             (isEmpty(sampleNo) ? '!! Missing: ' : 'OK: ') + 'Number of sample storage type\n');
 
-//         // start with the sampling number
-//         sampleId += samplingNo;
+    //         return;
 
-//         // add the storage type
-//         var stTypeMap = {
-//             'Frozen': 'F',
-//             'Fixed': 'H',
-//             'Native': 'N',
-//             'Whole blood': 'B',
-//             'RNA': 'R',
-//             'Other': 'O'
-//         }
+    //     }
 
-//         if (Object.keys(stTypeMap).indexOf(stType) == -1) {
-//             alert('Sample storage type not found');
-//             return;
-//         }
+    //     // check if the sampling number was specified correctly (conforms to Regex)
+    //     var checkSamplingNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
 
-//         sampleId += stTypeMap[stType];
+    //     if (checkSamplingNo.test(samplingNo) == false) {
 
+    //         alert('The entered ID for this sampling event does not comply with the standard. It should start with D, T or U, followed by the center abbreviation (e.g., USB) and a five-digit number.');
+    //         return;
 
-//         // add the sample number
-//         var checkSampleNo = new RegExp('^[0-9]{2}$');
+    //     }
 
-//         if (checkSampleNo.test(sampleNo) == false) {
+    //     // --- encode the sample id ---
 
-//             alert('The number of the sample storage type is not correct. This needs to be a two-digit number (e.g., 01, 02 ... 10, 11, etc.).');
-//             return;
+    //     // initialize the sample id
+    //     var sampleId = '';
 
-//         }
+    //     // start with the sampling number
+    //     sampleId += samplingNo;
 
-//         sampleId += sampleNo;
+    //     // add the storage type
+    //     var stTypeMap = {
+    //         'Frozen': 'F',
+    //         'Fixed': 'H',
+    //         'Native': 'N',
+    //         'Whole blood': 'B',
+    //         'RNA': 'R',
+    //         'Other': 'O'
+    //     }
 
-//         // add the target pathogen
-//         var tapaMap = {
-//             'S. aureus': 'SA',
-//             'P. aeruginosa': 'PA',
-//             'E. coli': 'EC',
-//             'Klebsiella spp.': 'KS',
-//             'Other': 'OS',
-//             'No growth': 'NG',
-//             'No data from routine microbiology': 'ND'
-//         }
+    //     if (Object.keys(stTypeMap).indexOf(stType) == -1) {
+    //         alert('Sample storage type not found');
+    //         return;
+    //     }
 
-//         if (Object.keys(tapaMap).indexOf(tapa) == -1) {
-//             alert('Target pathogen not found');
-//             return;
-//         }
+    //     sampleId += stTypeMap[stType];
 
-//         sampleId += tapaMap[tapa];
 
-//         // add additional information
-//         var mopoMap = {
-//             'Monomicrobial': 'm',
-//             'Polymicrobial': 'p',
-//         }
+    //     // add the sample number
+    //     var checkSampleNo = new RegExp('^[0-9]{2}$');
 
-//         var tapaNgMap = {
-//             'S. aureus': 'sa',
-//             'P. aeruginosa': 'pa',
-//             'E. coli': 'ec',
-//             'Klebsiella spp.': 'ks',
-//             'Other': 'os'
-//         }
+    //     if (checkSampleNo.test(sampleNo) == false) {
 
-//         var ngMap = {
-//             'control (no infection)': 'co',
-//             'infection with target pathogen (within prior 3 months or 10 days after sampling)': 'inf'
-//         }
+    //         alert('The number of the sample storage type is not correct. This needs to be a two-digit number (e.g., 01, 02 ... 10, 11, etc.).');
+    //         return;
 
-//         if (tapa != 'No growth' && tapa != 'No data from routine microbiology') {
+    //     }
 
-//             if (Object.keys(mopoMap).indexOf(mopo) == -1) {
-//                 alert('Monomicrobial or polymicrobial growth not found');
-//                 return;
-//             }
+    //     sampleId += sampleNo;
 
-//             sampleId += mopoMap[mopo];
+    //     // add the target pathogen
+    //     var tapaMap = {
+    //         'S. aureus': 'SA',
+    //         'P. aeruginosa': 'PA',
+    //         'E. coli': 'EC',
+    //         'Klebsiella spp.': 'KS',
+    //         'Other': 'OS',
+    //         'No growth': 'NG',
+    //         'No data from routine microbiology': 'ND'
+    //     }
 
-//         } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection')) {
+    //     if (Object.keys(tapaMap).indexOf(tapa) == -1) {
+    //         alert('Target pathogen not found');
+    //         return;
+    //     }
 
-//             if (Object.keys(tapaNgMap).indexOf(tapaNg) == -1) {
-//                 alert('Target pathogen responsible for infection not found');
-//                 return;
-//             }
+    //     sampleId += tapaMap[tapa];
 
-//             sampleId += tapaNgMap[tapaNg];
+    //     // add additional information
+    //     var mopoMap = {
+    //         'Monomicrobial': 'm',
+    //         'Polymicrobial': 'p',
+    //     }
 
-//         } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('control')) {
+    //     var tapaNgMap = {
+    //         'S. aureus': 'sa',
+    //         'P. aeruginosa': 'pa',
+    //         'E. coli': 'ec',
+    //         'Klebsiella spp.': 'ks',
+    //         'Other': 'os'
+    //     }
 
-//             if (Object.keys(ngMap).indexOf(ng) == -1) {
-//                 alert('Sample event control or infection not found');
-//                 return;
-//             }
+    //     var ngMap = {
+    //         'control (no infection)': 'co',
+    //         'infection with target pathogen (within prior 3 months or 10 days after sampling)': 'inf'
+    //     }
 
-//             sampleId += ngMap[ng];
+    //     if (tapa != 'No growth' && tapa != 'No data from routine microbiology') {
 
-//         } else {
+    //         if (Object.keys(mopoMap).indexOf(mopo) == -1) {
+    //             alert('Monomicrobial or polymicrobial growth not found');
+    //             return;
+    //         }
 
-//             // If needed info is not there (i.e., values could not be matched), throw this alert
-//             alert('Additional information needed for sample ID is missing!');
-//             return;
+    //         sampleId += mopoMap[mopo];
 
-//         }
+    //     } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection')) {
 
-//         if (currentFieldContent != '') {
-//             var answer = prompt('Attention: A sample ID is already specified, please type OVERWRITE to overwrite the current sample ID');
-//             if (answer.toLowerCase() != 'overwrite') {
-//                 return;
-//             }
-//         }
+    //         if (Object.keys(tapaNgMap).indexOf(tapaNg) == -1) {
+    //             alert('Target pathogen responsible for infection not found');
+    //             return;
+    //         }
 
+    //         sampleId += tapaNgMap[tapaNg];
 
-//         // Check that the sample ID matches a certain regex, if not, throw an alert
-//         var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
+    //     } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('control')) {
 
-//         if (checkId.test(sampleId) == false) {
+    //         if (Object.keys(ngMap).indexOf(ng) == -1) {
+    //             alert('Sample event control or infection not found');
+    //             return;
+    //         }
 
-//             alert('The generated ID for this sample does not comply with the standard. Please make sure all variables are specified correctly.');
-//             return;
+    //         sampleId += ngMap[ng];
 
-//         }
+    //     } else {
 
-//         // Check that the sample storage and sample number combination is unique within one sampling event
+    //         // If needed info is not there (i.e., values could not be matched), throw this alert
+    //         alert('Additional information needed for sample ID is missing!');
+    //         return;
 
-//         // Get all sample IDs in the repetition group
-//         var sampleIds = function (parent) {
+    //     }
 
-//             var selected = $('[name^=ff_nsmpl_nccrid]', parent).map(function(){
-//                 return $(this).val();
-//             }).get();
+    //     if (currentFieldContent != '') {
+    //         var answer = prompt('Attention: A sample ID is already specified, please type OVERWRITE to overwrite the current sample ID');
+    //         if (answer.toLowerCase() != 'overwrite') {
+    //             return;
+    //         }
+    //     }
 
-//             return selected
 
-//         }(repetitionGroup);
+    //     // Check that the sample ID matches a certain regex, if not, throw an alert
+    //     var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
 
-//         // Check that the current ID is unique (not already used)
-//         // If it is not: The sample number is not unique within this storage type and needs to be changed
+    //     if (checkId.test(sampleId) == false) {
 
-//         if (jQuery.inArray(sampleId, sampleIds) == 0) {
+    //         alert('The generated ID for this sample does not comply with the standard. Please make sure all variables are specified correctly.');
+    //         return;
 
-//             alert('The generated ID for this sample is already used. Please check that the combination of storage type and sample number is unique within this sampling event.');
-//             return;
+    //     }
 
-//         }
+    //     // Check that the sample storage and sample number combination is unique within one sampling event
 
-//         // prompt user to check all values
-//         // return if not entered ok
-//         // --- check if all required values have been provided. If not, throw an alert message ---
+    //     // Get all sample IDs in the repetition group
+    //     var sampleIds = function (parent) {
 
-//         var answer = prompt('Before the sample ID is generated, please confirm that the following information is correct:\n\n- ID for sampling event: ' + samplingNo +
-//             '\n- Main target pathogen: ' + tapa +
-//             (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + mopo : '') +
-//             (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng : '') +
-//             ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg : '') +
-//             '\n- Primary storage type: ' + stType +
-//             '\n- Number of sample storage type: ' + sampleNo +
-//             '\n\nATTENTION: By typing "ok", you confirm that the information is correct. With this, the sample ID is generated.');
+    //         var selected = $('[name^=ff_nsmpl_nccrid]', parent).map(function(){
+    //             return $(this).val();
+    //         }).get();
 
-//         if (answer.toLowerCase() != 'ok') {
-//             return;
-//         }
+    //         return selected
 
-//         // make field editable again
-//         inputField.prop('readonly', false)
+    //     }(repetitionGroup);
+
+    //     // Check that the current ID is unique (not already used)
+    //     // If it is not: The sample number is not unique within this storage type and needs to be changed
+
+    //     if (jQuery.inArray(sampleId, sampleIds) == 0) {
+
+    //         alert('The generated ID for this sample is already used. Please check that the combination of storage type and sample number is unique within this sampling event.');
+    //         return;
+
+    //     }
+
+    //     // prompt user to check all values
+    //     // return if not entered ok
+    //     // --- check if all required values have been provided. If not, throw an alert message ---
+
+    //     var answer = prompt('Before the sample ID is generated, please confirm that the following information is correct:\n\n- ID for sampling event: ' + samplingNo +
+    //         '\n- Main target pathogen: ' + tapa +
+    //         (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? '\n- Monomicrobial or polymicrobial growth: ' + mopo : '') +
+    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? '\n- Sample event control or infection: ' + ng : '') +
+    //         ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? '\n- Target pathogen responsible for infection: ' + tapaNg : '') +
+    //         '\n- Primary storage type: ' + stType +
+    //         '\n- Number of sample storage type: ' + sampleNo +
+    //         '\n\nATTENTION: By typing "ok", you confirm that the information is correct. With this, the sample ID is generated.');
+
+    //     if (answer.toLowerCase() != 'ok') {
+    //         return;
+    //     }
+
+    //     // make field editable again
+    //     inputField.prop('readonly', false)
         
-//         // set the value of the input field
-//         inputField.val(sampleId);
+    //     // set the value of the input field
+    //     inputField.val(sampleId);
 
-//         // make field uneditable again
-//         inputField.prop('readonly', true)
+    //     // make field uneditable again
+    //     inputField.prop('readonly', true)
 
-//     };
+    };
 
 //     var selectField = function (start, parent) {
 //         // use jquery to select all fields that have a name starting with our expression
