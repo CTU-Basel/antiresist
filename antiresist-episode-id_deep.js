@@ -102,7 +102,7 @@ var episodeIdDeep = function () {
 
     }
 
-    // // generate the id for an nccr sample
+    // // generate the id for a deep seated episode PLUS site
     // var generateId = function(event) {
 
     //     // prevent the browser from firing the default events
@@ -116,10 +116,7 @@ var episodeIdDeep = function () {
     //     var inputField = btn.prev();
     //     var currentFieldContent = inputField.val();
 
-    //     // get the sample group for the storage type
-    //     var sampleGroup = btn.closest('div').prev();
-
-    //     // get the current sample repetition group for this id
+    //     // get the current repetition group for this id
     //     var repetitionGroup = btn.closest('div').closest('td');
 
     //     // samplingNo is an text input field
@@ -462,7 +459,7 @@ var episodeIdDeep = function () {
             btn.innerHTML = 'Generate ID';
             btn.style.marginLeft = '8px';
 
-            btn.onclick = generateId;
+            //btn.onclick = generateId;
 
             item.parentNode.appendChild(btn);
         })
