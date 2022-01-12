@@ -1,4 +1,4 @@
-var episodeIdInitialized = false;
+var episodeIdDeepInitialized = false;
 
 // // TODO: I tried something here, but it did not work (I'm sure you know how to do it :))
 // // // make episode ID fields readonly from the beginning
@@ -11,13 +11,13 @@ var episodeIdInitialized = false;
 // // custom scope to generate sample ids
 // // note: jquery must be loaded beforehand
 // // which is done already by secutrial
-var episodeId = function () {
+var episodeIdDeep = function () {
 
     // ensure that function is only initialized once
-    if (episodeIdInitialized === true) {
+    if (episodeIdDeepInitialized === true) {
         return;
     }
-    episodeIdInitialized = true;
+    episodeIdDeepInitialized = true;
 
     // check if a field value is empty
     var isEmpty = function (value) {
@@ -33,7 +33,7 @@ var episodeId = function () {
         return false;
     }
 
-    var alertInfo = 'Attention: You changed a variable that is relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button.';
+    var alertInfoDeep = 'Attention: You changed a variable that is relevant for the Episode ID PLUS site, but an Episode ID PLUS site was already generated. Please generate the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
 
     var alertOnChange = function(event){
         var triggeredOn = $(this);
@@ -51,19 +51,53 @@ var episodeId = function () {
         }
         
     }
+    
+    var alertOnChangeRepetition = function(event){
+        var triggeredOn = $(this);
+        
+        // get the current sample repetition group for this id
+        var repetitionGroup = triggeredOn.closest('div').closest('td');
+
+        // check if any sampleId is defined
+        var episodeIdDeepFields = $('input[name^=ff_episode_uniqidsit]', repetitionGroup);
+        var episodeIdDeepUsed = false;
+        episodeIdDeepFields.each(function(){
+            var fieldValue = $(this).val();
+            if (isEmpty(fieldValue) === false) {
+                episodeIdDeepUsed = true;
+            }
+        });
+
+        if (episodeIdDeepUsed) {
+            alert(alertInfo);
+        }
+        
+    }
 
     // watch changes in any fields that have an
-    // influence on the Episode id
+    // influence on the Episode Id PLUS site for Deep-seated infections
     var watchChanges = function() {
 
-        var mainGroup = selectField('ff_episode_maingrp_2', null);
+        var mainGroup = selectField('ff_episode_maingrp', null);
         mainGroup.on('change', alertOnChange);
 
-        var episodeNo = $('[name^=ff_episode_nmb_2]');
+        var episodeNo = $('[name^=ff_episode_nmb]');
         episodeNo.on('change', alertOnChange);
 
-        var episodeClass = selectField('ff_episode_class_2', null);
+        var episodeClass = selectField('ff_episode_class', null);
         episodeClass.on('change', alertOnChange);
+
+        var infType = selectField('ff_inf_type', null);
+        infType.on('change', alertOnChangeRepetition);
+
+        var bji_loc = selectField('ff_inf_bji_loc', null);
+        bji_loc.on('change', alertOnChangeRepetition);
+
+        var bji_side = selectField('ff_inf_bji_side', null);
+        bji_side.on('change', alertOnChangeRepetition);
+
+        var infColsite = selectField('ff_inf_d_colsite', null);
+        infColsite.on('change', alertOnChangeRepetition);
 
     }
 
@@ -380,25 +414,25 @@ var episodeId = function () {
 
     };
 
-//     var selectField = function (start, parent) {
-//         // use jquery to select all fields that have a name starting with our expression
-//         var items = []
+    var selectField = function (start, parent) {
+        // use jquery to select all fields that have a name starting with our expression
+        var items = []
 
-//         // scope the search to a parent dom element, if specified
-//         if (parent) {
-//             items = $('[name^=' + start + ']', parent);
-//         } else {
-//             items = $('[name^=' + start + ']');
-//         }
+        // scope the search to a parent dom element, if specified
+        if (parent) {
+            items = $('[name^=' + start + ']', parent);
+        } else {
+            items = $('[name^=' + start + ']');
+        }
 
-//         // create a regular expression matcher that allows 
-//         var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
-//         var selectedItems = items.filter(function (index) {
-//             return nameMatcher.test(this.name);
-//         });
+        // create a regular expression matcher that allows 
+        var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
+        var selectedItems = items.filter(function (index) {
+            return nameMatcher.test(this.name);
+        });
 
-//         return selectedItems;
-//     }
+        return selectedItems;
+    }
 
 //     var selectedText = function (selectElement) {
 //         var selectedOption = $('option:selected', selectElement);
