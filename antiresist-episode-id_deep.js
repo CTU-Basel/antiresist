@@ -134,10 +134,17 @@ var episodeIdDeep = function () {
 
         // infection type is a select field
         var infType = function(parent) {
-            var fields = selectField('ff_inf_type_5', parent);
+            var fields = selectField('ff_inf_type', parent);
             // return selected option of select field
             return selectedText(fields);
         }(repetitionGroup);
+
+        // // infection type is a select field
+        // var infType = function(parent) {
+        //     var fields = selectField('ff_inf_bji_loc', parent);
+        //     // return selected option of select field
+        //     return selectedText(fields);
+        // }(repetitionGroup);
 
     //     // --- check if all required values have been provided. If not, throw an alert message ---
 
