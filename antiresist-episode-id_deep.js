@@ -133,7 +133,7 @@ var episodeIdDeep = function () {
         // };
 
         // // episode class is a select field
-        // var mainGroup = function() {
+        // var episodeClass = function() {
         //     var fields = selectField('ff_episode_class');
         //     // return selected option of select field
         //     return selectedText(fields);
@@ -211,22 +211,19 @@ var episodeIdDeep = function () {
 
     // OLD FROM SAMPLE ID:
 
-    //     // add the storage type
-    //     var stTypeMap = {
-    //         'Frozen': 'F',
-    //         'Fixed': 'H',
-    //         'Native': 'N',
-    //         'Whole blood': 'B',
-    //         'RNA': 'R',
-    //         'Other': 'O'
-    //     }
+        // // start with the main group
+        // var mainGroupMap = {
+        //     'Deep-seated': 'Deep',
+        //     'Urine': 'Urine',
+        //     'Tracheal/pulmonal': 'Tracheal',
+        // }
 
-    //     if (Object.keys(stTypeMap).indexOf(stType) == -1) {
-    //         alert('Sample storage type not found');
-    //         return;
-    //     }
+        // if (Object.keys(mainGroupMap).indexOf(mainGroup) == -1) {
+        //     alert('Main anatomic group not found');
+        //     return;
+        // }
 
-    //     sampleId += stTypeMap[stType];
+        // epiIdDeep += mainGroupMap[mainGroup];
 
 
     //     // add the sample number
