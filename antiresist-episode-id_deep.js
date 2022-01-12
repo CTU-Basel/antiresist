@@ -102,105 +102,42 @@ var episodeIdDeep = function () {
 
     }
 
-    // // generate the id for a deep seated episode PLUS site
-    // var generateId = function(event) {
+    // generate the id for a deep seated episode PLUS site
+    var generateId = function(event) {
 
-    //     // prevent the browser from firing the default events
-    //     event.preventDefault();
-    //     event.stopPropagation();
+        // prevent the browser from firing the default events
+        event.preventDefault();
+        event.stopPropagation();
 
-    //     // get button as jquery element
-    //     var btn = $(event.target);
+        // get button as jquery element
+        var btn = $(event.target);
 
-    //     // get the input field that belongs to the button
-    //     var inputField = btn.prev();
-    //     var currentFieldContent = inputField.val();
+        // get the input field that belongs to the button
+        var inputField = btn.prev();
+        var currentFieldContent = inputField.val();
 
-    //     // get the current repetition group for this id
-    //     var repetitionGroup = btn.closest('div').closest('td');
+        // get the current repetition group for this id
+        var repetitionGroup = btn.closest('div').closest('td');
 
-    //     // samplingNo is an text input field
-    //     var samplingNo = function (parent) {
-    //         var fields = selectField('ff_nsmpl_smplid', parent);
-    //         return fields.val();
-    //     }(repetitionGroup);
+        // // main anatomic group is a select field
+        // var mainGroup = function() {
+        //     var fields = selectField('ff_episode_maingrp');
+        //     // return selected option of select field
+        //     return selectedText(fields);
+        // };
 
-    //     // stType is a select field in the same sample as the button
-    //     var stType = function (parent) {
+        // // episode number is an number input field
+        // var episodeNo = function () {
+        //     var fields = selectField('ff_episode_nmb');
+        //     return fields.val();
+        // };
 
-    //         var fields = $('[name^=ff_nsmpl_store]', parent);
-
-    //         // ensure that we have only the store field (not the store_nb field)
-    //         var nameMatcher = new RegExp('^ff_nsmpl_store[0-9]+');
-    //         var selectedItem = fields.filter(function (index) {
-    //             return nameMatcher.test(this.name);
-    //         });
-
-    //         return selectedText(selectedItem);
-
-    //     }(sampleGroup);
-
-    //     // sampleNo is an input field in the same sample as the button
-    //     var sampleNo = function (parent) {
-    //         var fields = $('[name^=ff_nsmpl_store_nb]', parent);
-    //         return fields.val();
-    //     }(sampleGroup);
-
-    //     // tapa is a select field
-    //     var tapa = function (parent) {
-    //         var fields = selectField('ff_nsmpl_tapa', parent);
-    //         // return selected option of select field
-    //         return selectedText(fields);
-    //     }(repetitionGroup);
-
-    //     // mopo is a radio button field
-    //     var mopo = function (parent) {
-    //         var fields = $('input[name^=ff_nsmpl_mopo]', parent);
-    //         var selectedFields = fields.filter(function () {
-    //             return $(this).prop('checked') === true;
-    //         });
-
-    //         // return empty string if no checked fields were found
-    //         if (!selectedFields || selectedFields.length == 0) {
-    //             return '';
-    //         }
-
-    //         // use the id of the checked field, to find a corresponding label
-    //         // and extract the text content of the label
-    //         var fieldId = selectedFields.attr('id');
-    //         var label = $('label[for=' + fieldId + ']', parent);
-    //         var txt = label.text();
-
-    //         return txt;
-    //     }(repetitionGroup);
-
-    //     // tapaNg is a select field
-    //     var tapaNg = function (parent) {
-    //         var fields = selectField('ff_nsmpl_nt_tapa', parent);
-    //         return selectedText(fields);
-    //     }(repetitionGroup);
-
-    //     // ng is a radio button
-    //     var ng = function (parent) {
-    //         var fields = $('input[name^=ff_nsmpl_ng]', parent);
-    //         var selectedFields = fields.filter(function () {
-    //             return $(this).prop('checked') === true;
-    //         });
-
-    //         // return empty string if no checked fields were found
-    //         if (!selectedFields || selectedFields.length == 0) {
-    //             return '';
-    //         }
-
-    //         // use the id of the checked field, to find a corresponding label
-    //         // and extract the text content of the label
-    //         var fieldId = selectedFields.attr('id');
-    //         var label = $('label[for=' + fieldId + ']', parent);
-    //         var txt = label.text();
-
-    //         return txt;
-    //     }(repetitionGroup);
-
+        // infection type is a select field
+        var infType = function(parent) {
+            var fields = selectField('ff_inf_type_5', parent);
+            // return selected option of select field
+            return selectedText(fields);
+        }(repetitionGroup);
 
     //     // --- check if all required values have been provided. If not, throw an alert message ---
 
@@ -410,7 +347,7 @@ var episodeIdDeep = function () {
     //     // make field uneditable again
     //     inputField.prop('readonly', true)
 
-    //};
+    };
 
     var selectField = function (start, parent) {
         // use jquery to select all fields that have a name starting with our expression
@@ -432,13 +369,13 @@ var episodeIdDeep = function () {
         return selectedItems;
     }
 
-//     var selectedText = function (selectElement) {
-//         var selectedOption = $('option:selected', selectElement);
-//         if (selectedOption.length == 0) {
-//             return '';
-//         }
-//         return selectedOption.text()
-//     }
+    var selectedText = function (selectElement) {
+        var selectedOption = $('option:selected', selectElement);
+        if (selectedOption.length == 0) {
+            return '';
+        }
+        return selectedOption.text()
+    }
 
     // add a new button to every episode id PLUS site field
     var addButtons = function () {
@@ -459,7 +396,7 @@ var episodeIdDeep = function () {
             btn.innerHTML = 'Generate ID';
             btn.style.marginLeft = '8px';
 
-            //btn.onclick = generateId;
+            btn.onclick = generateId;
 
             item.parentNode.appendChild(btn);
         })
