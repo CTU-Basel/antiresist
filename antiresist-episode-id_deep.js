@@ -390,9 +390,9 @@ var episodeIdDeep = function () {
             btn.addEventListener("click", generateIdDeep);
 
             // open window on click if there is something in ID field
-            if(item.value){
+            // TODO @Ramon: right now, the window opens also if the ID is empty. I tried if(item.value), but then the window never opens
+            // (I don't fully understand why or how to fix it, maybe you know it?)
             btn.addEventListener("click", openWindowIdDeep);
-            }
 
             item.parentNode.appendChild(btn);
         })
