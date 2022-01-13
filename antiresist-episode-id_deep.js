@@ -102,6 +102,19 @@ var episodeIdDeep = function () {
 
     }
 
+    // Get patient ID (needed for window later on)
+    var patID = function(){
+        
+        // The PatID is the second navigationlevellink object
+        var field = document.getElementsByClassName('navigationlevellink')[1].text
+        
+        // Extract only the PatID (with center code)
+        // @Ramon: I know this is a bit risky... Do you think this could change, or vary between browsers?
+        // It should not, right?
+        field = field.replace(/\s+/g, '').replace(/>Patient/, '');
+
+    }
+
     // generate the id for a deep seated episode PLUS site
     var generateIdDeep = function(event) {
 
@@ -384,7 +397,7 @@ var episodeIdDeep = function () {
             // TODO: Add Patient ID as soon as variable added in form
             var openWindowIdDeep = function(){
                 var IdDeepWindow = window.open("", "", "width=600,height=200")
-                IdDeepWindow.document.write("<p><b>Episode ID PLUS site: </b>" + item.value + "</p>")
+                IdDeepWindow.document.write("<p><b>Patient ID: </b>" + patID + "</p><p><b>Episode ID PLUS site: </b>" + item.value + "</p>")
             };
 
             // generate Id on click
