@@ -241,46 +241,26 @@ var episodeIdDeep = function () {
 
         // Define when to add which var
 
-        if(episodeClass == 'Infection' && infType == 'bone and joint infection'){
+        if((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint')){
 
             epiIdDeep += bji_locMod + '_' + bji_sideMod
 
+        } else if(episodeClass == 'Infection' && infType != 'bone and joint infection'){
+
+            epiIdDeep += infTypeFirst
+
+        } else if(episodeClass != 'Infection' && infColsite != 'bone or joint'){
+
+            epiIdDeep += infColsiteFirst
+
+        } else {
+
+            // If needed info is not there (i.e., values could not be matched), throw this alert
+            alert('Additional information needed for Episode ID PLUS site is missing!');
+            return;
+
         }
 
-    //     if (tapa != 'No growth' && tapa != 'No data from routine microbiology') {
-
-    //         if (Object.keys(mopoMap).indexOf(mopo) == -1) {
-    //             alert('Monomicrobial or polymicrobial growth not found');
-    //             return;
-    //         }
-
-    //         sampleId += mopoMap[mopo];
-
-    //     } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection')) {
-
-    //         if (Object.keys(tapaNgMap).indexOf(tapaNg) == -1) {
-    //             alert('Target pathogen responsible for infection not found');
-    //             return;
-    //         }
-
-    //         sampleId += tapaNgMap[tapaNg];
-
-    //     } else if ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('control')) {
-
-    //         if (Object.keys(ngMap).indexOf(ng) == -1) {
-    //             alert('Sample event control or infection not found');
-    //             return;
-    //         }
-
-    //         sampleId += ngMap[ng];
-
-    //     } else {
-
-    //         // If needed info is not there (i.e., values could not be matched), throw this alert
-    //         alert('Additional information needed for sample ID is missing!');
-    //         return;
-
-    //     }
 
     //     if (currentFieldContent != '') {
     //         var answer = prompt('Attention: A sample ID is already specified, please type OVERWRITE to overwrite the current sample ID');
