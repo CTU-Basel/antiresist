@@ -382,14 +382,17 @@ var episodeIdDeep = function () {
 
             // Open new window on click with episode ID PLUS site in it
             var openWindowIdDeep = function(){
-                var IdDeepWindow = window.open("", "", "width=500,height=100")
-                IdDeepWindow.document.write("<p>Episode ID PLUS site: " + item.value + "<p>")
+                var IdDeepWindow = window.open("", "", "width=600,height=200")
+                IdDeepWindow.document.write("<p><b>Episode ID PLUS site: <b>" + item.value + "<p>")
             };
 
-            // generate Id and open window on click
+            // generate Id on click
             btn.addEventListener("click", generateIdDeep);
 
+            // open window on click if there is something in ID field
+            if(item.value){
             btn.addEventListener("click", openWindowIdDeep);
+            }
 
             item.parentNode.appendChild(btn);
         })
