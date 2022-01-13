@@ -219,7 +219,7 @@ var episodeIdDeep = function () {
         // add the episode number
         epiIdDeep += episodeNo;
 
-        // add the episode class pathogen
+        // add the episode class
         var episodeClassMap = {
             'Infection': '_infection_',
             'Colonisation': '_colonisation_',
@@ -297,16 +297,15 @@ var episodeIdDeep = function () {
     //     }
 
         // Check that the current ID is unique (not already used)
-        // If it is not: The sample number is not unique within this storage type and needs to be changed
 
-        // Get all sample IDs in the repetition group
+        // Get all IDs
         var epiIdsDeep = $('[name^=ff_episode_uniqidsit]').map(function(){
                 return $(this).val();
         }).get();
 
         if (jQuery.inArray(epiIdDeep, epiIdsDeep) == 0) {
 
-            alert('The generated episode ID PLUS site is already used. Please check the variables for infection type / anatomic site and (if bone and joint) anatomic location and anatomic side.');
+            alert('The generated Episode ID PLUS site is already used. Please check the variables for infection type / anatomic site and (if bone and joint) anatomic location and anatomic side.');
             return;
 
         }
