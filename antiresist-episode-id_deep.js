@@ -2,7 +2,7 @@ var episodeIdDeepInitialized = false;
 
 // // TODO: I tried something here, but it did not work (I'm sure you know how to do it :))
 // // // make episode ID fields readonly from the beginning
-// // var idFields = document.querySelectorAll('[name^=ff_episode_uniqid]');
+// // var idFields = document.querySelectorAll('[name^=ff_episode_uniqidsit]');
 
 // // idFields.forEach(function (item) {
 // //     item.prop('readonly', true)
@@ -168,26 +168,27 @@ var episodeIdDeep = function () {
         }(repetitionGroup);
 
 
-    //     // --- check if all required values have been provided. If not, throw an alert message ---
+        // --- check if all required values have been provided. If not, throw an alert message ---
 
-    //     if (isEmpty(samplingNo) || isEmpty(stType) || isEmpty(tapa) || isEmpty(sampleNo) ||
-    //         (tapa != 'No growth' && tapa != 'No data from routine microbiology') && isEmpty(mopo) ||
-    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology') && isEmpty(ng) ||
-    //         (tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(tapaNg)) {
+        if (isEmpty(mainGroup) || isEmpty(episodeNo) || isEmpty(episodeClass) || 
+            (episodeClass == 'Infection') && isEmpty(infType) ||
+            (episodeClass != 'Infection') && isEmpty(infColsite) ||
+            ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint')) && (isEmpty(bji_loc) || isEmpty(bji_side))) {
 
-    //         // check for each value if it is not empty (or < Please choose > )
-    //         // and inform the user if the value is empty
-    //         alert('ID for NCCR sample could not be generated. Some input is missing:\n\n' + (isEmpty(samplingNo) ? '!! Missing: ' : 'OK: ') + 'ID for sampling event\n' +
-    //             (isEmpty(tapa) ? '!! Missing: ' : 'OK: ') + 'Main target pathogen\n' +
-    //             (tapa != 'No growth' && tapa != 'No data from routine microbiology' ? (isEmpty(mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
-    //             (tapa == 'No growth' || tapa == 'No data from routine microbiology' ? (isEmpty(ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
-    //             ((tapa == 'No growth' || tapa == 'No data from routine microbiology') && ng.startsWith('infection') ? (isEmpty(tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
-    //             (isEmpty(stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type\n' +
-    //             (isEmpty(sampleNo) ? '!! Missing: ' : 'OK: ') + 'Number of sample storage type\n');
+            // check for each value if it is not empty (or < Please choose > )
+            // and inform the user if the value is empty
+            alert('Episode ID PLUS site could not be generated. Some input is missing:\n\n' + 
+                (isEmpty(mainGroup) ? '!! Missing: ' : 'OK: ') + 'Main anatomic group\n' +
+                (isEmpty(episodeNo) ? '!! Missing: ' : 'OK: ') + 'Episode number\n' +
+                (isEmpty(episodeClass) ? '!! Missing: ' : 'OK: ') + 'Episode class\n' +
+                (episodeClass == 'Infection' ? (isEmpty(infType) ? '!! Missing: ' : 'OK: ') + 'Type of infection\n' : '') +
+                (episodeClass != 'Infection' ? (isEmpty(infColsite) ? '!! Missing: ' : 'OK: ') + 'Anatomic site of sampling\n' : '') +
+                ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint') ? (isEmpty(bji_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
+                ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint') ? (isEmpty(bji_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : ''));
 
-    //         return;
+            return;
 
-    //     }
+        }
 
         // --- encode the episode id PLUS site---
 
@@ -261,16 +262,24 @@ var episodeIdDeep = function () {
 
         }
 
-
+        // @Ramon: We could do this here as well, but I don't think this is necessary, will ask Richard again
     //     if (currentFieldContent != '') {
-    //         var answer = prompt('Attention: A sample ID is already specified, please type OVERWRITE to overwrite the current sample ID');
+    //         var answer = prompt('Attention: An Episode ID PLUS site is already specified, please type OVERWRITE to overwrite the current ID');
     //         if (answer.toLowerCase() != 'overwrite') {
-    //             return;
-    //         }
+
+    //              alert('ID has NOT been changed')
+    //              return;
+
+    //          } else{
+
+    //              alert('Change of ID successfull')
+
+    //          }
     //     }
 
-
-    //     // Check that the sample ID matches a certain regex, if not, throw an alert
+        // @Ramon: I think we do not need this, either (Regex would have to be adapted), we already test for empty values, at least, 
+        // the number field is restricted to 1 or 2-digit numbers, and the rest is drop-downs.
+    //     // Check that the episode ID PLUS site matches a certain regex, if not, throw an alert
     //     var checkId = new RegExp('^[D|T|U]-[A-Z]{3}[0-9]{5}[F|H|B|N|R|O]{1}[0-9]{2}(SA|PA|EC|KS|OS|NG|ND)([pm]{1}|(sa|pa|ec|ks|os|co))$');
 
     //     if (checkId.test(sampleId) == false) {
@@ -280,29 +289,28 @@ var episodeIdDeep = function () {
 
     //     }
 
-    //     // Check that the sample storage and sample number combination is unique within one sampling event
+        // Check that the current ID is unique (not already used)
+        // If it is not: The sample number is not unique within this storage type and needs to be changed
 
-    //     // Get all sample IDs in the repetition group
-    //     var sampleIds = function (parent) {
+        // Get all sample IDs in the repetition group
+        var epiIdsDeep = function (parent) {
 
-    //         var selected = $('[name^=ff_nsmpl_nccrid]', parent).map(function(){
-    //             return $(this).val();
-    //         }).get();
+            var selected = $('[name^=ff_episode_uniqidsit]', parent).map(function(){
+                return $(this).val();
+            }).get();
 
-    //         return selected
+            return selected
 
-    //     }(repetitionGroup);
+        }(repetitionGroup);
 
-    //     // Check that the current ID is unique (not already used)
-    //     // If it is not: The sample number is not unique within this storage type and needs to be changed
+        if (jQuery.inArray(epiIdDeep, epiIdsDeep) == 0) {
 
-    //     if (jQuery.inArray(sampleId, sampleIds) == 0) {
+            alert('The generated episode ID PLUS site is already used. Please check the variables for infection type / anatomic site, and (if bone and joint) anatomic location and anatomic side.');
+            return;
 
-    //         alert('The generated ID for this sample is already used. Please check that the combination of storage type and sample number is unique within this sampling event.');
-    //         return;
+        }
 
-    //     }
-
+        //@Ramon: I think this is also not needed for this ID (would need to be adapted), I will ask Richard again here
     //     // prompt user to check all values
     //     // return if not entered ok
     //     // --- check if all required values have been provided. If not, throw an alert message ---
@@ -383,41 +391,6 @@ var episodeIdDeep = function () {
             item.parentNode.appendChild(btn);
         })
     };
-
-    // // handle changes in the value of the select field to specify
-    // // the number of samples, since this will result
-    // // in new nccr id fields that need to be enhanced
-    // var handleSampleChange = function (updateFn) {
-
-    //     // find all select fields where the name starts with the given text
-    //     var fields = document.querySelectorAll('select[name^=ff_nsmpl_amt]');
-
-    //     // filter out all items that do not match ^ff_nsmpl_amt_[0-9]+$
-    //     var nameMatcher = new RegExp('^ff_nsmpl_amt_[0-9]+$');
-    //     var selectedFields = [];
-
-    //     for (var i = 0; i < fields.length; i++) {
-
-    //         // nothing to do, if the field name does not match our criteria
-    //         if (nameMatcher.test(fields[i].name) == false) {
-    //             continue;
-    //         }
-
-    //         // react to field changes, as this changes the number of 
-    //         // available samples and accordingly the available sample id fields
-    //         fields[i].addEventListener('onchange', function () {
-    //             updateFn();
-    //         });
-
-    //         // watch select field for changes
-    //         selectedFields.push(fields[i]);
-    //     }
-
-    // }
-
-    // // initialize the script to handle changes when the number
-    // // of samples is changed
-    // handleSampleChange(addButtons);
 
     // ensure that buttons are added from the start
     addButtonsDeep();
