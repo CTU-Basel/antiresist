@@ -213,9 +213,9 @@ var episodeIdDeep = function () {
 
         // add the episode class pathogen
         var episodeClassMap = {
-            'Infection': '_infection',
-            'Colonisation': '_colonisation',
-            'No growth, no infection (control)': '_nogrowth.noinfection',
+            'Infection': '_infection_',
+            'Colonisation': '_colonisation_',
+            'No growth, no infection (control)': '_nogrowth.noinfection_',
         }
 
         if (Object.keys(episodeClassMap).indexOf(episodeClass) == -1) {
@@ -228,7 +228,7 @@ var episodeIdDeep = function () {
         // add information on type (if not bone or joint) or location and side (if bone or joint)
 
         // Take location of bone or joint infection: Replace white spaces with "." and convert to lower case
-        var bji_locMod = bji_loc.toLowerCase()
+        var bji_locMod = bji_loc.toLowerCase().replace(/ .*/,".")
 
         epiIdDeep += bji_locMod;
         
