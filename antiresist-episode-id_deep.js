@@ -229,8 +229,6 @@ var episodeIdDeep = function () {
 
         // Take location of bone or joint infection: Replace white spaces with "." and convert to lower case
         var bji_locMod = bji_loc.toLowerCase().replace(/ /g,".");
-
-        epiIdDeep += bji_locMod;
         
         // Take side of bone or joint infection: Replace white spaces with "." and convert to lower case
         var bji_sideMod = bji_side.toLowerCase().replace(/ /g,".");
@@ -243,6 +241,11 @@ var episodeIdDeep = function () {
 
         // Define when to add which var
 
+        if(episodeClass == 'Infection' && infType == 'bone and joint infection'){
+
+            epiIdDeep += bji_locMod += '_' += bji_sideMod
+
+        }
 
     //     if (tapa != 'No growth' && tapa != 'No data from routine microbiology') {
 
