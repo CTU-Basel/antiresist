@@ -311,7 +311,7 @@ var nccrid = function () {
 
         var ngMap = {
             'control (no infection)': 'co',
-            'infection with target pathogen (within prior 3 months or 10 days after sampling)': 'inf'
+            'infection with target pathogen': 'inf'
         }
 
         if (tapa != 'No growth' && tapa != 'No data from routine microbiology') {
