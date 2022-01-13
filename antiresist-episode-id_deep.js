@@ -119,25 +119,25 @@ var episodeIdDeep = function () {
         // get the current repetition group for this id
         var repetitionGroup = btn.closest('div').closest('td');
 
-        // // main anatomic group is a select field
-        // var mainGroup = function() {
-        //     var fields = selectField('ff_episode_maingrp');
-        //     // return selected option of select field
-        //     return selectedText(fields);
-        // };
+        // main anatomic group is a select field
+        var mainGroup = function() {
+            var fields = selectField('ff_episode_maingrp');
+            // return selected option of select field
+            return selectedText(fields);
+        };
 
-        // // episode number is an number input field
-        // var episodeNo = function () {
-        //     var fields = selectField('ff_episode_nmb');
-        //     return fields.val();
-        // };
+        // episode number is an number input field
+        var episodeNo = function () {
+            var fields = selectField('ff_episode_nmb');
+            return fields.val();
+        };
 
-        // // episode class is a select field
-        // var episodeClass = function() {
-        //     var fields = selectField('ff_episode_class');
-        //     // return selected option of select field
-        //     return selectedText(fields);
-        // };
+        // episode class is a select field
+        var episodeClass = function() {
+            var fields = selectField('ff_episode_class');
+            // return selected option of select field
+            return selectedText(fields);
+        };
 
         // infection type is a select field
         var infType = function(parent) {
