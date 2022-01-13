@@ -243,7 +243,7 @@ var episodeIdDeep = function () {
 
         if(episodeClass == 'Infection' && infType == 'bone and joint infection'){
 
-            epiIdDeep += bji_locMod += '_' += bji_sideMod
+            epiIdDeep += bji_locMod + '_' + bji_sideMod
 
         }
 
