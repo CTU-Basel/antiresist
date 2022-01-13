@@ -227,15 +227,19 @@ var episodeIdDeep = function () {
 
         // add information on type (if not bone or joint) or location and side (if bone or joint)
 
-        // bji_loc
+        // Take location of bone or joint infection: Replace white spaces with "." and convert to lower case
+        var bji_locMod = bji_loc.toLowerCase()
+
+        epiIdDeep += bji_locMod;
+        
+        //bji_loc
         // bji_side
 
+        // Take the first word from infection Type
         var infTypeFirst = infType.replace(/ .*/,'');
 
-        epiIdDeep += infTypeFirst;
-
-        // infColsite
-
+        // Take the first word from infection site
+        var infColsiteFirst = infColsite.replace(/ .*/,'');
 
     //     // add additional information
     //     var mopoMap = {
