@@ -111,7 +111,7 @@ var episodeIdDeep = function () {
         // Extract only the PatID (with center code)
         // @Ramon: I know this is a bit risky... Do you think this could change, or vary between browsers?
         // It should not, right?
-        field = field.replace(/\s+/g, '').replace(/>Patient/, '');
+        return field.replace(/\s+/g, '').replace(/>Patient/, '');
 
     }
 
