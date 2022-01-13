@@ -232,8 +232,6 @@ var episodeIdDeep = function () {
 
         var infTypeFirst = infType.replace(/ .*/,'');
 
-        $('body').append(infTypeFirst);
-
         epiIdDeep += infTypeFirst;
 
         // infColsite
