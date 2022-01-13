@@ -227,6 +227,17 @@ var episodeIdDeep = function () {
 
         // add information on type (if not bone or joint) or location and side (if bone or joint)
 
+        // bji_loc
+        // bji_side
+
+        var infTypeFirst = infType.replace(/ .*/,'');
+
+        $('body').append(infTypeFirst);
+
+        epiIdDeep += infTypeFirst;
+
+        // infColsite
+
 
     //     // add additional information
     //     var mopoMap = {
