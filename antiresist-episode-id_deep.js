@@ -103,17 +103,11 @@ var episodeIdDeep = function () {
     }
 
     // Get patient ID (needed for window later on)
-    var patID = function(){
-        
-        // The PatID is the second navigationlevellink object
-        var field = document.getElementsByClassName('navigationlevellink')[1].text
-        
-        // Extract only the PatID (with center code)
+    // The PatID is the second navigationlevellink object
+    // Extract only the PatID (with center code)
         // @Ramon: I know this is a bit risky... Do you think this could change, or vary between browsers?
         // It should not, right?
-        return field.replace(/\s+/g, '').replace(/>Patient/, '');
-
-    }
+    var patID = document.getElementsByClassName('navigationlevellink')[1].text.replace(/\s+/g, '').replace(/>Patient/, '');
 
     // generate the id for a deep seated episode PLUS site
     var generateIdDeep = function(event) {
