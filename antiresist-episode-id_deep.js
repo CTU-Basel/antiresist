@@ -381,9 +381,10 @@ var episodeIdDeep = function () {
             btn.style.marginLeft = '8px';
 
             // Open new window on click with episode ID PLUS site in it
+            // TODO: Add Patient ID as soon as variable added in form
             var openWindowIdDeep = function(){
                 var IdDeepWindow = window.open("", "", "width=600,height=200")
-                IdDeepWindow.document.write("<p><b>Episode ID PLUS site: <b>" + item.value + "<p>")
+                IdDeepWindow.document.write("<p><b>Episode ID PLUS site: </b>" + item.value + "</p>")
             };
 
             // generate Id on click
