@@ -293,15 +293,9 @@ var episodeIdDeep = function () {
         // If it is not: The sample number is not unique within this storage type and needs to be changed
 
         // Get all sample IDs in the repetition group
-        var epiIdsDeep = function (parent) {
-
-            var selected = $('[name^=ff_episode_uniqidsit]', parent).map(function(){
+        var epiIdsDeep = $('[name^=ff_episode_uniqidsit]').map(function(){
                 return $(this).val();
-            }).get();
-
-            return selected
-
-        }(repetitionGroup);
+        }).get();
 
         if (jQuery.inArray(epiIdDeep, epiIdsDeep) == 0) {
 
