@@ -381,18 +381,16 @@ var episodeIdDeep = function () {
             btn.style.marginLeft = '8px';
 
             // Open new window on click with episode ID PLUS site in it
-            openWindowIdDeep = function(){
+            var openWindowIdDeep = function(){
                 var IdDeepWindow = window.open("", "", "width=500,height=100")
                 IdDeepWindow.document.write("<p>Episode ID PLUS site: <p>")
             };
 
             // generate Id and open window on click
-            CombDeep = function(event){
-                generateIdDeep(event)
+            btn.onclick = function(){
+                generateIdDeep()
                 openWindowIdDeep()
             };
-            
-            btn.onclick = CompDeep
 
             item.parentNode.appendChild(btn);
         })
