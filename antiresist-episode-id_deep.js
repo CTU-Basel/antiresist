@@ -387,10 +387,8 @@ var episodeIdDeep = function () {
             };
 
             // generate Id and open window on click
-            btn.onclick = function(){
-                generateIdDeep()
-                openWindowIdDeep()
-            };
+            btn.addEventListener("click", generateIdDeep);
+            btn.addEventListener("click", openWindowIdDeep)
 
             item.parentNode.appendChild(btn);
         })
