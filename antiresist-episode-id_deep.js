@@ -228,12 +228,12 @@ var episodeIdDeep = function () {
         // add information on type (if not bone or joint) or location and side (if bone or joint)
 
         // Take location of bone or joint infection: Replace white spaces with "." and convert to lower case
-        var bji_locMod = bji_loc.toLowerCase().replace(/ .*/,".")
+        var bji_locMod = bji_loc.toLowerCase().replace(/ /g,".");
 
         epiIdDeep += bji_locMod;
         
-        //bji_loc
-        // bji_side
+        // Take side of bone or joint infection: Replace white spaces with "." and convert to lower case
+        var bji_sideMod = bji_side.toLowerCase().replace(/ /g,".");
 
         // Take the first word from infection Type
         var infTypeFirst = infType.replace(/ .*/,'');
@@ -241,24 +241,8 @@ var episodeIdDeep = function () {
         // Take the first word from infection site
         var infColsiteFirst = infColsite.replace(/ .*/,'');
 
-    //     // add additional information
-    //     var mopoMap = {
-    //         'Monomicrobial': 'm',
-    //         'Polymicrobial': 'p',
-    //     }
+        // Define when to add which var
 
-    //     var tapaNgMap = {
-    //         'S. aureus': 'sa',
-    //         'P. aeruginosa': 'pa',
-    //         'E. coli': 'ec',
-    //         'Klebsiella spp.': 'ks',
-    //         'Other': 'os'
-    //     }
-
-    //     var ngMap = {
-    //         'control (no infection)': 'co',
-    //         'infection with target pathogen (within prior 3 months or 10 days after sampling)': 'inf'
-    //     }
 
     //     if (tapa != 'No growth' && tapa != 'No data from routine microbiology') {
 
