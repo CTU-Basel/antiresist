@@ -2,7 +2,7 @@ var episodeIdDeepInitialized = false;
 
 // // TODO: I tried something here, but it did not work (I'm sure you know how to do it :))
 // // // make episode ID fields readonly from the beginning
-// // var idFields = document.querySelectorAll('[name^=ff_episode_uniqid_2]');
+// // var idFields = document.querySelectorAll('[name^=ff_episode_uniqid]');
 
 // // idFields.forEach(function (item) {
 // //     item.prop('readonly', true)
@@ -204,57 +204,37 @@ var episodeIdDeep = function () {
         // initialize the episode id PLUS site
         var epiIdDeep = '';
 
-        // TRY OUT:
+        // start with the main group
+        var mainGroupMap = {
+            'Deep-seated': 'Deep',
+            'Urine': 'Urine',
+            'Tracheal/pulmonal': 'Tracheal',
+        }
 
-        // start with the infection type (NOT FINAL VERSION!)
-        epiIdDeep += infType;
+        if (Object.keys(mainGroupMap).indexOf(mainGroup) == -1) {
+            alert('Main anatomic group not found');
+            return;
+        }
 
-    // OLD FROM SAMPLE ID:
+        epiIdDeep += mainGroupMap[mainGroup];
 
-        // // start with the main group
-        // var mainGroupMap = {
-        //     'Deep-seated': 'Deep',
-        //     'Urine': 'Urine',
-        //     'Tracheal/pulmonal': 'Tracheal',
-        // }
+        // add the episode number
 
-        // if (Object.keys(mainGroupMap).indexOf(mainGroup) == -1) {
-        //     alert('Main anatomic group not found');
-        //     return;
-        // }
+        epiIdDeep += episodeNo;
 
-        // epiIdDeep += mainGroupMap[mainGroup];
+        // add the episode class pathogen
+        var episodeClassMap = {
+            'Infection': '_infection',
+            'Colonisation': '_colonisation',
+            'No growth, no infection (control)': '_nogrowth.noinfection',
+        }
 
+        if (Object.keys(episodeClassMap).indexOf(episodeClass) == -1) {
+            alert('Episode class not found');
+            return;
+        }
 
-    //     // add the sample number
-    //     var checkSampleNo = new RegExp('^[0-9]{2}$');
-
-    //     if (checkSampleNo.test(sampleNo) == false) {
-
-    //         alert('The number of the sample storage type is not correct. This needs to be a two-digit number (e.g., 01, 02 ... 10, 11, etc.).');
-    //         return;
-
-    //     }
-
-    //     sampleId += sampleNo;
-
-    //     // add the target pathogen
-    //     var tapaMap = {
-    //         'S. aureus': 'SA',
-    //         'P. aeruginosa': 'PA',
-    //         'E. coli': 'EC',
-    //         'Klebsiella spp.': 'KS',
-    //         'Other': 'OS',
-    //         'No growth': 'NG',
-    //         'No data from routine microbiology': 'ND'
-    //     }
-
-    //     if (Object.keys(tapaMap).indexOf(tapa) == -1) {
-    //         alert('Target pathogen not found');
-    //         return;
-    //     }
-
-    //     sampleId += tapaMap[tapa];
+        epiIdDeep += episodeClassMap[episodeClass];
 
     //     // add additional information
     //     var mopoMap = {
