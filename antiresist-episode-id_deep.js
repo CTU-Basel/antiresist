@@ -120,11 +120,11 @@ var episodeIdDeep = function () {
         var repetitionGroup = btn.closest('div').closest('td');
 
         // main anatomic group is a select field
-        var mainGroup = function() {
-            var fields = selectField('ff_episode_maingrp');
+        var mainGroup = function(parent) {
+            var fields = selectField('ff_episode_maingrp', parent);
             // return selected option of select field
             return selectedText(fields);
-        };
+        }(null);
 
         // episode number is an number input field
         var episodeNo = function () {
@@ -189,16 +189,6 @@ var episodeIdDeep = function () {
 
     //     }
 
-    //     // check if the sampling number was specified correctly (conforms to Regex)
-    //     var checkSamplingNo = new RegExp('^[D|T|U]{1}-[A-Z]{3}[0-9]{5}$');
-
-    //     if (checkSamplingNo.test(samplingNo) == false) {
-
-    //         alert('The entered ID for this sampling event does not comply with the standard. It should start with D, T or U, followed by the center abbreviation (e.g., USB) and a five-digit number.');
-    //         return;
-
-    //     }
-
         // --- encode the episode id PLUS site---
 
         // initialize the episode id PLUS site
@@ -219,7 +209,6 @@ var episodeIdDeep = function () {
         epiIdDeep += mainGroupMap[mainGroup];
 
         // add the episode number
-
         epiIdDeep += episodeNo;
 
         // add the episode class pathogen
@@ -235,6 +224,9 @@ var episodeIdDeep = function () {
         }
 
         epiIdDeep += episodeClassMap[episodeClass];
+
+        // add information on type (if not bone or joint) or location and side (if bone or joint)
+
 
     //     // add additional information
     //     var mopoMap = {
