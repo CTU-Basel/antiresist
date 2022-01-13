@@ -299,7 +299,7 @@ var episodeIdDeep = function () {
 
         if (jQuery.inArray(epiIdDeep, epiIdsDeep) == 0) {
 
-            alert('The generated episode ID PLUS site is already used. Please check the variables for infection type / anatomic site, and (if bone and joint) anatomic location and anatomic side.');
+            alert('The generated episode ID PLUS site is already used. Please check the variables for infection type / anatomic site and (if bone and joint) anatomic location and anatomic side.');
             return;
 
         }
@@ -380,7 +380,16 @@ var episodeIdDeep = function () {
             btn.innerHTML = 'Generate ID';
             btn.style.marginLeft = '8px';
 
+            // generate Id on click
             btn.onclick = generateIdDeep;
+
+            // Open new window
+            openWindowIdDeep = function(){
+            var IdDeepWindow = window.open("", "", "width=200,height=100")
+            IdDeepWindow.document.write("<p>Episode ID PLUS site: <p>")
+            }
+
+            btn.onclick = openWindowIdDeep;
 
             item.parentNode.appendChild(btn);
         })
