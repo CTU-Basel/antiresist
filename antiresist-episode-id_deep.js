@@ -8,7 +8,7 @@ var episodeIdDeepInitialized = false;
 // //     item.prop('readonly', true)
 // // });
 
-// // custom scope to generate sample ids
+// // custom scope to generate episode ids PLUS site
 // // note: jquery must be loaded beforehand
 // // which is done already by secutrial
 var episodeIdDeep = function () {
@@ -383,12 +383,15 @@ var episodeIdDeep = function () {
             // Open new window on click with episode ID PLUS site in it
             var openWindowIdDeep = function(){
                 var IdDeepWindow = window.open("", "", "width=500,height=100")
-                IdDeepWindow.document.write("<p>Episode ID PLUS site: <p>")
+                IdDeepWindow.document.write("<p>Episode ID PLUS site: " + item.val() + "<p>")
             };
 
             // generate Id and open window on click
             btn.addEventListener("click", generateIdDeep);
-            btn.addEventListener("click", openWindowIdDeep)
+
+            if(!isEmpty(item.val())){
+            btn.addEventListener("click", openWindowIdDeep);
+            }
 
             item.parentNode.appendChild(btn);
         })
@@ -402,7 +405,7 @@ var episodeIdDeep = function () {
 
 }
 
-// add custom functionality as soon as windows is completely loaded
+// add custom functionality as soon as window is completely loaded
 // note: secutrial is using the window load event itself, so we must
 // ensure, that this does not overwrite the respective event listener
 $(window).load(function () {
