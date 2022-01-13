@@ -380,16 +380,17 @@ var episodeIdDeep = function () {
             btn.innerHTML = 'Generate ID';
             btn.style.marginLeft = '8px';
 
-            // generate Id on click
-            btn.onclick = generateIdDeep;
-
-            // Open new window
+            // Open new window on click with episode ID PLUS site in it
             openWindowIdDeep = function(){
-            var IdDeepWindow = window.open("", "", "width=200,height=100")
-            IdDeepWindow.document.write("<p>Episode ID PLUS site: <p>")
-            }
+                var IdDeepWindow = window.open("", "", "width=500,height=100")
+                IdDeepWindow.document.write("<p>Episode ID PLUS site: <p>")
+            };
 
-            btn.onclick = openWindowIdDeep;
+            // generate Id and open window on click
+            btn.onclick = function(){
+                generateIdDeep()
+                openWindowIdDeep()
+            };
 
             item.parentNode.appendChild(btn);
         })
