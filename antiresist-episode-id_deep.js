@@ -127,17 +127,17 @@ var episodeIdDeep = function () {
         }(null);
 
         // episode number is an number input field
-        var episodeNo = function () {
-            var fields = selectField('ff_episode_nmb');
+        var episodeNo = function(parent) {
+            var fields = selectField('ff_episode_nmb', parent);
             return fields.val();
-        };
+        }(null);
 
         // episode class is a select field
-        var episodeClass = function() {
-            var fields = selectField('ff_episode_class');
+        var episodeClass = function(parent) {
+            var fields = selectField('ff_episode_class', parent);
             // return selected option of select field
             return selectedText(fields);
-        };
+        }(null);
 
         // infection type is a select field
         var infType = function(parent) {
