@@ -19,12 +19,6 @@ var episodeId = function () {
     }
     episodeIdInitialized = true;
 
-    var openWindowId = function(){
-
-        return;
-
-    }
-
     // check if a field value is empty
     var isEmpty = function (value) {
         if (!value) {
@@ -242,6 +236,9 @@ var episodeId = function () {
 
         };
 
+        // open a window with the ID in it
+        btn.addEventListener("click", openWindowId);
+
     };
 
     var selectField = function (start, parent) {
@@ -296,9 +293,6 @@ var episodeId = function () {
 
             item.parentNode.appendChild(btn);
 
-            // open a window with the ID in it
-            btn.addEventListener("click", openWindowId);
-            
         })
     };
 
