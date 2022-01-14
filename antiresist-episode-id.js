@@ -36,7 +36,7 @@ var episodeId = function () {
     var alertInfo1 = 'Attention: You changed a variable that is potentially relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button.';
     var alertInfo2 = 'Attention: You changed a variable that is potentially relevant for the Episode ID and Episode ID PLUS site, but an Episode ID and/or an Episode ID PLUS site was already generated. Please generate the Episode ID and the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
 
-    var alertOnChange = function({event, alertText}){
+    var alertOnChange = function({alertText}){
 
         // check if any episode ID is defined
         var episodeIdFields = $('input[name^=ff_episode_uniqid_]');
