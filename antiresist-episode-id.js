@@ -234,14 +234,12 @@ var episodeId = function () {
 
         // open window on button click, but only if an id is written in the field
         // TODO @Ramon: right now, the window opens also if the respective ID is empty.
-        // How could this be made dependent on 
-        // Open new window on click with episode ID in it
 
         var openWindowId = function(){
 
             var IdWindow = window.open("", "", "width=600,height=200")
             IdWindow.document.write("<p><b>Patient ID: </b>" + patID + "</p><p><b>Episode ID: </b>" + item.value + "</p>")
-            
+
         };
 
     };
@@ -296,10 +294,11 @@ var episodeId = function () {
             // generate Id on click
             btn.addEventListener("click", generateId);
 
+            item.parentNode.appendChild(btn);
+
             // open a window with the ID in it
             btn.addEventListener("click", openWindowId);
-
-            item.parentNode.appendChild(btn);
+            
         })
     };
 
