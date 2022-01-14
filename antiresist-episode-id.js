@@ -82,9 +82,9 @@ var episodeId = function () {
     // Get patient ID (needed for window later on)
     // The PatID is the second navigationlevellink object
     // Extract only the PatID (with center code)
-        // @Ramon: I know this is a bit risky... Do you think this could change, or vary between browsers?
-        // It should not, right?
-        var patID = document.getElementsByClassName('navigationlevellink')[1].text.replace(/\s+/g, '').replace(/>Patient/, '');
+    // @Ramon: I know this is a bit risky... Do you think this could change, or vary between browsers?
+    // It should not, right?
+    var patID = document.getElementsByClassName('navigationlevellink')[1].text.replace(/\s+/g, '').replace(/>Patient/, '');
 
     // generate the general episode id
     var generateId = function(event) {
@@ -226,19 +226,6 @@ var episodeId = function () {
         // make field uneditable again
         inputField.prop('readonly', true)
 
-        // open window on button click, but only if an id is written in the field
-        // TODO @Ramon: right now, the window opens also if the respective ID is empty.
-
-        var openWindowId = function(){
-
-            var IdWindow = window.open("", "", "width=600,height=200")
-            IdWindow.document.write("<p><b>Patient ID: </b>" + patID + "</p><p><b>Episode ID: </b>" + item.value + "</p>")
-
-        };
-
-        // open a window with the ID in it
-        btn.addEventListener("click", openWindowId);
-
     };
 
     var selectField = function (start, parent) {
@@ -290,6 +277,23 @@ var episodeId = function () {
 
             // generate Id on click
             btn.addEventListener("click", generateId);
+
+            // open window on button click, but only if an id is written in the field
+            // TODO @Ramon: right now, the window opens also if the respective ID is empty.
+            // I tried several things to open this only when an ID is written in the field
+            // (it should not open if generateId ends without a (new) ID being written in the field)
+            // how could this best be done?
+
+            if(isEmpty(btn.prev().val())){
+
+            var openWindowId = function(){
+                var IdWindow = window.open("", "", "width=600,height=200")
+                IdWindow.document.write("<p><b>Patient ID: </b>" + patID + "</p><p><b>Episode ID: </b>" + item.value + "</p>")
+            };
+            
+            btn.addEventListener("click", openWindowId);
+
+            }
 
             item.parentNode.appendChild(btn);
 
