@@ -36,7 +36,7 @@ var episodeId = function () {
     var alertInfo1 = 'Attention: You changed a variable that is potentially relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button.';
     var alertInfo2 = 'Attention: You changed a variable that is potentially relevant for the Episode ID and Episode ID PLUS site, but an Episode ID and/or an Episode ID PLUS site was already generated. Please generate the Episode ID and the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
 
-    var alertOnChange = function({event}){
+    var alertOnChange = function({event, alertText}){
 
         // check if any episode ID is defined
         var episodeIdFields = $('input[name^=ff_episode_uniqid_]');
@@ -65,17 +65,17 @@ var episodeId = function () {
 
         if(selectedText(mainGroup) == 'Deep-seated'){
 
-            var alertText = alertInfo2
+            var alertTexts = alertInfo2
 
         } else {
 
-            var alertText = alertInfo1
+            var alertTexts = alertInfo1
 
         }
 
-        mainGroup.on('change', alertOnChange);
-        episodeNo.on('change', alertOnChange);
-        episodeClass.on('change', alertOnChange);
+        mainGroup.on('change', alertOnChange({alertText: alertTexts}));
+        episodeNo.on('change', alertOnChange({alertText: alertTexts}));
+        episodeClass.on('change', alertOnChange({alertText: alertTexts}));
 
     }
 
