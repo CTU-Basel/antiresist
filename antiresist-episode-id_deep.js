@@ -35,24 +35,6 @@ var episodeIdDeep = function () {
 
     var alertInfoDeep = 'Attention: You changed a variable that is potentially relevant for the Episode ID PLUS site, but an Episode ID PLUS site was already generated. Please generate the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
 
-    var alertOnChangeDeep = function(event){
-
-        // check if any episode ID PLUS site is defined
-        var episodeIdDeepFields = $('input[name^=ff_episode_uniqidsit]');
-        var episodeIdDeepUsed = false;
-        episodeIdDeepFields.each(function(){
-            var fieldValue = $(this).val();
-            if (isEmpty(fieldValue) === false) {
-                episodeIdDeepUsed = true;
-            }
-        });
-
-        if (episodeIdDeepUsed) {
-            alert(alertInfoDeep);
-        }
-        
-    }
-
     var alertOnChangeRepetitionDeep = function(event){
         var triggeredOn = $(this);
         
@@ -78,15 +60,6 @@ var episodeIdDeep = function () {
     // watch changes in any fields that have an
     // influence on the Episode Id PLUS site for Deep-seated infections
     var watchChangesDeep = function() {
-
-        var mainGroup = selectField('ff_episode_maingrp', null);
-        mainGroup.on('change', alertOnChangeDeep);
-
-        var episodeNo = $('[name^=ff_episode_nmb]');
-        episodeNo.on('change', alertOnChangeDeep);
-
-        var episodeClass = selectField('ff_episode_class', null);
-        episodeClass.on('change', alertOnChangeDeep);
 
         var infType = selectField('ff_inf_type', null);
         infType.on('change', alertOnChangeRepetitionDeep);

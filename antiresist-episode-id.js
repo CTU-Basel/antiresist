@@ -33,9 +33,10 @@ var episodeId = function () {
         return false;
     }
 
-    var alertInfo = 'Attention: You changed a variable that is potentially relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button.';
+    var alertInfo1 = 'Attention: You changed a variable that is potentially relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button.';
+    var alertInfo2 = 'Attention: You changed a variable that is potentially relevant for the Episode ID and Episode ID PLUS site, but an Episode ID and/or an Episode ID PLUS site was already generated. Please generate the Episode ID and the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
 
-    var alertOnChange = function(event){
+    var alertOnChange = function({event, alertText}){
 
         // check if any episode ID is defined
         var episodeIdFields = $('input[name^=ff_episode_uniqid_]');
@@ -48,7 +49,7 @@ var episodeId = function () {
         });
 
         if (episodeIdUsed) {
-            alert(alertInfo);
+            alert(alertText);
         }
         
     }
@@ -59,13 +60,22 @@ var episodeId = function () {
     var watchChanges = function() {
 
         var mainGroup = selectField('ff_episode_maingrp', null);
-        mainGroup.on('change', alertOnChange);
-
         var episodeNo = $('[name^=ff_episode_nmb]');
-        episodeNo.on('change', alertOnChange);
-
         var episodeClass = selectField('ff_episode_class', null);
-        episodeClass.on('change', alertOnChange);
+
+        if(selectedText(mainGroup) == 'Deep-seated'){
+
+            var alertText = alertInfo2
+
+        } else {
+
+            var alertText = alertInfo1
+
+        }
+
+        mainGroup.on('change', alertOnChange({alertText: alertText}));
+        episodeNo.on('change', alertOnChange({alertText: alertText}));
+        episodeClass.on('change', alertOnChange({alertText: alertText}));
 
     }
 
