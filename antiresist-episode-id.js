@@ -49,11 +49,11 @@ var episodeId = function () {
 
         if(selectedText(mainGroup) == 'Deep-seated'){
 
-            var alertText = 'Attention: You changed a variable that is relevant for the Episode ID and Episode ID PLUS site, but an Episode ID and/or an Episode ID PLUS site was already generated. Please generate the Episode ID and the Episode ID PLUS site again by clicking again on the "Generate ID"-Button.';
+            var alertText = 'Attention: You changed a variable that is relevant for the Episode ID and Episode ID PLUS site, but an Episode ID and/or an Episode ID PLUS site was already generated. Please generate the Episode ID and the Episode ID PLUS site again by clicking again on the "Generate ID"-Button. If you have already copied the ID into other forms, please update the ID there as well.';
 
         } else {
 
-            var alertText = 'Attention: You changed a variable that is relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button.';
+            var alertText = 'Attention: You changed a variable that is relevant for the Episode ID, but an Episode ID was already generated. Please generate the Episode ID again by clicking again on the "Generate ID"-Button. If you have already copied the ID into other forms, please update the ID there as well.';
 
         }
 
