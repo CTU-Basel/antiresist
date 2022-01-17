@@ -284,7 +284,7 @@ var episodeId = function () {
             // (it should not open if generateId ends without a (new) ID being written in the field)
             // how could this best be done?
 
-            if(isEmpty(btn.prev().val())){
+            if(!isEmpty(item.textContent)){
 
             var openWindowId = function(){
                 var IdWindow = window.open("", "", "width=600,height=200")
