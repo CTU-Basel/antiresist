@@ -362,11 +362,11 @@ var episodeIdDeep = function () {
             // generate Id on click
             btn.addEventListener("click", generateIdDeep);
 
-            // open window on click if there is something in ID field
+            // open window on button click, but only if an id is written in the field
             // TODO @Ramon: right now, the window opens also if the respective ID is empty.
             // I tried several things to open this only when an ID is written in the field
             // (it should not open if generateId ends without a (new) ID being written in the field)
-            // how could this best be done?
+            // how could this best be done? (with item.value, it does not work)
             var openWindowIdDeep = function(){
                 var IdDeepWindow = window.open("", "", "width=600,height=200")
                 IdDeepWindow.document.write("<p><b>Patient ID: </b>" + patID + "</p><p><b>Episode ID PLUS site: </b>" + item.value + "</p>")

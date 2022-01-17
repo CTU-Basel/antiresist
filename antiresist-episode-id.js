@@ -282,9 +282,7 @@ var episodeId = function () {
             // TODO @Ramon: right now, the window opens also if the respective ID is empty.
             // I tried several things to open this only when an ID is written in the field
             // (it should not open if generateId ends without a (new) ID being written in the field)
-            // how could this best be done? (with item.textContent, it does not work)
-
-            if(item.value){
+            // how could this best be done? (with item.value, it does not work)
 
             var openWindowId = function(){
                 var IdWindow = window.open("", "", "width=600,height=200")
@@ -292,8 +290,6 @@ var episodeId = function () {
             };
             
             btn.addEventListener("click", openWindowId);
-
-            }
 
             item.parentNode.appendChild(btn);
 
