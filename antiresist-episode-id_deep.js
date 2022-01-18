@@ -146,6 +146,20 @@ var episodeIdDeep = function () {
             return selectedText(fields);
         }(repetitionGroup);
 
+        // infection location is a select field
+        var ssti_loc = function(parent) {
+            var fields = selectField('ff_inf_ssti_loc', parent);
+            // return selected option of select field
+            return selectedText(fields);
+        }(repetitionGroup);
+
+        // infection location is a select field
+        var ssti_side = function(parent) {
+            var fields = selectField('ff_inf_ssti_side', parent);
+            // return selected option of select field
+            return selectedText(fields);
+        }(repetitionGroup);
+
         // infection site a select field
         var infColsite = function(parent) {
             var fields = selectField('ff_inf_d_colsite', parent);
@@ -159,8 +173,8 @@ var episodeIdDeep = function () {
         if (isEmpty(mainGroup) || isEmpty(episodeNo) || isEmpty(episodeClass) || 
             episodeClass == 'Infection' && isEmpty(infType) ||
             episodeClass != 'Infection' && isEmpty(infColsite) ||
-            (episodeClass == 'Infection' && infType == 'bone and joint infection' || episodeClass != 'Infection' && infColsite == 'bone or joint') && (isEmpty(bji_loc) || isEmpty(bji_side)) ||
-            (episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement' || episodeClass != 'Infection' && infColsite == 'skin and soft tissue') && (isEmpty(ssti_loc) || isEmpty(ssti_side))) {
+            ((episodeClass == 'Infection' && infType == 'bone and joint infection' || episodeClass != 'Infection' && infColsite == 'bone or joint') && (isEmpty(bji_loc) || isEmpty(bji_side))) ||
+            ((episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement' || episodeClass != 'Infection' && infColsite == 'skin and soft tissue') && (isEmpty(ssti_loc) || isEmpty(ssti_side)))) {
 
             // check for each value if it is not empty (or < Please choose > )
             // and inform the user if the value is empty
