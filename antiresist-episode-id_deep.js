@@ -73,6 +73,12 @@ var episodeIdDeep = function () {
         var infColsite = selectField('ff_inf_d_colsite', null);
         infColsite.on('change', alertOnChangeRepetitionDeep);
 
+        var ssti_loc = selectField('ff_inf_ssti_loc', null);
+        ssti_loc.on('change', alertOnChangeRepetitionDeep);
+
+        var ssti_side = selectField('ff_inf_ssti_side', null);
+        ssti_side.on('change', alertOnChangeRepetitionDeep);
+        
     }
 
     // Get patient ID (needed for window later on)
@@ -151,9 +157,10 @@ var episodeIdDeep = function () {
         // --- check if all required values have been provided. If not, throw an alert message ---
 
         if (isEmpty(mainGroup) || isEmpty(episodeNo) || isEmpty(episodeClass) || 
-            (episodeClass == 'Infection') && isEmpty(infType) ||
-            (episodeClass != 'Infection') && isEmpty(infColsite) ||
-            ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint')) && (isEmpty(bji_loc) || isEmpty(bji_side))) {
+            episodeClass == 'Infection' && isEmpty(infType) ||
+            episodeClass != 'Infection' && isEmpty(infColsite) ||
+            (episodeClass == 'Infection' && infType == 'bone and joint infection' || episodeClass != 'Infection' && infColsite == 'bone or joint') && (isEmpty(bji_loc) || isEmpty(bji_side)) ||
+            (episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement' || episodeClass != 'Infection' && infColsite == 'skin and soft tissue') && (isEmpty(ssti_loc) || isEmpty(ssti_side))) {
 
             // check for each value if it is not empty (or < Please choose > )
             // and inform the user if the value is empty
@@ -164,7 +171,9 @@ var episodeIdDeep = function () {
                 (episodeClass == 'Infection' ? (isEmpty(infType) ? '!! Missing: ' : 'OK: ') + 'Type of infection\n' : '') +
                 (episodeClass != 'Infection' ? (isEmpty(infColsite) ? '!! Missing: ' : 'OK: ') + 'Anatomic site of sampling\n' : '') +
                 ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint') ? (isEmpty(bji_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
-                ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint') ? (isEmpty(bji_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : ''));
+                ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint') ? (isEmpty(bji_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : '') +
+                ((episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'Infection' && infColsite == 'skin and soft tissue') ? (isEmpty(ssti_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
+                ((episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'Infection' && infColsite == 'skin and soft tissue') ? (isEmpty(ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : ''));
 
             return;
 
@@ -206,13 +215,19 @@ var episodeIdDeep = function () {
 
         epiIdDeep += episodeClassMap[episodeClass];
 
-        // add information on type (if not bone or joint) or location and side (if bone or joint)
+        // add information on type (if not bone or joint or skin and soft tissue) or location and side (if bone or joint or skin and soft tissue)
 
         // Take location of bone or joint infection: Replace white spaces with "." and convert to lower case
         var bji_locMod = bji_loc.toLowerCase().replace(/ /g,".");
         
         // Take side of bone or joint infection: Replace white spaces with "." and convert to lower case
         var bji_sideMod = bji_side.toLowerCase().replace(/ /g,".");
+
+        // Take location of skin and soft tissue infection: Replace white spaces with "." and convert to lower case
+        var ssti_locMod = ssti_loc.toLowerCase().replace(/ /g,".");
+        
+        // Take side of skin and soft tissue infection: Replace white spaces with "." and convert to lower case
+        var ssti_sideMod = ssti_side.toLowerCase().replace(/ /g,".");
 
         // Take the first word from infection Type
         var infTypeFirst = infType.replace(/ .*/,'');
@@ -226,11 +241,15 @@ var episodeIdDeep = function () {
 
             epiIdDeep += bji_locMod + '_' + bji_sideMod
 
-        } else if(episodeClass == 'Infection' && infType != 'bone and joint infection'){
+        } else if((episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'Infection' && infColsite == 'skin and soft tissue')){
+
+            epiIdDeep += ssti_locMod + '_' + ssti_sideMod
+
+        } else if(episodeClass == 'Infection' && infType != 'bone and joint infection' && infType != 'skin and soft tissue infection without bone or joint involvement'){
 
             epiIdDeep += infTypeFirst
 
-        } else if(episodeClass != 'Infection' && infColsite != 'bone or joint'){
+        } else if(episodeClass != 'Infection' && infColsite != 'bone or joint' && infColsite != 'skin and soft tissue'){
 
             epiIdDeep += infColsiteFirst
 
@@ -278,7 +297,7 @@ var episodeIdDeep = function () {
 
         if (jQuery.inArray(epiIdDeep, epiIdsDeep) == 0) {
 
-            alert('The generated Episode ID PLUS site is already used. Please check the variables for infection type / anatomic site and (if bone and joint) anatomic location and anatomic side.');
+            alert('The generated Episode ID PLUS site is already used. Please check the variables for infection type / anatomic site and (if bone and joint or skin and soft tissue) anatomic location and anatomic side.');
             return;
 
         }
