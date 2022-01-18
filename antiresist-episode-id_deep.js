@@ -67,7 +67,7 @@ var episodeIdDeep = function () {
         var bji_loc = selectField('ff_inf_bji_loc', null);
         bji_loc.on('change', alertOnChangeRepetitionDeep);
 
-        var bji_ssti_side = selectField('ff_inf_bji_ssti_side', null);
+        var bji_ssti_side = selectField('ff_inf_ssti_bji_side', null);
         bji_ssti_side.on('change', alertOnChangeRepetitionDeep);
 
         var infColsite = selectField('ff_inf_d_colsite', null);
