@@ -148,9 +148,18 @@ var episodeIdDeep = function () {
 
         // infection location is a select field
         var ssti_loc = function(parent) {
+
             var fields = selectField('ff_inf_ssti_loc', parent);
+
+            // ensure that we have only the store field (not the store_nb field)
+            var nameMatcher = new RegExp('^ff_inf_ssti_loc_[0-9]+');
+            var selectedItem = fields.filter(function (index) {
+                return nameMatcher.test(this.name);
+            });
+
             // return selected option of select field
-            return selectedText(fields);
+            return selectedText(selectedItem);
+            
         }(repetitionGroup);
 
         // infection location is a select field
