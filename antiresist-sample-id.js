@@ -351,16 +351,15 @@ var nccrid = function () {
 
         if (currentFieldContent != '') {
             var answer = prompt('Attention: A sample ID is already specified, please type OVERWRITE to overwrite the current sample ID');
+
+
             if (answer.toLowerCase() != 'overwrite') {
 
                 alert('ID has NOT been changed')
                 return;
 
-            } else{
-
-                alert('Change of ID successfull')
-
             }
+
         }
 
 
