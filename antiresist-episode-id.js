@@ -8,27 +8,6 @@ var episodeIdInitialized = false;
 // //     item.prop('readonly', true)
 // // });
 
-// Check if the first part of the ID is identical to the episode ID above, if not, throw an alert
-
-// Get all IDs plus site
-var epiIdsDeep = $('[name^=ff_episode_uniqidsit]').map(function(){
-            return $(this).val();
-}).get();
-
-// Extract the first part of the string that should correspond to the Episode ID
-var epiIdsDeepPart = $.map(epiIdsDeep, function(val){
-
-    return val.substring(val.indexOf("_", 11), "");
-    
-});
-
-// If any of the Episode IDs PLUS site does not match the Episode ID, throw an alert that says to generate them again, too
-if(jQuery.inArray(epiId, epiIdsDeepPart) == 0 && epiIdsDeepPart.every((val, i, arr) => val === arr[0])){
-
-    alert('The generated Episode ID does not match with all Episode IDs PLUS site. Please generate the Episode IDs PLUS site again, too')
-
-}
-
 // // custom scope to generate episode ids
 // // note: jquery must be loaded beforehand
 // // which is done already by secutrial
@@ -237,6 +216,32 @@ var episodeId = function () {
     //     if (answer.toLowerCase() != 'ok') {
     //         return;
     //     }
+
+       // TODO: This was a whish from Richard, but it does not make much sense the way it is implemented here (and it somehow breaks
+       // something with the window.open, dont know why...). If anything, we would need to implement this such that the alert
+       // appears right from the beginning on. But then, you would get the alert every time the fields do not match, also while you are
+       // still entering info... I would not do this (it is not mandatory according to Richard)
+ 
+        // // Check if the first part of the ID is identical to the episode ID above, if not, throw an alert
+
+        // // Get all IDs plus site
+        // var epiIdsDeep = $('[name^=ff_episode_uniqidsit]').map(function(){
+        //             return $(this).val();
+        // }).get();
+
+        // // Extract the first part of the string that should correspond to the Episode ID
+        // var epiIdsDeepPart =$.map(epiIdsDeep, function(val){
+
+        //     return val.substring(val.indexOf("_", 11), "");
+            
+        // });
+
+        // // If any of the Episode IDs PLUS site does not match the Episode ID, throw an alert that says to generate them again, too
+        // if(jQuery.inArray(epiId, epiIdsDeepPart) == 0 && epiIdsDeepPart.every((val, i, arr) => val === arr[0])){
+    
+        //     alert('The generated Episode ID does not match with all Episode IDs PLUS site. Please generate the Episode IDs PLUS site again, too')
+
+        // }
 
 
         // make field editable again

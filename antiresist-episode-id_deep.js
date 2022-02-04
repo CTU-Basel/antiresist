@@ -316,7 +316,8 @@ var episodeIdDeep = function () {
 
        // TODO: This was a whish from Richard, but it does not make much sense the way it is implemented here (and it somehow breaks
        // something with the window.open, dont know why...). If anything, we would need to implement this such that the alert
-       // appears right from the beginning on.
+       // appears right from the beginning on. But then, you would get the alert every time the fields do not match, also while you are
+       // still entering info... I would not do this (it is not mandatory according to Richard)
 
         // // Check if the first part of the ID is identical to the episode ID above, if not, throw an alert
         
