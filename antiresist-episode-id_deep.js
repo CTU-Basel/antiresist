@@ -298,6 +298,8 @@ var episodeIdDeep = function () {
 
     //     }
 
+
+
         // Check that the current ID is unique (not already used)
 
         // Get all IDs
@@ -312,21 +314,25 @@ var episodeIdDeep = function () {
 
         }
 
-        // Check if the first part of the ID is identical to the episode ID above, if not, throw an alert
+       // TODO: This was a whish from Richard, but it does not make much sense the way it is implemented here (and it somehow breaks
+       // something with the window.open, dont know why...). If anything, we would need to implement this such that the alert
+       // appears right from the beginning on.
+
+        // // Check if the first part of the ID is identical to the episode ID above, if not, throw an alert
         
-        var epiID = function(parent) {
-            var fields = selectField('ff_episode_uniqid', parent);
-            // return selected option of select field
-            return fields.val();
-        }(null);
+        // var epiID = function(parent) {
+        //     var fields = selectField('ff_episode_uniqid', parent);
+        //     // return selected option of select field
+        //     return fields.val();
+        // }(null);
 
-        var epiIdDeepPart = epiIdDeep.substring(epiIdDeep.indexOf("_", 11), "")
+        // var epiIdDeepPart = epiIdDeep.substring(epiIdDeep.indexOf("_", 11), "")
 
-        if(epiIdDeepPart != epiID){
+        // if(epiIdDeepPart != epiID){
 
-            alert('The generated Episode ID PLUS site and the Episode ID do not match. Please generate the Episode ID (and possible further Episode IDs PLUS site) again, too')
+        //     alert('The generated Episode ID PLUS site and the Episode ID do not match. Please generate the Episode ID (and possible further Episode IDs PLUS site) again, too')
 
-        }
+        // }
 
         //@Ramon: I think this is also not needed for this ID (would need to be adapted), I will ask Richard again here
     //     // prompt user to check all values
