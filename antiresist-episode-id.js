@@ -225,7 +225,7 @@ var episodeId = function () {
         }).get();
 
         // Extract the first part of the string that should correspond to the Episode ID
-        $.map(epiIdsDeep, function(val){
+        var epiIdsDeepPart = $.map(epiIdsDeep, function(val){
 
             return val.substring(val.indexOf("_", 11), "");
             
