@@ -170,10 +170,10 @@ var episodeIdDeep = function () {
         // --- check if all required values have been provided. If not, throw an alert message ---
 
         if (isEmpty(mainGroup) || isEmpty(episodeNo) || isEmpty(episodeClass) || 
-            episodeClass == 'Infection' && isEmpty(infType) ||
-            episodeClass != 'Infection' && isEmpty(infColsite) ||
-            ((episodeClass == 'Infection' && infType == 'bone and joint infection' || episodeClass != 'Infection' && infColsite == 'bone or joint') && (isEmpty(bji_loc) || isEmpty(bji_ssti_side))) ||
-            ((episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement' || episodeClass != 'Infection' && infColsite == 'skin and soft tissue') && (isEmpty(ssti_loc) || isEmpty(bji_ssti_side)))) {
+            episodeClass == 'infection' && isEmpty(infType) ||
+            episodeClass != 'infection' && isEmpty(infColsite) ||
+            ((episodeClass == 'infection' && infType == 'bone and joint infection' || episodeClass != 'infection' && infColsite == 'bone or joint') && (isEmpty(bji_loc) || isEmpty(bji_ssti_side))) ||
+            ((episodeClass == 'infection' && infType == 'skin and soft tissue infection without bone or joint involvement' || episodeClass != 'infection' && infColsite == 'skin and soft tissue') && (isEmpty(ssti_loc) || isEmpty(bji_ssti_side)))) {
 
             // check for each value if it is not empty (or < Please choose > )
             // and inform the user if the value is empty
@@ -181,12 +181,12 @@ var episodeIdDeep = function () {
                 (isEmpty(mainGroup) ? '!! Missing: ' : 'OK: ') + 'Main anatomic group\n' +
                 (isEmpty(episodeNo) ? '!! Missing: ' : 'OK: ') + 'Episode number\n' +
                 (isEmpty(episodeClass) ? '!! Missing: ' : 'OK: ') + 'Episode class\n' +
-                (episodeClass == 'Infection' ? (isEmpty(infType) ? '!! Missing: ' : 'OK: ') + 'Type of infection\n' : '') +
-                (episodeClass != 'Infection' ? (isEmpty(infColsite) ? '!! Missing: ' : 'OK: ') + 'Anatomic site of sampling\n' : '') +
-                ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint') ? (isEmpty(bji_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
-                ((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint') ? (isEmpty(bji_ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : '') +
-                ((episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'Infection' && infColsite == 'skin and soft tissue') ? (isEmpty(ssti_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
-                ((episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'Infection' && infColsite == 'skin and soft tissue') ? (isEmpty(bji_ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : ''));
+                (episodeClass == 'infection' ? (isEmpty(infType) ? '!! Missing: ' : 'OK: ') + 'Type of infection\n' : '') +
+                (episodeClass != 'infection' ? (isEmpty(infColsite) ? '!! Missing: ' : 'OK: ') + 'Anatomic site of sampling\n' : '') +
+                ((episodeClass == 'infection' && infType == 'bone and joint infection') || (episodeClass != 'infection' && infColsite == 'bone or joint') ? (isEmpty(bji_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
+                ((episodeClass == 'infection' && infType == 'bone and joint infection') || (episodeClass != 'infection' && infColsite == 'bone or joint') ? (isEmpty(bji_ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : '') +
+                ((episodeClass == 'infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'infection' && infColsite == 'skin and soft tissue') ? (isEmpty(ssti_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
+                ((episodeClass == 'infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'infection' && infColsite == 'skin and soft tissue') ? (isEmpty(bji_ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : ''));
 
             return;
 
@@ -216,9 +216,9 @@ var episodeIdDeep = function () {
 
         // add the episode class
         var episodeClassMap = {
-            'Infection': '_infection_',
-            'Colonisation': '_colonisation_',
-            'No growth, no infection (control)': '_nogrowth.noinfection_',
+            'infection': '_infection_',
+            'colonisation': '_colonisation_',
+            'no growth, no infection (control)': '_nogrowth.noinfection_',
         }
 
         if (Object.keys(episodeClassMap).indexOf(episodeClass) == -1) {
@@ -247,19 +247,19 @@ var episodeIdDeep = function () {
 
         // Define when to add which var
 
-        if((episodeClass == 'Infection' && infType == 'bone and joint infection') || (episodeClass != 'Infection' && infColsite == 'bone or joint')){
+        if((episodeClass == 'infection' && infType == 'bone and joint infection') || (episodeClass != 'infection' && infColsite == 'bone or joint')){
 
             epiIdDeep += bji_locMod + '_' + bji_ssti_sideMod
 
-        } else if((episodeClass == 'Infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'Infection' && infColsite == 'skin and soft tissue')){
+        } else if((episodeClass == 'infection' && infType == 'skin and soft tissue infection without bone or joint involvement') || (episodeClass != 'infection' && infColsite == 'skin and soft tissue')){
 
             epiIdDeep += ssti_locMod + '_' + bji_ssti_sideMod
 
-        } else if(episodeClass == 'Infection' && infType != 'bone and joint infection' && infType != 'skin and soft tissue infection without bone or joint involvement'){
+        } else if(episodeClass == 'infection' && infType != 'bone and joint infection' && infType != 'skin and soft tissue infection without bone or joint involvement'){
 
             epiIdDeep += infTypeFirst
 
-        } else if(episodeClass != 'Infection' && infColsite != 'bone or joint' && infColsite != 'skin and soft tissue'){
+        } else if(episodeClass != 'infection' && infColsite != 'bone or joint' && infColsite != 'skin and soft tissue'){
 
             epiIdDeep += infColsiteFirst
 
@@ -310,6 +310,23 @@ var episodeIdDeep = function () {
             alert('The generated Episode ID PLUS site is already used. Please check the variables for infection type / anatomic site and (if bone and joint or skin and soft tissue) anatomic location and anatomic side.');
             return;
 
+        }
+
+        // Check if the first part of the ID is identical to the episode ID above, if not, throw an alert
+        
+        var epiID = function(parent) {
+            var fields = selectField('ff_episode_uniqid', parent);
+            // return selected option of select field
+            return fields.val();
+        }(null);
+
+        // TODO: THIS IS WRONG; THIS IS EVERYTHING BEFOR INSTEAD OF AFTER UNDERSCORE
+        var epiIdDeepPart = epiIdDeep.substring(epiIdDeep.indexOf("_", 11), "")
+
+        if(epiIdDeepPart != epiID){
+
+            alert('The generated Episode ID PLUS site and the Episode ID do not match. Please generate the Episode ID (and possible further Episode IDs PLUS site) again, too')
+            
         }
 
         //@Ramon: I think this is also not needed for this ID (would need to be adapted), I will ask Richard again here
