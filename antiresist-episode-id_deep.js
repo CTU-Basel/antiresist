@@ -320,13 +320,12 @@ var episodeIdDeep = function () {
             return fields.val();
         }(null);
 
-        // TODO: THIS IS WRONG; THIS IS EVERYTHING BEFOR INSTEAD OF AFTER UNDERSCORE
         var epiIdDeepPart = epiIdDeep.substring(epiIdDeep.indexOf("_", 11), "")
 
         if(epiIdDeepPart != epiID){
 
             alert('The generated Episode ID PLUS site and the Episode ID do not match. Please generate the Episode ID (and possible further Episode IDs PLUS site) again, too')
-            
+
         }
 
         //@Ramon: I think this is also not needed for this ID (would need to be adapted), I will ask Richard again here
