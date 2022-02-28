@@ -11,13 +11,11 @@
 		"editor.wordWrap": "bounded",
 		"editor.wrappingIndent": "same",
 		"editor.wordWrapColumn": 120,
-		"eslint.codeActionsOnSave.rules": [
-			"!@typescript-eslint/*",
-			"*"
-		],
-		"editor.formatOnSave": true,
-		"eslint.alwaysShowStatus": true,
-		"javascript.validate.enable": false,
+		"[javascript]": {
+			"editor.formatOnSave": true,
+			"eslint.alwaysShowStatus": true,
+			"javascript.validate.enable": false,
+		},		
 		"livePreview.autoRefreshPreview": "On Changes to Saved Files"
 	}
 }
