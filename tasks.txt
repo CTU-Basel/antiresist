@@ -1,0 +1,10 @@
+Tasks:
+
+- Fenster öffnen auch falls keine Angaben drin stehen
+- Feld ID immer auf "readonly"
+
+Episode ID:
+- Main group: «Deep», «Tracheal», «Urine»
+- Number of episode: 1-99
+- Classification of episode: “infection”, “colonisation”, “nogrowth.noinfection”
+- Folgendermassen zusammengehängt, z.B. “Deep2_infection», «Tracheal_10_nogrowth.noinfection»

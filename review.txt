@@ -1,0 +1,59 @@
+Lieber Ramon
+
+Ich konnte die Episode IDs nun umsetzen und habe entsprechend 2 neue JS-Skripts auf github hinzugefügt. Die Funktionalität sollte so bereits fast fertig sein, allerdings habe ich es nicht hinbekommen, dass das neue Fenster (siehe Infos unten für genaueres) nicht nur dann öffnet, wenn eine ID drin steht, sondern auch, wenn das Feld noch leer ist (i.e., weil eine Angabe vergessen wurde). Wenn du das noch hinbekommen würdest, wäre das toll! Falls das jetzt keinen Sinn macht: Ich habe alles im Code entsprechend kommentiert. Falls es nicht verständlich ist, bitte gerne nachfragen.
+
+Ausserdem würde ich bei allen drei Skripts das Feld der ID immer nur "readonly" haben, ausser natürlich gerade beim Reinschreiben der ID. Das habe ich leider auch noch nicht hinbekommen.
+
+Die Dinge, die noch nicht funktionieren, habe ich mit "TODO" oder "@Ramon" kommentiert.
+
+Ansonsten sollte aber alles fertig sein und funktionieren.
+
+Zu reviewen wäre also folgendes:
+
+- antiresist-sample-id.js, testen in Formular "NCCR Sampling" in der Subdatenbank "AntiResist Visits"
+- antiresist-episode-id.js, testen in Formular "Episodes" in der Subdatenbank "AntiResist Episodes"
+- antiresist-episode-id_deep.js, testen in Formular "Episodes" in der Subdatenbank "AntiResist Episodes"
+
+Mir ist bewusst, dass die Lösung mit 2 Skripts, die v.a. copy-paste sind, für die Episode IDs nicht so schön ist. Man könnte das evtl. auch zusammennehmen, da es aber schnell gehen musste, habe ich es jetzt so umgesetzt.
+
+Die Funktionalität werden David und ich auch noch selbst testen. Es geht also vor allem um den Code.
+
+Hier noch ein paar Infos zur gewollten Funktionalität:
+
+
+ 
+Episode ID with location (only for deep seated):
+ 
+Episode ID von oben +
+ 
+IF Classification = “infection” & Type of infection = “bone and joint infection”
+THEN anatomical localization (i.e., "shoulder", "ellbow", "wrist", "hip", "knee", "ankle", "long-bone.upper.extermity", "long.bone.lower.extremity", "spine", "pelvis", "skull", "jaw”) “_” anatomical side (i.e., "right", "left", "not.applicable")
+ 
+IF Classification = “infection” & Type of infection nicht = “bone and joint infection”
+THEN first word from Type of infection (i.e., "skin", "oto-rhino-laryngeal", "endocarditis", "vascular", "neurological", "intraabdominal", "genital", "bacteremia", "other")
+ 
+IF Classification nicht = “infection” & Anatomic site of sampling = “bone or joint”
+THEN anatomical localization (i.e., "shoulder", "ellbow", "wrist", "hip", "knee", "ankle", "long-bone.upper.extermity", "long.bone.lower.extremity", "spine", "pelvis", "skull", "jaw") “_” anatomical side (i.e., "right", "left", "not.applicable")
+ 
+IF Classification nicht = “infection” & Anatomic site of sampling nicht = “bone or joint”
+THEN first word from Anatomic site of sampling (i.e., "skin", "nares", "blood", "gastro-intestinal", "intra-abdominal", "other")
+ 
+Folgendermassen zusammengehängt:
+-        Deep1_infection_shoulder_left
+-        Deep1_infection_skin
+-        Deep1_infection_skull_not.applicable
+-        Deep1_colonisation_wrist_right
+-        Deep1_nogrowth.noinfection_blood
+
+Sowohl die Episode ID als auch die Episode ID with location sollen in je ein separates Fenster zusammen mit der PatID geschrieben werden. Aus diesem Fenster soll dann die entsprechende ID z.B. bei den NCCR samplings reinkopiert werden können (um eine genaue Zuteilung für jedes Sample zu einer bestimmten Episode vornehmen zu können). Da es leider keine gute Lösung dafür von secuTrial selbst gibt, haben wir es jetzt so besprochen mit Richard.
+
+Sample ID
+
+Hier weisst du ja schon Bescheid. Ich habe auch nochmals die Vorgaben für die ID von Richard hier angehängt.
+
+Bitte melde dich gerne bei Fragen.
+
+Vielen Dank fürs Reviewen!
+
+Liebe Grüsse
+Silvia
