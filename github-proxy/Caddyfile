@@ -1,0 +1,12 @@
+# server files from git with mime type javascript for antiresist secutrial
+# extension development
+:8080 {
+	reverse_proxy https://raw.githubusercontent.com {
+		buffer_requests
+		buffer_responses
+		header_up Host raw.githubusercontent.com
+		header_down Content-Type "application/javascript; charset=utf-8"
+		header_down X-Gitserve-Path {path}
+	}
+	header -server
+}

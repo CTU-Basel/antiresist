@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  caddyserver:
+    container_name: caddyserver
+    image: caddy:2.4.5-alpine
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - 8080:8080
