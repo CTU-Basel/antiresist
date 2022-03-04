@@ -8,3 +8,7 @@ Episode ID:
 - Number of episode: 1-99
 - Classification of episode: “infection”, “colonisation”, “nogrowth.noinfection”
 - Folgendermassen zusammengehängt, z.B. “Deep2_infection», «Tracheal_10_nogrowth.noinfection»
+
+2 Variablen nur Read-only
+- Main anatomic group of this episode (episode_maingrp)
+- Episode number (episode_nmb)
