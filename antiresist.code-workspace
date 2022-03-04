@@ -6,6 +6,10 @@
 		{
 			"path": "devserver"
 		}
+		{
+			"path": "exports/nccr-sampling_files",
+			"name": "sampling"
+		}
 	],
 	"settings": {
 		"editor.wordWrap": "bounded",
@@ -15,7 +19,6 @@
 			"editor.formatOnSave": true,
 			"eslint.alwaysShowStatus": true,
 			"javascript.validate.enable": false,
-		},		
-		"livePreview.autoRefreshPreview": "On Changes to Saved Files"
+		},
 	}
 }
