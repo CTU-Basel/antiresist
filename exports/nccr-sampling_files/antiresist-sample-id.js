@@ -144,9 +144,11 @@
         }
 
         // // get the sample group for the storage type
+        // TODO: check if we still need this information somehow
         // var sampleGroup = btn.closest('div').prev();
 
         // // get the current sample repetition group for this id
+        // TODO: check if we still need this information somehow
         // var repetitionGroup = btn.closest('div').closest('td');
 
         // gather the current form data
@@ -237,13 +239,11 @@
                 return agg
             }
 
-            console.log(baseName, item.name, item.value);
-
             // add the baseName ot the item
             item.baseName = baseName;
 
             // get text values from select fields and radio buttons
-            item.value = window.dkf._extractTextValue(item);
+            item.value = window.dkf.extractTextValue(item);
 
             // we skip all items, that do not have a value
             // TODO: check if this is a good idea
@@ -265,7 +265,7 @@
     };
 
     // extractTextValue will try to extract the text value of the given field
-    window.dkf._extractTextValue = function (item) {
+    window.dkf.extractTextValue = function (item) {
 
         // no selection string should be handled as empty values
         if (item.value == 'WONoSelectionString') {
@@ -311,6 +311,8 @@
     // generateId will process the given form data to generate an id
     window.dkf.generateId = function (sampleData) {
 
+        // TODO: move code from below into this function
+
         return {
             id: 'some id',
             _errors: []
@@ -348,8 +350,6 @@
             return;
         }
 
-        console.log('id', idField, dta.sampleId);
-
         // set the value of the input field
         idField.val(dta.sampleId);
 
@@ -357,20 +357,6 @@
 
     // define our setup function
     window.dkf.__sampleId = function () {
-
-        // check if a field value is empty
-        var isEmpty = function (value) {
-            if (!value) {
-                return true;
-            }
-            if (value === '< Please choose >') {
-                return true;
-            }
-            if (value === '') {
-                return true;
-            }
-            return false;
-        }
 
         // information to be displayed to users
         var alertInfo = 'Attention: You changed a variable that is relevant for the NCCR Sample ID, but an NCCR Sample ID was already generated. You now have two options:\n\n 1) If the NCCR Sample ID is already used (i.e., printed and pasted on the sample), DO NOT generate the NCCR Sample ID again!!!\n\n 2) If the NCCR Sample ID is NOT already used (i.e., printed and pasted on the sample), you should generate the NCCR Sample ID again now by clicking again on the "Generate ID"-Button. \n\nIf in doubt about which applies (1 or 2), also DO NOT generate the NCCR Sample ID again.';
@@ -690,64 +676,8 @@
 
         };
 
-        var selectField = function (start, parent) {
-            // use jquery to select all fields that have a name starting with our expression
-            var items = []
 
-            // scope the search to a parent dom element, if specified
-            if (parent) {
-                items = $('[name^=' + start + ']', parent);
-            } else {
-                items = $('[name^=' + start + ']');
-            }
-
-            // create a regular expression matcher that allows 
-            var nameMatcher = new RegExp('^' + start + '(_[0-9]+)?$');
-            var selectedItems = items.filter(function (index) {
-                return nameMatcher.test(this.name);
-            });
-
-            return selectedItems;
-        }
-
-        var selectedText = function (selectElement) {
-            var selectedOption = $('option:selected', selectElement);
-            if (selectedOption.length == 0) {
-                return '';
-            }
-            return selectedOption.text()
-        }
-
-        // add a new button to every nccr id field
-        var addButtons = function () {
-
-            // find all fields for nccrd id sample ids
-            var idFields = document.querySelectorAll('[name^=ff_nsmpl_nccrid]');
-
-            // go through all fields and append a button, if there is not already a button
-            idFields.forEach(function (item) {
-
-                // nothing to do, if there is already a button
-                if (item.nextSibling && item.nextSibling.tagName == 'BUTTON') {
-                    return;
-                }
-
-                // create a new button and append it after the text input field
-                var btn = document.createElement('button');
-                btn.innerHTML = 'Generate ID';
-                btn.style.marginLeft = '8px';
-
-                // btn.onclick = generateId;
-                btn.onclick = function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    console.log($('form').first().serializeArray());
-                }
-
-                item.parentNode.appendChild(btn);
-            })
-        };
-
+        // TODO: Refactor
         // handle changes in the value of the select field to specify
         // the number of samples, since this will result
         // in new nccr id fields that need to be enhanced
