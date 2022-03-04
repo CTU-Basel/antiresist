@@ -2,7 +2,7 @@ Lieber Ramon
 
 Ich konnte die Episode IDs nun umsetzen und habe entsprechend 2 neue JS-Skripts auf github hinzugefügt. Die Funktionalität sollte so bereits fast fertig sein, allerdings habe ich es nicht hinbekommen, dass das neue Fenster (siehe Infos unten für genaueres) nicht nur dann öffnet, wenn eine ID drin steht, sondern auch, wenn das Feld noch leer ist (i.e., weil eine Angabe vergessen wurde). Wenn du das noch hinbekommen würdest, wäre das toll! Falls das jetzt keinen Sinn macht: Ich habe alles im Code entsprechend kommentiert. Falls es nicht verständlich ist, bitte gerne nachfragen.
 
-Ausserdem würde ich bei allen drei Skripts das Feld der ID immer nur "readonly" haben, ausser natürlich gerade beim Reinschreiben der ID. Das habe ich leider auch noch nicht hinbekommen.
+Ausserdem würde ich bei allen drei Skripts das Feld der ID immer nur "readonly" haben, ausser natürlich gerade beim Reinschreiben der ID. Das habe ich leider auch noch nicht hinbekommen. -> mit $().attr("readonly","readonly");
 
 Die Dinge, die noch nicht funktionieren, habe ich mit "TODO" oder "@Ramon" kommentiert.
 
