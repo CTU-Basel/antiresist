@@ -17,73 +17,169 @@
     // initialize is used to initialize the custom form functionality
     var _initialize = function () {
 
-        // make all sample id fields readonly
-        var episodeIds = $("input[name^='ff_nsmpl_nccrid']");
-        episodeId.attr('readonly', 'readonly');
+        // get all episode and episode plus id fields
+        var episodeIds = $("input[name^='ff_episode_uniqid_']");
+        var episodePlusIds = $('[name^=ff_episode_uniqidsit_]');
 
-        var episodePlusIds = $('[name^=ff_episode_uniqidsit]');
-        episodePlusIds.attr('readonly', 'readonly');
+        // define a list of required fields
+        var episodeIdVars = {
+            episodeId: { baseName: 'ff_episode_uniqid', scope: 'form', value: '', isID: true },
+            mainGroup: { baseName: 'ff_episode_maingrp', scope: 'form', value: '' },
+            episodeNo: { baseName: 'ff_episode_nmb', scope: 'form', value: '' },
+            episodeClass: { baseName: 'ff_episode_class', scope: 'form', value: '' },
+        }
+
+        // define a list of required fields
+        var episodePlusIdVars = {
+            episodeId: { baseName: 'ff_episode_uniqid', scope: 'form', value: '', isID: true },
+            episodePlusId: { baseName: 'ff_episode_uniqidsit', scope: 'repetition', value: '', isID: true },
+            mainGroup: { baseName: 'ff_episode_maingrp', scope: 'form', value: '' },
+            episodeNo: { baseName: 'ff_episode_nmb', scope: 'form', value: '' },
+            episodeClass: { baseName: 'ff_episode_class', scope: 'form', value: '' },
+            infColsite: { baseName: 'ff_inf_d_colsite', scope: 'repetition', value: '' },
+            infType: { baseName: 'ff_inf_type', scope: 'repetition', value: '' },
+            bji_loc: { baseName: 'ff_inf_bji_loc', scope: 'repetition', value: '' },
+            bji_ssti_side: { baseName: 'ff_inf_ssti_bji_side', scope: 'repetition', value: '' },
+            ssti_loc: { baseName: 'ff_inf_ssti_loc', scope: 'repetition', value: '' },
+        }
+
+        // make some fields readonly
+        _makeReadonly(episodeIds, episodePlusIds)
 
         // add custom buttons to generate ids
-        _addButtons(episodeIds, _handleGenerateEpisodeId);
-        _addPopupLinks(episodeIds);
+        _addButtons(episodeIds, _handleGenerateEpisodeId, episodeIdVars);
+        _addPopupLinks(episodeIds, 'Episode ID');
+
+        if (episodePlusIds.length > 0) {
+            // resize the episodePlusIds fields
+            episodePlusIds.css('max-width', '300px');
+        }
 
         // add custom functionality to generate episode plus ids
-        _addButtons(episodePlusIds, _handleGenerateEpisodePlusId);
-        _addPopupLinks(episodePlusIds);
+        _addButtons(episodePlusIds, _handleGenerateEpisodePlusId, episodePlusIdVars);
+        _addPopupLinks(episodePlusIds, 'Episode ID PLUS site');
 
         // watch the form for changes
-        _watchForChanges();
+        _watchForChanges(episodePlusIdVars);
 
     };
 
-    // TODO: implement function to watch for changes
-    // watchForChanges will watch all relevant fields in the form for changes
-    // and alert the user of possible problems with the generated id
-    var _watchForChanges = function () {
+    var _makeReadonly = function (episodeIDs, episodePlusIds) {
+        // define styling for readonly fields
+        var readonlyStyle = {
+            opacity: 0.7,
+            outline: 'none',
+        }
+        episodeIDs.attr('readonly', 'readonly').css(readonlyStyle);
+        episodePlusIds.attr('readonly', 'readonly').css(readonlyStyle);
+        $('[name^=ff_episode_nmb]').attr('readonly', 'readonly').css(readonlyStyle);
 
-        // TODO: implement this function
-        console.warn('watch for changes not yet implemented');
-
-        // define an alert information to display to the user if a value was
-        // changed that is relevant when generating ids
-        var alertInfo = 'Attention: You changed a variable that is relevant for ' +
-            'the NCCR Sample ID, but an NCCR Sample ID was already generated. ' +
-            'You now have two options:\n\n' +
-            '1) If the NCCR Sample ID is already used (i.e., printed and pasted on ' +
-            'the sample), DO NOT generate the NCCR Sample ID again!!!\n\n' +
-            '2) If the NCCR Sample ID is NOT already used (i.e., printed and pasted on ' +
-            'the sample), you should generate the NCCR Sample ID again now by ' +
-            'clicking again on the "Generate ID" - Button.\n\n' +
-            'If in doubt about which applies(1 or 2), also DO NOT generate the NCCR Sample ID again.';
-
-        // the main data is in the form pageform
-        var form = $('form[name=pageForm]');
-
-        // watch all form inputs for changes. for text elements, this will be
-        // triggered when the user leaves the field (blur event). to always
-        // trigger the event after each keystroke, use the keyup event. 
-        form.on('change paste', 'input, select, radio, textarea', function (event) {
-
-            // TODO: manage changes
-            // console.log('something was changed', $(event.target).attr('name'));
-            // var formData = form.serializeArray();
-            // formData.forEach(function (el) {
-            //     for (var i = 0; i < watchFields.length; i++) {
-            //         if (el.name.indexOf(watchFields[i]) > -1) {
-            //             console.log(el.name, el.value);
-            //             return
-            //         }
-            //     }
-            // });
-
+        // select fields need to be handled differently, we cannot disable the
+        // field, since this will exclude it from jquery serializeArray and might
+        // lead to problems with the built-in secutrial functionality
+        $('[name^=ff_episode_maingrp]').css(readonlyStyle).click(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            alert('Do not change this field');
         });
+
+    }
+
+    // _watchForChanges will watch all relevant fields in the form for changes
+    // and alert the user of possible problems with the generated id
+    var _watchForChanges = function (vars) {
+
+        var episodeAlertMessage = 'Attention: You changed a variable that is relevant for the Episode ID, but an Episode ID was already generated.\n\nPlease generate the Episode ID again by clicking again on the "Generate ID"-Button. If you have already copied the ID into other forms, please update the ID there as well.';
+
+        var episodePlusAlertMessage = 'Attention: You changed a variable that is relevant for the Episode ID and Episode ID PLUS site, but an Episode ID and/or an Episode ID PLUS site was already generated.\n\nPlease generate the Episode ID and the Episode ID PLUS site again by clicking again on the "Generate ID"-Button. If you have already copied the ID into other forms, please update the ID there as well.';
+
+        // select all elements with a name attribute in the main form
+        var fields = $('[name]', 'form#dataForm');
+
+        let index = Object.values(vars).reduce(function (list, item) {
+            list[item.baseName] = { scope: item.scope, isID: item.isID };
+            return list;
+        }, {});
+
+        // remove all numbers and underscore from the end of the name
+        var trimRegExp = new RegExp("[0-9_]+$");
+
+        var scope = null;
+        var currentIdField = null;
+
+        // TODO: find a different solution to include all our required fields
+        // does not work for all fields, since jquery serializeArray does not
+        // include disabled fields
+        for (var i = fields.length - 1; i >= 0; i--) {
+
+            var field = $(fields[i]);
+            var fieldName = field.attr('name');
+            var baseName = fieldName.replace(trimRegExp, '');
+
+            var currentVar = index[baseName];
+
+            // nothing to do if the element is not in our base array
+            if (!currentVar) continue;
+
+            console.log(fieldName, baseName);
+
+            if (currentVar.isID == true && currentVar.scope == 'repetition') {
+                scope = 'episode-plus';
+                currentIdField = field;
+                continue;
+            }
+
+            if (currentVar.isID == true && currentVar.scope == 'form') {
+                scope = 'episode';
+                currentIdField = field;
+                continue;
+            }
+
+            var tmp = function (scope, pId) {
+                field.bind('change', function (event) {
+                    var value = pId.val();
+
+                    // nothing to do, if the associated id field is empty
+                    if (value == '') return;
+
+                    switch (scope) {
+                        case 'episode':
+                            alert(episodeAlertMessage);
+                            break;
+                        case 'episode-plus':
+                            alert(episodePlusAlertMessage);
+                            break;
+                    }
+                });
+            }
+            tmp(scope, currentIdField);
+
+        }
+
+        // // watch all form inputs for changes. for text elements, this will be
+        // // triggered when the user leaves the field (blur event). to always
+        // // trigger the event after each keystroke, use the keyup event. 
+        // form.on('change paste', 'input, select, radio, textarea', function (event) {
+
+        //     // TODO: manage changes
+        //     // console.log('something was changed', $(event.target).attr('name'));
+        //     // var formData = form.serializeArray();
+        //     // formData.forEach(function (el) {
+        //     //     for (var i = 0; i < watchFields.length; i++) {
+        //     //         if (el.name.indexOf(watchFields[i]) > -1) {
+        //     //             console.log(el.name, el.value);
+        //     //             return
+        //     //         }
+        //     //     }
+        //     // });
+
+        // });
 
     };
 
     // addPopupLink will add a link to all given fields to export the current
     // patient id and respective id to a separate popup window
-    var _addPopupLinks = function (fields) {
+    var _addPopupLinks = function (fields, label) {
 
         // return if there are no fields
         if (!fields || fields.length == 0) return;
@@ -111,7 +207,7 @@
                 event.preventDefault();
                 event.stopPropagation();
                 // send the id of the current sample to a separate window
-                _handlePopupClick(field);
+                _handlePopupClick(field, label);
             };
 
             // append the popup link to the parent element of the field
@@ -121,7 +217,7 @@
     }
 
     // handlePopupClick will display the current id in a separate window
-    var _handlePopupClick = function (idField) {
+    var _handlePopupClick = function (idField, label) {
         var patID = $('#status_add-id').text().trim();
         if (!patID || patID == '') patID = '[NOT FOUND]';
 
@@ -131,11 +227,11 @@
 
         // open the information about the patient and sample id in a separate window
         var popup = window.open("", "antiresist-ids", "width=600,height=200,popup=yes");
-        popup.document.write("<p><b>Patient ID: </b>" + patID + "</p><p><b>Episode ID: </b>" + id + "</p>");
+        popup.document.write("<p><b>Patient ID:</b>&nbsp;" + patID + "&nbsp;&nbsp;<b>" + label + ": </b>&nbsp;" + id + "</p>");
     }
 
     // addButtons will add "generate id" buttons to all given fields
-    var _addButtons = function (fields, callbackFunction) {
+    var _addButtons = function (fields, callbackFunction, variables) {
 
         // return if there are no fields
         if (!fields || fields.length == 0) return;
@@ -162,7 +258,7 @@
                 event.preventDefault();
                 event.stopPropagation();
                 // initiate the given callback function
-                callbackFunction(field);
+                callbackFunction(field, variables);
             };
 
             // append the button to the parent element of the field
@@ -172,7 +268,7 @@
     };
 
     // handleGenerateEpisodeId will generate an episode id
-    var _handleGenerateEpisodeId = function (idField) {
+    var _handleGenerateEpisodeId = function (idField, vars) {
 
         // fetch the value of the current field
         let sampleId = idField.val();
@@ -187,14 +283,6 @@
             if (!answer || answer.toLowerCase() != 'overwrite') {
                 return;
             }
-        }
-
-        // define a list of required fields
-        var vars = {
-            episodeId: { baseName: 'ff_nsmpl_nccrid', scope: 'form', value: '' },
-            mainGroup: { baseName: 'ff_episode_maingrp', scope: 'form', value: '' },
-            episodeNo: { baseName: 'ff_episode_nmb', scope: 'form', value: '' },
-            episodeClass: { baseName: 'ff_episode_class', scope: 'form', value: '' },
         }
 
         // get a list of all relevant fields (by baseName)
@@ -312,7 +400,7 @@
         // generate our episode id
         dta.episodeId = '';
         dta.episodeId += encoding.mainGroup[dta.mainGroup];
-        dta.episodeId += episodeNo;
+        dta.episodeId += dta.episodeNo;
         dta.episodeId += encoding.episodeClass[dta.episodeClass];
 
         result.vars = dta;
@@ -321,7 +409,7 @@
 
     // handleGenerateEpisodePlusId will generate an episode plus id for deep
     // seated infections
-    var _handleGenerateEpisodePlusId = function (idField) {
+    var _handleGenerateEpisodePlusId = function (idField, vars) {
 
         // fetch the value of the current field
         let sampleId = idField.val();
@@ -334,22 +422,9 @@
                 '\n\nAttention: This might have serious consequences.'
             );
             if (!answer || answer.toLowerCase() != 'overwrite') {
+                alert('Id was NOT regenerated');
                 return;
             }
-        }
-
-        // define a list of required fields
-        var vars = {
-            episodeId: { baseName: 'ff_nsmpl_nccrid', scope: 'form', value: '' },
-            episodePlusId: { baseName: 'ff_episode_uniqidsit', scope: 'repetition', value: '' },
-            mainGroup: { baseName: 'ff_episode_maingrp', scope: 'form', value: '' },
-            episodeNo: { baseName: 'ff_episode_nmb', scope: 'form', value: '' },
-            episodeClass: { baseName: 'ff_episode_class', scope: 'form', value: '' },
-            infType: { baseName: 'ff_inf_type', scope: 'repetition', value: '' },
-            bji_loc: { baseName: 'ff_inf_bji_loc', scope: 'repetition', value: '' },
-            bji_ssti_side: { baseName: 'ff_inf_ssti_bji_side', scope: 'repetition', value: '' },
-            ssti_loc: { baseName: 'ff_inf_ssti_loc', scope: 'repetition', value: '' },
-            infColsite: { baseName: 'ff_inf_d_colsite', scope: 'repetition', value: '' },
         }
 
         // get a list of all relevant fields (by baseName)
@@ -376,7 +451,7 @@
 
         // set the sample id into the given field. note: this also works if the 
         // field is set to readonly
-        idField.val(result.vars.episodeId);
+        idField.val(result.vars.episodePlusId);
 
     };
 
@@ -429,7 +504,7 @@
 
             // check if we are at the end of the repetition group to stop any 
             // further data extraction
-            if (field.baseName == "ff_inf_type") {
+            if (field.baseName == "ff_inf_d_colsite" || field.baseName == 'ff_inf_type') {
                 isRepetitionGroup = false;
             }
 
@@ -466,10 +541,10 @@
                 (_isEmpty(dta.episodeClass) ? '!! Missing: ' : 'OK: ') + 'Episode class\n' +
                 (dta.episodeClass == 'infection' ? (_isEmpty(dta.infType) ? '!! Missing: ' : 'OK: ') + 'Type of infection\n' : '') +
                 (dta.episodeClass != 'infection' ? (_isEmpty(dta.infColsite) ? '!! Missing: ' : 'OK: ') + 'Anatomic site of sampling\n' : '') +
-                ((dta.episodeClass == 'infection' && dta.infType == 'bone and joint infection') || (dta.episodeClass != 'infection' && dta.infColsite == 'bone or joint') ? (_isEmpty(dta.bji_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
-                ((dta.episodeClass == 'infection' && dta.infType == 'bone and joint infection') || (dta.episodeClass != 'infection' && dta.infColsite == 'bone or joint') ? (_isEmpty(dta.bji_ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : '') +
-                ((dta.episodeClass == 'infection' && dta.infType == 'skin and soft tissue infection without bone or joint involvement') || (dta.episodeClass != 'infection' && dta.infColsite == 'skin and soft tissue') ? (_isEmpty(dta.ssti_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomic location\n' : '') +
-                ((dta.episodeClass == 'infection' && dta.infType == 'skin and soft tissue infection without bone or joint involvement') || (dta.episodeClass != 'infection' && dta.infColsite == 'skin and soft tissue') ? (_isEmpty(dta.bji_ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomic side\n' : '');
+                ((dta.episodeClass == 'infection' && dta.infType == 'bone and joint infection') || (dta.episodeClass != 'infection' && dta.infColsite == 'bone or joint') ? (_isEmpty(dta.bji_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomical location\n' : '') +
+                ((dta.episodeClass == 'infection' && dta.infType == 'bone and joint infection') || (dta.episodeClass != 'infection' && dta.infColsite == 'bone or joint') ? (_isEmpty(dta.bji_ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomical side\n' : '') +
+                ((dta.episodeClass == 'infection' && dta.infType == 'skin and soft tissue infection without bone or joint involvement') || (dta.episodeClass != 'infection' && dta.infColsite == 'skin and soft tissue') ? (_isEmpty(dta.ssti_loc) ? '!! Missing: ' : 'OK: ') + 'Anatomical location\n' : '') +
+                ((dta.episodeClass == 'infection' && dta.infType == 'skin and soft tissue infection without bone or joint involvement') || (dta.episodeClass != 'infection' && dta.infColsite == 'skin and soft tissue') ? (_isEmpty(dta.bji_ssti_side) ? '!! Missing: ' : 'OK: ') + 'Anatomical side\n' : '');
             result._errors.push(info);
             return result;
 
@@ -533,32 +608,32 @@
         dta.episodePlusId += function () {
 
             if (
-                (episodeClass == 'infection' && infType == 'bone and joint infection')
-                || (episodeClass != 'infection' && infColsite == 'bone or joint')
+                (dta.episodeClass == 'infection' && dta.infType == 'bone and joint infection')
+                || (dta.episodeClass != 'infection' && dta.infColsite == 'bone or joint')
             ) {
                 return bji_locMod + '_' + bji_ssti_sideMod;
             }
 
             if (
-                (episodeClass == 'infection'
-                    && infType == 'skin and soft tissue infection without bone or joint involvement')
-                || (episodeClass != 'infection' && infColsite == 'skin and soft tissue')
+                (dta.episodeClass == 'infection'
+                    && dta.infType == 'skin and soft tissue infection without bone or joint involvement')
+                || (dta.episodeClass != 'infection' && dta.infColsite == 'skin and soft tissue')
             ) {
                 return ssti_locMod + '_' + bji_ssti_sideMod;
             }
 
             if (
-                episodeClass == 'infection'
-                && infType != 'bone and joint infection'
-                && infType != 'skin and soft tissue infection without bone or joint involvement'
+                dta.episodeClass == 'infection'
+                && dta.infType != 'bone and joint infection'
+                && dta.infType != 'skin and soft tissue infection without bone or joint involvement'
             ) {
                 return infTypeFirst;
             }
 
             if (
-                episodeClass != 'infection'
-                && infColsite != 'bone or joint'
-                && infColsite != 'skin and soft tissue'
+                dta.episodeClass != 'infection'
+                && dta.infColsite != 'bone or joint'
+                && dta.infColsite != 'skin and soft tissue'
             ) {
                 return infColsiteFirst;
             }
@@ -588,7 +663,7 @@
         };
 
         // serialize the content of the secutrial from
-        var form = $('form[name=pageForm]');
+        var form = $('form#dataForm');
         var formData = form.serializeArray();
 
         // remove all numbers and underscore from the end of the name
@@ -697,7 +772,7 @@
     // note: jquery must be loaded beforehand, (loaded by secutrial)
     $(window).load(function () {
         _initialize();
+        console.log('initialized');
     });
-
 
 })();
