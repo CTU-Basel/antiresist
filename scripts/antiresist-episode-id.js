@@ -94,8 +94,11 @@
         var episodePlusAlertMessage = 'Attention: You changed a variable that is relevant for the Episode ID and Episode ID PLUS site, but an Episode ID and/or an Episode ID PLUS site was already generated.\n\nPlease generate the Episode ID and the Episode ID PLUS site again by clicking again on the "Generate ID"-Button. If you have already copied the ID into other forms, please update the ID there as well.';
 
         // select all elements with a name attribute in the main form
+        // $(form).serializeArray cannot be used, since this will exclude all
+        // disabled items (which there are quite a few of)
         var fields = $('[name]', 'form#dataForm');
 
+        // create an easy to access index for our variables
         let index = Object.values(vars).reduce(function (list, item) {
             list[item.baseName] = { scope: item.scope, isID: item.isID };
             return list;
@@ -104,12 +107,11 @@
         // remove all numbers and underscore from the end of the name
         var trimRegExp = new RegExp("[0-9_]+$");
 
+        // define the current socpe and the currently relevant id field
         var scope = null;
         var currentIdField = null;
 
-        // TODO: find a different solution to include all our required fields
-        // does not work for all fields, since jquery serializeArray does not
-        // include disabled fields
+        // iterate through all fields
         for (var i = fields.length - 1; i >= 0; i--) {
 
             var field = $(fields[i]);
@@ -120,8 +122,6 @@
 
             // nothing to do if the element is not in our base array
             if (!currentVar) continue;
-
-            console.log(fieldName, baseName);
 
             if (currentVar.isID == true && currentVar.scope == 'repetition') {
                 scope = 'episode-plus';
@@ -135,6 +135,8 @@
                 continue;
             }
 
+            // use a new closure to capture the current value of the id field
+            // and scope
             var tmp = function (scope, pId) {
                 field.bind('change', function (event) {
                     var value = pId.val();
@@ -155,25 +157,6 @@
             tmp(scope, currentIdField);
 
         }
-
-        // // watch all form inputs for changes. for text elements, this will be
-        // // triggered when the user leaves the field (blur event). to always
-        // // trigger the event after each keystroke, use the keyup event. 
-        // form.on('change paste', 'input, select, radio, textarea', function (event) {
-
-        //     // TODO: manage changes
-        //     // console.log('something was changed', $(event.target).attr('name'));
-        //     // var formData = form.serializeArray();
-        //     // formData.forEach(function (el) {
-        //     //     for (var i = 0; i < watchFields.length; i++) {
-        //     //         if (el.name.indexOf(watchFields[i]) > -1) {
-        //     //             console.log(el.name, el.value);
-        //     //             return
-        //     //         }
-        //     //     }
-        //     // });
-
-        // });
 
     };
 
@@ -480,6 +463,7 @@
 
             // if we found our id group, then we are in
             if (field.name == idFieldName) {
+                console.log('is in rep group', field.name);
                 isRepetitionGroup = true;
             }
 
@@ -496,16 +480,16 @@
                 continue;
             }
 
+            // check if we are at the end of the repetition group to stop any 
+            // further data extraction
+            if (field.baseName == "ff_inf_d_colsite" || field.baseName == "ff_inf_type") {
+                isRepetitionGroup = false;
+            }
+
             // only extract data if it is still in the same scope as the 
             // currently required id
             if (field.value != '') {
                 currentVar.value = field.value;
-            }
-
-            // check if we are at the end of the repetition group to stop any 
-            // further data extraction
-            if (field.baseName == "ff_inf_d_colsite" || field.baseName == 'ff_inf_type') {
-                isRepetitionGroup = false;
             }
 
         }
