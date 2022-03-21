@@ -446,6 +446,16 @@
                 return
             }
 
+            // all episode ids must be unique
+            var epiIdsDeep = $('[name^=ff_episode_uniqidsit]').map(function () {
+                return $(this).val();
+            }).get();
+
+            if (epiIdsDeep.indexOf(result.episodePlusId) > -1) {
+                alert('The generated Episode ID PLUS site is already used. Please check the variables for infection type / anatomic site and (if bone and joint or skin and soft tissue) anatomic location and anatomic side.');
+                return;
+            }
+
             // inform the user, that it might be dangerous to overwrite this id
             // and require them to explictely demand and overwrite.
             if (idField.value != '') {
