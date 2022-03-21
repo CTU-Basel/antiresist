@@ -419,8 +419,6 @@
 
         return function () {
 
-
-
             // ensure that we have the most current form data
             _updateFormData(fields);
 
@@ -526,7 +524,7 @@
             episodeClass: {
                 'infection': '_infection_',
                 'colonisation': '_colonisation_',
-                'no growth, no infection (control)': '_nogrowth.noinfection_',
+                'no growth, no infection': '_nogrowth.noinfection_',
             }
         }
 
