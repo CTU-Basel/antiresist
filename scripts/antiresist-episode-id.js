@@ -17,20 +17,8 @@
     // initialize is used to initialize the custom form functionality
     var _initialize = function () {
 
-        // get all episode and episode plus id fields
-        // var episodeIds = $("input[name^=ff_episode_uniqid_]");
-        // var episodePlusIds = $("[name^=ff_episode_uniqidsit_]");
-
-        // define a list of required fields for regular episoded ids
-        // var episodeIdVars = [
-        //     { id: "mainGroup", baseName: 'ff_episode_maingrp', scope: 'form', },
-        //     { id: "episodeNo", baseName: 'ff_episode_nmb', scope: 'form', },
-        //     { id: "episodeClass", baseName: 'ff_episode_class', scope: 'form', },
-        //     { id: "episodeId", baseName: 'ff_episode_uniqid', scope: 'form', value: '', isID: true },
-        // ];
-
         // define a list of required fields for episode plus ids
-        var episodePlusIdVars = [
+        var idVars = [
             {
                 id: "mainGroup", baseName: 'ff_episode_maingrp',
                 scope: 'form', readonly: true
@@ -73,7 +61,7 @@
             },
         ]
 
-        var result = _serializeForm('form#dataForm', episodePlusIdVars);
+        var result = _serializeForm('form#dataForm', idVars);
         if (_hasErrors(result)) {
             alert('Could not initiliaze custom id functionality:\n' + result._errors.join('\n'));
             return;
@@ -86,26 +74,19 @@
         var episodeFields = [];
         var closestEpisodePlusId = null;
 
-        var changeWarning = 'Attention: You changed a variable that is relevant for ' +
-            'the NCCR Sample ID, but an NCCR Sample ID was already generated. ' +
-            'You now have two options:' +
-            '<ol style="margin-top:8px;margin-bottom:8px;padding:0px 11px;list-style-position:outside">' +
-            '<li>If the NCCR Sample ID is already used (i.e., printed and pasted on ' +
-            'the sample), DO NOT generate the NCCR Sample ID again!!!</li>' +
-            '<li style="margin-top: 8px">If the NCCR Sample ID is NOT already used (i.e., printed and pasted on ' +
-            'the sample), you should generate the NCCR Sample ID again now by ' +
-            'clicking again on the "Generate ID" - Button.</li>' +
-            '</ol>' +
-            'If in doubt about which applies (1 or 2), also DO NOT generate the NCCR Sample ID again.'
+        // field is used to capture the current field in the loop
+        var field = null
 
-        var clearWarning = '<span style="display:block;text-decoration:underline;cursor:pointer;font-style:italic;margin-top:8px" onclick="$(event.target).parent().remove()">Clear warning</span>'
-
+        // loop through all variables from the end to construct the necessary
+        // information to generate ids
         for (var i = fields.length - 1; i >= 0; i--) {
 
-            var field = fields[i];
+            field = fields[i];
 
             // automatically update the value of the field in memory, if
-            // the user is changing the value in the form
+            // the user is changing the value in the form. note: we need a closure
+            // here to ensure that the value is not updated as part of the for
+            // loop
             (function (_field, _closestEpisodePlusId) {
                 var current = _field;
                 _field.input.on('change', function (event) {
@@ -114,12 +95,7 @@
 
                     // warn users for episode plus ids
                     if (current.scope == 'repetition' && _closestEpisodePlusId.value != '') {
-
-                        // remove any existing warning
-                        $('.dkf-warning', _field.input.parent()).remove();
-
-                        // append a new warning
-                        _field.input.parent().append('<div class="dkf-warning" style="color:#ee0000;margin-top: 8px;font-weight:bold">' + changeWarning + clearWarning + '</div>')
+                        _showChangeWarning(_field.input);
                     }
 
                     // warn users for form ids
@@ -131,47 +107,53 @@
                             }
                         });
                         if (errors.length > 0) {
-
-                            // remove any existing warning
-                            $('.dkf-warning', _field.input.parent()).remove();
-
-                            // append a new warning
-                            _field.input.parent().append(
-                                '<div class="dkf-warning" style="color:#ee0000;margin-top: 8px;font-weight:bold">' + changeWarning +
-                                '<strong style="display:block;margin-top:12px">Affected IDs:</strong>' +
+                            var message = '<strong style="display:block;margin-top:12px">Affected IDs:</strong>' +
                                 '<ul style="margin-top: 8px;margin-bottom:16px;padding-left:14px">' +
                                 errors.map(function (text) {
                                     return "<li>" + text + "</li>"
-                                }).join('') + '</ul>' +
-                                clearWarning + '</div>')
+                                }).join('') + '</ul>'
+
+                            _showChangeWarning(_field.input, message);
                         }
                     }
                 });
+
             })(field, closestEpisodePlusId);
 
+            // ensure that certain fields are read only
             if (field.readonly) {
                 _makeReadonly(field);
             }
 
+            // episodeID field should only be present once
             if (field.id == 'episodeId') {
+                // add a button to genereate an episode id
+
                 _addButton(field, _handleGenerateEpisodeId(fields, i));
+                // add a link to move the id to a separate window for copy&paste
                 _addPopupLink(field, 'Episode ID');
+
+                // store the field to enable alerts when related fields are changed
                 episodeFields.unshift(field);
             }
 
+            // episodePlusID can be present multiple times
             if (field.id == 'episodePlusId') {
+                // ensure that the fields are not to wide
                 field.input.css('max-width', '300px');
+
+                // add a button to genereate an episode id
                 _addButton(field, _handleGenerateEpisodePlusId(fields, i));
+
+                // add a link to move the id to a separate window for copy&paste
                 _addPopupLink(field, 'Episode ID PLUS site');
+
+                // store the field to enable alerts when related fields are changed
                 episodeFields.unshift(field);
                 closestEpisodePlusId = field;
             }
 
         }
-
-
-        // watch the form for changes
-        // _watchForChanges(episodePlusIdVars);
 
     };
 
@@ -213,7 +195,33 @@
             alert('Please do not change this field');
         });
 
-    }
+    };
+
+    var _showChangeWarning = function (input, message) {
+
+        // define the default change warning
+        var changeWarning = 'Attention: You changed a variable that is relevant for ' +
+            'the NCCR Sample ID, but an NCCR Sample ID was already generated. ' +
+            'You now have two options:' +
+            '<ol style="margin-top:8px;margin-bottom:8px;padding:0px 11px;list-style-position:outside">' +
+            '<li>If the NCCR Sample ID is already used (i.e., printed and pasted on ' +
+            'the sample), DO NOT generate the NCCR Sample ID again!!!</li>' +
+            '<li style="margin-top: 8px">If the NCCR Sample ID is NOT already used (i.e., printed and pasted on ' +
+            'the sample), you should generate the NCCR Sample ID again now by ' +
+            'clicking again on the "Generate ID" - Button.</li>' +
+            '</ol>' +
+            'If in doubt about which applies (1 or 2), also DO NOT generate the NCCR Sample ID again.'
+
+        // add a link to remove the warning
+        var clearWarning = '<span style="display:block;text-decoration:underline;cursor:pointer;font-style:italic;margin-top:8px" onclick="$(event.target).parent().remove()">Clear warning</span>'
+
+        // remove any existing warning
+        $('.dkf-warning', input.parent()).remove();
+
+        // append a new warning
+        input.parent().append('<div class="dkf-warning" style="color:#ee0000;margin-top: 8px;font-weight:bold">' + changeWarning + message + clearWarning + '</div>')
+
+    };
 
     // addPopupLink will add a link to all given fields to export the current
     // patient id and respective id to a separate popup window
@@ -245,7 +253,7 @@
         // append the popup link to the parent element of the field
         input.parent().append(popupLink);
 
-    }
+    };
 
     // handlePopupClick will display the current id in a separate window
     var _handlePopupClick = function (field, label) {
@@ -591,81 +599,6 @@
         return result;
     };
 
-    // _watchForChanges will watch all relevant fields in the form for changes
-    // and alert the user of possible problems with the generated id
-    var _watchForChanges = function (vars) {
-
-        var episodeAlertMessage = 'Attention: You changed a variable that is relevant for the Episode ID, but an Episode ID was already generated.\n\nPlease generate the Episode ID again by clicking again on the "Generate ID"-Button. If you have already copied the ID into other forms, please update the ID there as well.';
-
-        var episodePlusAlertMessage = 'Attention: You changed a variable that is relevant for the Episode ID and Episode ID PLUS site, but an Episode ID and/or an Episode ID PLUS site was already generated.\n\nPlease generate the Episode ID and the Episode ID PLUS site again by clicking again on the "Generate ID"-Button. If you have already copied the ID into other forms, please update the ID there as well.';
-
-        // select all elements with a name attribute in the main form
-        // $(form).serializeArray cannot be used, since this will exclude all
-        // disabled items (which there are quite a few of)
-        var fields = $('[name]', 'form#dataForm');
-
-        // create an easy to access index for our variables
-        var index = Object.values(vars).reduce(function (list, item) {
-            list[item.baseName] = { scope: item.scope, isID: item.isID };
-            return list;
-        }, {});
-
-        // remove all numbers and underscore from the end of the name
-        var trimRegExp = new RegExp("[0-9_]+$");
-
-        // define the current socpe and the currently relevant id field
-        var scope = null;
-        var currentIdField = null;
-
-        // iterate through all fields
-        for (var i = fields.length - 1; i >= 0; i--) {
-
-            var field = $(fields[i]);
-            var fieldName = field.attr('name');
-            var baseName = fieldName.replace(trimRegExp, '');
-
-            var currentVar = index[baseName];
-
-            // nothing to do if the element is not in our base array
-            if (!currentVar) continue;
-
-            if (currentVar.isID == true && currentVar.scope == 'repetition') {
-                scope = 'episode-plus';
-                currentIdField = field;
-                continue;
-            }
-
-            if (currentVar.isID == true && currentVar.scope == 'form') {
-                scope = 'episode';
-                currentIdField = field;
-                continue;
-            }
-
-            // use a new closure to capture the current value of the id field
-            // and scope
-            var tmp = function (scope, pId) {
-                field.bind('change', function (event) {
-                    var value = pId.val();
-
-                    // nothing to do, if the associated id field is empty
-                    if (value == '') return;
-
-                    switch (scope) {
-                        case 'episode':
-                            alert(episodeAlertMessage);
-                            break;
-                        case 'episode-plus':
-                            alert(episodePlusAlertMessage);
-                            break;
-                    }
-                });
-            }
-            tmp(scope, currentIdField);
-
-        }
-
-    };
-
     // serializeForm will serialize the current form. most selections and 
     // radio groups are only stored as numbers, therefore we need to apply
     // some additional processing to get the effective values.
@@ -772,7 +705,7 @@
         dta.fields = fields;
         return dta;
 
-    }
+    };
 
     var _getFieldType = function (field) {
 
@@ -787,7 +720,7 @@
         }
 
         return fieldType;
-    }
+    };
 
     // extractTextValue will extract the text value from the given field
     // this is specifically necesaary for select and radio fields
@@ -836,7 +769,7 @@
         }
 
         if (tag == 'checkbox') {
-            // note: checkboxes are not yet implemented
+            // note: checkboxes are not yet supported
         }
 
         // no selection string should be handled as empty values
@@ -853,13 +786,13 @@
         for (var i = 0; i < fields.length; i++) {
             fields[i].value = _extractTextValue(fields[i].input, fields[i].fieldType);
         }
-    }
+    };
 
     // hasErrors will check if the given element has errors associated with it
     var _hasErrors = function (element) {
         if (!element._errors) return false;
         return element._errors.length > 0;
-    }
+    };
 
     // isEmpty will check if the given value is empty
     var _isEmpty = function (value) {
@@ -873,7 +806,7 @@
             return true;
         }
         return false;
-    }
+    };
 
     // initialize custom functionality as soon as the window is completely loaded
     // note: secutrial is using the window load event itself, so we must
