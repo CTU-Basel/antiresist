@@ -95,7 +95,12 @@
 
                     // warn users for episode plus ids
                     if (current.scope == 'repetition' && _closestEpisodePlusId.value != '') {
-                        _showChangeWarning(_field.input);
+
+                        var message = '<strong style="display:block;margin-top:12px">Affected ID:</strong>' +
+                            '<ul style="margin-top: 8px;margin-bottom:16px;padding-left:14px">' +
+                            '<li>' + _closestEpisodePlusId.id + ':&nbsp;' + _closestEpisodePlusId.value + '</li></ul>'
+
+                        _showChangeWarning(_field.input, message);
                     }
 
                     // warn users for form ids
