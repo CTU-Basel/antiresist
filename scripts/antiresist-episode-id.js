@@ -665,9 +665,6 @@
         // initialize array to hold the field data in sorted order
         var fields = [];
 
-        // initialize a map to hold the field values to manage radio buttons
-        var fieldValues = {};
-
         // go through each field
         $(htmlFields).each(function () {
 
@@ -687,12 +684,6 @@
 
             // nothing to do if the fiels has no name (special html elements)
             if (!info.name) {
-                return;
-            }
-
-            // do not parse the field, if it was already extracted with a value.
-            // this is mainly required for radio fields.
-            if (fieldValues.hasOwnProperty(info.name) && fieldValues[info.name] != '') {
                 return;
             }
 
@@ -723,10 +714,6 @@
             // get text values for the fields. special functionality is required
             // for select and radio fields
             info.value = _extractTextValue(field, info.fieldType);
-
-            // add the field information to the index, so we can easily check
-            // if it was already defined
-            fieldValues[info.name] = info.value;
 
             // store the reference to the field to access it later
             info.input = field;
