@@ -2,26 +2,6 @@
 // variable namespace
 (function () {
 
-    // hasErrors will check if the given element has errors associated with it
-    var hasErrors = function (element) {
-        if (!element._errors) return false;
-        return element._errors.length > 0;
-    }
-
-    // isEmpty will check if the given value is empty
-    var isEmpty = function (value) {
-        if (!value) {
-            return true;
-        }
-        if (value === '') {
-            return true;
-        }
-        if (value === '< Please choose >') {
-            return true;
-        }
-        return false;
-    }
-
     // initialize a namespace for all dkf customizations
     if (!window.dkf) {
         window.dkf = {}
@@ -34,358 +14,270 @@
         window.dkf._initalized = true
     }
 
-    // add custom nccrid functionality as soon as windows is completely loaded
-    // note: secutrial is using the window load event itself, so we must
-    // ensure, that this does not overwrite the respective event listener
-    // note: jquery must be loaded beforehand, (loaded by secutrial)
-    $(window).load(function () {
-        window.dkf.initialize();
-    });
-
     // initialize is used to initialize the custom form functionality
-    window.dkf.initialize = function () {
+    var _initialize = function () {
 
-        // make all sample id fields readonly
-        var idfields = $("input[name^='ff_nsmpl_nccrid']");
-        idfields.attr('readonly', 'readonly');
+        // define a list of required fields for episode plus ids
+        var idVars = [
+            { id: "samplingNo", baseName: 'ff_nsmpl_smplid', scope: 'repetition' },
+            { id: "tapa", baseName: 'ff_nsmpl_tapa', scope: 'repetition' },
+            { id: "mopo", baseName: 'ff_nsmpl_mopo', scope: 'repetition' },
+            { id: "tapaNg", baseName: 'ff_nsmpl_nt_tapa', scope: 'repetition' },
+            { id: "ng", baseName: 'ff_nsmpl_ng', scope: 'repetition' },
+            { id: "sampleNo", baseName: 'ff_nsmpl_store_nb', scope: 'sample' },
+            { id: "stType", baseName: 'ff_nsmpl_store', scope: 'sample' },
+            { id: "sampleId", baseName: 'ff_nsmpl_nccrid', scope: 'sample' },
+        ]
 
-        // add custom buttons to generate ids
-        window.dkf.addButtons();
-
-        // TODO: implement watch to inform users when they change something
-        // watch the form for changes
-        // window.dkf.watchForChanges();
-
-    };
-
-    // watchForChanges will watch all relevant fields in the form for changes
-    // and alert the user of possible problems with the generated id
-    window.dkf.watchForChanges = function () {
-
-        // define an alert information to display to the user if a value was
-        // changed that is relevant when generating ids
-        var alertInfo = 'Attention: You changed a variable that is relevant for ' +
-            'the NCCR Sample ID, but an NCCR Sample ID was already generated. ' +
-            'You now have two options:\n\n' +
-            '1) If the NCCR Sample ID is already used (i.e., printed and pasted on ' +
-            'the sample), DO NOT generate the NCCR Sample ID again!!!\n\n' +
-            '2) If the NCCR Sample ID is NOT already used (i.e., printed and pasted on ' +
-            'the sample), you should generate the NCCR Sample ID again now by ' +
-            'clicking again on the "Generate ID" - Button.\n\n' +
-            'If in doubt about which applies(1 or 2), also DO NOT generate the NCCR Sample ID again.';
-
-        // the main data is in the form pageform
-        var form = $('form[name=pageForm]');
-
-        // watch all form inputs for changes. for text elements, this will be
-        // triggered when the user leaves the field (blur event). to always
-        // trigger the event after each keystroke, use the keyup event. 
-        form.on('change paste', 'input, select, radio, textarea', function (event) {
-
-            // TODO: manage changes
-            // console.log('something was changed', $(event.target).attr('name'));
-            // var formData = form.serializeArray();
-            // formData.forEach(function (el) {
-            //     for (var i = 0; i < watchFields.length; i++) {
-            //         if (el.name.indexOf(watchFields[i]) > -1) {
-            //             console.log(el.name, el.value);
-            //             return
-            //         }
-            //     }
-            // });
-
-        });
-
-    };
-
-    // add a new button to every nccr id field
-    window.dkf.addButtons = function () {
-
-        // find all fields for nccrd id sample ids
-        var idFields = $('[name^=ff_nsmpl_nccrid]');
-
-        // go through all fields and append a button, if there is not already a button
-        idFields.each(function () {
-
-            var idField = $(this);
-
-            // nothing to do, if there is already a button
-            if (idField.next().length > 0 && idField.next().prop('tagName') == 'BUTTON') {
-                return;
-            }
-
-            // create a new button to generate an id
-            var idButton = document.createElement('button');
-            idButton.innerHTML = 'Generate ID';
-            idButton.style.marginLeft = '8px';
-
-            idButton.onclick = function (event) {
-                // prevent the browser from firing the default events, which could
-                // trigger a form submission
-                event.preventDefault();
-                event.stopPropagation();
-                // initiate id generation for this sample
-                window.dkf.handleGenerateIdClick(idField);
-            };
-
-        })
-    };
-
-    // handleGenerateIdClick will handle the click of a user on the button
-    // to generate an id next to the field "ff_nsmpl_nccrid"
-    window.dkf.handleGenerateIdClick = function (idField) {
-
-        // we use the field name to determine the group information
-        var fieldName = idField.attr('name');
-
-        // fetch the value of the current field
-        let sampleId = idField.val();
-        if (sampleId && sampleId != '') {
-            var answer = prompt('Attention: A sample ID is already specified, ' +
-                'please type OVERWRITE to overwrite the current sample ID');
-
-            if (!answer || answer.toLowerCase() != 'overwrite') {
-                alert("ID has NOT been changed");
-                return;
-            }
-        }
-
-        // define a list of required fields
-        var vars = {
-            samplingNo: { baseName: 'ff_nsmpl_smplid', scope: 'repetition', value: '' },
-            tapa: { baseName: 'ff_nsmpl_tapa', scope: 'repetition', value: '' },
-            mopo: { baseName: 'ff_nsmpl_mopo', scope: 'repetition', value: '' },
-            tapaNg: { baseName: 'ff_nsmpl_nt_tapa', scope: 'repetition', value: '' },
-            ng: { baseName: 'ff_nsmpl_ng', scope: 'repetition', value: '' },
-            sampleNo: { baseName: 'ff_nsmpl_store_nb', scope: 'sample', value: '' },
-            stType: { baseName: 'ff_nsmpl_store', scope: 'sample', value: '' },
-            sampleId: { baseName: 'ff_nsmpl_nccrid', scope: 'sample', value: '' },
-        }
-
-        // get a list of all relevant fields (by baseName)
-        var relevantFields = Object.keys(vars).map(function (item) {
-            return vars[item].baseName;
-        });
-
-        // gather the current form data, this will return fields and error
-        // information
-        var result = window.dkf.gatherFormData(relevantFields);
-        if (hasErrors(result)) {
-            result._errors.unshift("ERROR: Could not gather form data:")
-            alert(result._errors.join("\n- "));
+        var result = _serializeForm('form#dataForm', idVars);
+        if (_hasErrors(result)) {
+            alert('Could not initiliaze custom id functionality:\n' + result._errors.join('\n'));
             return;
         }
 
-        // generate a sample id from the form data
-        result = window.dkf.generateSampleId(fieldName, vars, result.fields);
-        if (hasErrors(result)) {
-            alert(result._errors.join("\n- "));
-            return
+        var fields = result.fields;
+
+        // initialize variables to hold references to episode ids, which are used
+        // to warn users if they change a value that affects an episode id
+        var samplingIdFields = [];
+        var currentIdField = null;
+
+        // field is used to capture the current field in the loop
+        var field = null
+
+        // loop through all variables from the end to construct the necessary
+        // information to generate ids
+        for (var i = fields.length - 1; i >= 0; i--) {
+
+            field = fields[i];
+
+            if (field.scope == 'sample') {
+
+            }
+
+            // // automatically update the value of the field in memory, if
+            // // the user is changing the value in the form. note: we need a closure
+            // // here to ensure that the value is not updated as part of the for
+            // // loop
+            (function (_field, _samplingIdFields, _currentIdField) {
+                var current = _field;
+
+                _field.input.on('change', function (event) {
+
+                    // NOTE: maybe add debouncing or use blur event for text fields
+                    current.value = _extractTextValue(current.input, current.fieldType);
+
+                    // warn users for episode plus ids
+                    if (current.scope == 'sample' && _currentIdField.value != '') {
+                        _showChangeWarning(_field.input);
+                        return;
+                    }
+
+                    // warn users for form ids
+                    if (current.scope == 'repetition') {
+                        var errors = [];
+                        _samplingIdFields.forEach(function (item) {
+                            if (item.value != '') {
+                                errors.push(item.id + ": " + item.value);
+                            }
+                        });
+                        if (errors.length > 0) {
+                            var message = '<strong style="display:block;margin-top:12px">Affected sample IDs:</strong>' +
+                                '<ul style="margin-top: 8px;margin-bottom:16px;padding-left:14px">' +
+                                errors.map(function (text) {
+                                    return "<li>" + text + "</li>"
+                                }).join('') + '</ul>'
+
+                            _showChangeWarning(_field.input, message);
+                        }
+                    }
+                });
+
+            })(field, samplingIdFields, currentIdField);
+
+            // episodeID field should only be present once
+            if (field.id == 'sampleId') {
+                // add a button to generate a sample id
+                _addButton(field, _handleSampleId(fields, i));
+                // store the field to enable alerts when related fields are changed
+                samplingIdFields.unshift(field);
+                currentIdField = field;
+            }
+
+            if (field.id == 'samplingNo') {
+                // clear all previous samplingIdFields if we arrive at a samplingNo
+                // which indicates that this is the beginning of a repetition group
+                samplingIdFields = [];
+            }
+
         }
-
-        // generate the id for the given id field
-        window.dkf.setSampleId(idField, result.vars);
-
 
     };
 
-    // gatherFormData will serialize the current form. most selections and 
-    // radio groups are only stored as numbers, therefore we need to apply
-    // some additional processing to get the effective values.
-    window.dkf.gatherFormData = function (relevantFields) {
+    var _showChangeWarning = function (input, message) {
 
-        // relevantFields contain the baseName of all fields that are
-        // actually relevant to us
+        // define the default change warning
+        var changeWarning = 'Attention: You changed a variable that is relevant for ' +
+            'the NCCR Sample ID, but an NCCR Sample ID was already generated. ' +
+            'You now have two options:' +
+            '<ol style="margin-top:8px;margin-bottom:8px;padding:0px 11px;list-style-position:outside">' +
+            '<li>If the NCCR Sample ID is already used (i.e., printed and pasted on ' +
+            'the sample), DO NOT generate the NCCR Sample ID again!!!</li>' +
+            '<li style="margin-top: 8px">If the NCCR Sample ID is NOT already used (i.e., printed and pasted on ' +
+            'the sample), you should generate the NCCR Sample ID again now by ' +
+            'clicking again on the "Generate ID" - Button.</li>' +
+            '</ol>' +
+            'If in doubt about which applies (1 or 2), also DO NOT generate the NCCR Sample ID again.'
 
-        // initialize return values
-        var dta = {
-            fields: null,
-            _errors: []
+        // add a link to remove the warning
+        var clearWarning = '<span style="display:block;text-decoration:underline;cursor:pointer;font-style:italic;margin-top:8px" onclick="$(event.target).parent().remove()">Clear warning</span>'
+
+        // remove any existing warning
+        $('.dkf-warning', input.parent()).remove();
+
+        // append a new warning
+        input.parent().append('<div class="dkf-warning" style="color:#ee0000;margin-top: 8px;font-weight:bold">' + changeWarning + message + clearWarning + '</div>')
+
+    };
+
+    // addButton will add "generate id" buttons to the given field
+    var _addButton = function (field, callbackFunction) {
+
+        var input = field.input;
+
+        // nothing to do, if there is already a respective button
+        if ($('button.dkf-generate-id', input.parent()).length > 0) {
+            return;
+        }
+
+        // create a new button to generate an id
+        var idButton = document.createElement('button');
+        idButton.innerHTML = 'Generate ID';
+        idButton.className = 'dkf-generate-id';
+        idButton.style.marginLeft = '8px';
+
+        idButton.onclick = function (event) {
+            // prevent the browser from firing the default events, which could
+            // trigger a form submission
+            event.preventDefault();
+            event.stopPropagation();
+            // initiate the given callback function
+            callbackFunction(input);
         };
 
-        // serialize the content of the secutrial from
-        var form = $('form[name=pageForm]');
-        var formData = form.serializeArray();
-
-        // remove all numbers and underscore from the end of the name
-        var trimRegExp = new RegExp("[0-9_]+$");
-
-        // transform all fields that are relevant to us into an associate
-        // array with {basename, name, value}
-        // for select and radio fields, we will read the text values of 
-        // the options instead of the numeric values
-        dta.fields = formData.reduce(function (fields, item) {
-
-            // extract the baseName of the field by trimming numbers and 
-            // underscore from the end of the name
-            // i.e. ff_nsmpl_nccrid14_58 > ff_nsmpl_nccrid
-            var baseName = item.name.replace(trimRegExp, '');
-
-            // nothing to do, if the field is not of interest to us
-            if (relevantFields.indexOf(baseName) == -1) {
-                return fields;
-            }
-
-            // add the baseName information to the item
-            item.baseName = baseName;
-
-            // get text values for the fields. specifically required for select 
-            // and radio fields.
-            item.value = window.dkf.extractTextValue(item);
-
-            // add the item to the return values
-            fields.push(item);
-            return fields;
-        }, []);
-
-        return dta;
+        // append the button to the parent element of the field
+        input.parent().append(idButton);
 
     };
 
-    // extractTextValue will try to extract the text value of the given field
-    window.dkf.extractTextValue = function (item) {
+    // handleSampleId will generate an episode id
+    var _handleSampleId = function (fields, currentIdFieldIndex) {
 
-        // no selection string should be handled as empty values
-        if (item.value == 'WONoSelectionString') {
-            return '';
-        }
+        // get the id field from our field list
+        var idField = fields[currentIdFieldIndex];
 
-        var inputField = $('[name=' + item.name + ']');
-        var tag = inputField.prop('tagName').toLowerCase();
-        var inputType = inputField.prop('type');
+        return function () {
 
-        if (tag != 'select' && tag != 'radio') {
-            tag = inputType;
-        }
+            // ensure that we have the latest form data
+            _updateFormData(fields);
 
-        // handle select fields
-        // note: we use if statements due to variable scope issues in switch
-        // clauses
-        if (tag == 'select') {
-            var selectedOption = $('option[value=' + item.value + ']', inputField);
-            item.value = selectedOption.text();
-        }
+            // extract the variables required to generate the sample id
+            var vars = {};
 
-        // handle radio fields
-        if (tag == 'radio') {
+            // go through all variables from the end and find the variables that
+            // belong to this repetitiongroup or sample group
+            // note: special care is required for radio buttons, which are 
+            // comprised of multiple input fields.
+            var nameIndex = {};
 
-            // false is used for not selected radio options. note: radio fields
-            // have multiple values for each radio option
-            if (item.value === 'false') {
-                return '';
+            // traverse the fields from the current id field upward to find the 
+            // closest representation of the variable 
+            for (var i = currentIdFieldIndex; i >= 0; i--) {
+                var item = fields[i];
+
+                // nothing to do, if this item was already extracted, unless
+                // it is a radio item with the same name and no value set yet
+                if (vars.hasOwnProperty(item.id)
+                    && nameIndex.hasOwnProperty(item.name) == false) {
+                    continue;
+
+                } else if (vars.hasOwnProperty(item.id)
+                    && nameIndex.hasOwnProperty(item.name)
+                    && vars[item.id] != '') {
+                    continue;
+                }
+
+                // save the name of the item in the index, to later check if
+                // we have an input with the same name again (required for 
+                // radio buttons).
+                nameIndex[item.name] = item.id;
+
+                // extract the value content of the variable
+                vars[item.id] = item.value;
+
+                // no need to look any further if we have found the
+                // sampling number (last item required for id)
+                if (item.id == 'samplingNo') break;
             }
 
-            // radio buttons have a strange setup with labels that use underscore
-            // and value in the for attribute, to set the corresponding field
-            // to the respective value. note: this is not a proper html setup
-            // and might be changed by the vendor in the future
-            var labelForSelection = $('label[for=' + item.name + '_' + item.value + ']');
-            item.value = labelForSelection.text();
-        }
+            // generate a sample id from the form data
+            result = _generateSampleId(vars);
+            if (_hasErrors(result)) {
+                alert(result._errors.join("\n- "));
+                return
+            }
 
-        return item.value;
+
+            // user must confirm the sample id
+            var sampleId = _confirmSampleId(result.vars);
+            if (!sampleId || sampleId == '') return;
+
+            // inform the user, that it might be dangerous to overwrite this id
+            // and require them to explictely demand and overwrite.
+            if (idField.value != '') {
+                var answer = prompt(
+                    'This id is already specified, ' +
+                    'please type OVERWRITE to regenerate the current id. ' +
+                    '\n\nAttention: This might have serious consequences.'
+                );
+                if (!answer || answer == null || answer.toLowerCase() != 'overwrite') {
+                    return;
+                }
+            }
+
+            // set the sample id into the given field. note: this also works if the 
+            // field is set to readonly. attention: no change event is fired for this
+            idField.value = sampleId;
+            idField.input.val(sampleId);
+        };
+
     };
 
-    // generateSampleId will process the given form data to generate a sample id
-    window.dkf.generateSampleId = function (fieldName, vars, fields) {
+    // generateSampleId will process the given form data to generate an episode id
+    var _generateSampleId = function (dta) {
 
         // initialize the result information, this allows us to pass errors
-        // along to the callser
+        // along to the caller
         var result = {
-            vars: null,
             _errors: [],
         };
 
-        // create an index for the variables
-        var varsIndex = Object.keys(vars).reduce(function (list, key) {
-            list[vars[key].baseName] = vars[key];
-            return list;
-        }, {});
-
-        // find the position of the current sample id field, starting from 
-        // the end and get the corresponding other fields by traversing
-        // all fields upwards and choosing the closest respective field
-        var scope = {
-            repetition: false,
-            sample: false
-        };
-
-        // parse the content of the fields from the end of the form upwards
-        for (var i = fields.length - 1; i >= 0; i--) {
-
-            var field = fields[i];
-
-            // start extraction, if the name of the checked field is the same
-            // as the name of the id field next to the button
-            if (field.name == fieldName) {
-                scope.repetition = true;
-                scope.sample = true;
-            }
-
-            // ignore fields if we are outside of the repetition and sample group
-            if (scope.repetition == false && scope.sample == false) {
-                continue;
-            }
-
-            // try to find the variable in our variable list
-            let currentVar = varsIndex[field.baseName];
-
-            // check if the base fieldname matches one of those we are looking for
-            if (!currentVar) {
-                result._errors.push('field not found ' + field.name);
-                continue;
-            }
-
-            // only extract data if it is still in the same scope as the 
-            // currently required id
-            if (field.value != '' &&
-                currentVar.scope == 'sample' && scope.sample == true ||
-                currentVar.scope == 'repetition' && scope.repetition == true) {
-                if (currentVar.value != '') {
-                    result._errors.push("multiple values for field " + field.baseName + " / " + field.name);
-                }
-                currentVar.value = field.value;
-            }
-
-            // check if we are at the end of the sample or repetition group
-            // scope to stop any further data extraction
-            if (field.baseName == "ff_nsmpl_store") {
-                scope.sample = false;
-            }
-
-            if (field.baseName == "ff_nsmpl_smplid") {
-                scope.repetition = false;
-            }
-
-        }
-
-        // stop processing, if there were errors gathering the data
-        if (result._errors.length > 0) {
-            return result;
-        }
-
-        // reduce the variables only to their values
-        dta = Object.keys(vars).reduce(function (list, key) {
-            list[key] = vars[key].value;
-            return list;
-        }, {});
-
         // --- check if all required values have been provided
-        if (isEmpty(dta.samplingNo) || isEmpty(dta.stType) || isEmpty(dta.tapa) || isEmpty(dta.sampleNo) ||
-            (dta.tapa != 'No growth' && dta.tapa != 'No data from routine microbiology') && isEmpty(dta.mopo) ||
-            (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && isEmpty(dta.ng) ||
-            (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && ng.startsWith('infection') && isEmpty(dta.tapaNg)) {
+        if (_isEmpty(dta.samplingNo) || _isEmpty(dta.stType) || _isEmpty(dta.tapa) || _isEmpty(dta.sampleNo) ||
+            (dta.tapa != 'No growth' && dta.tapa != 'No data from routine microbiology') && _isEmpty(dta.mopo) ||
+            (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && _isEmpty(dta.ng) ||
+            (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && ng.startsWith('infection') && _isEmpty(dta.tapaNg)) {
 
             // check for each value if it is not empty (or < Please choose > )
             // and inform the user if the value is empty
             var info = 'ID for NCCR sample could not be generated. Some input is missing:\n\n' +
-                (isEmpty(dta.samplingNo) ? '!! Missing: ' : 'OK: ') + 'ID for sampling event\n' +
-                (isEmpty(dta.tapa) ? '!! Missing: ' : 'OK: ') + 'Main target pathogen\n' +
-                (dta.tapa != 'No growth' && dta.tapa != 'No data from routine microbiology' ? (isEmpty(dta.mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
-                (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology' ? (isEmpty(dta.ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
-                ((dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && dta.ng.startsWith('infection') ? (isEmpty(dta.tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
-                (isEmpty(dta.stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type\n' +
-                (isEmpty(dta.sampleNo) ? '!! Missing: ' : 'OK: ') + 'Number of sample storage type\n';
+                (_isEmpty(dta.samplingNo) ? '!! Missing: ' : 'OK: ') + 'ID for sampling event\n' +
+                (_isEmpty(dta.tapa) ? '!! Missing: ' : 'OK: ') + 'Main target pathogen\n' +
+                (dta.tapa != 'No growth' && dta.tapa != 'No data from routine microbiology' ? (_isEmpty(dta.mopo) ? '!! Missing: ' : 'OK: ') + 'Monomicrobial or polymicrobial growth\n' : '') +
+                (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology' ? (_isEmpty(dta.ng) ? '!! Missing: ' : 'OK: ') + 'Sample event control or infection\n' : '') +
+                ((dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && dta.ng.startsWith('infection') ? (_isEmpty(dta.tapaNg) ? '!! Missing: ' : 'OK: ') + 'Target pathogen responsible for infection\n' : '') +
+                (_isEmpty(dta.stType) ? '!! Missing: ' : 'OK: ') + 'Primary storage type\n' +
+                (_isEmpty(dta.sampleNo) ? '!! Missing: ' : 'OK: ') + 'Number of sample storage type\n';
 
             result._errors.push(info);
             // stop further processing here
@@ -510,8 +402,7 @@
         return result;
     };
 
-    // setSampleId will set the sample id for the given field
-    window.dkf.setSampleId = function (idField, dta) {
+    var _confirmSampleId = function (dta) {
 
         // prompt user to check all values used to generate the id
         var answer = prompt(
@@ -537,90 +428,215 @@
             'With this, the sample ID is generated.');
 
         // abort if the user does not want to generate the id
-        if (!answer || answer.toLowerCase() != 'ok') {
-            return;
+        if (!answer || answer == null || answer.toLowerCase() != 'ok') {
+            return '';
         }
 
-        // set the value of the input field
-        idField.val(dta.sampleId);
-
+        return dta.sampleId
     }
 
-    // define our setup function
-    window.dkf.__sampleId = function () {
+    // serializeForm will serialize the current form. most selections and 
+    // radio groups are only stored as numbers, therefore we need to apply
+    // some additional processing to get the effective values.
+    var _serializeForm = function (formID, relevantFields) {
 
-        // information to be displayed to users
-        var alertInfo = 'Attention: You changed a variable that is relevant for the NCCR Sample ID, but an NCCR Sample ID was already generated. You now have two options:\n\n 1) If the NCCR Sample ID is already used (i.e., printed and pasted on the sample), DO NOT generate the NCCR Sample ID again!!!\n\n 2) If the NCCR Sample ID is NOT already used (i.e., printed and pasted on the sample), you should generate the NCCR Sample ID again now by clicking again on the "Generate ID"-Button. \n\nIf in doubt about which applies (1 or 2), also DO NOT generate the NCCR Sample ID again.';
+        // relevantFields can be used to serialize only the fields that
+        // are actually relevant to us
 
-        var alertOnChangeRepetition = function (event) {
-            var triggeredOn = $(this);
+        // initialize return values
+        var dta = {
+            fields: null,
+            _errors: []
+        };
 
-            // get the current sample repetition group for this id
-            var repetitionGroup = triggeredOn.closest('div').closest('td');
+        // create a field index for the baseNames
+        var fieldFilter = relevantFields.reduce(function (idx, item) {
+            idx[item.baseName] = item;
+            return idx;
+        }, {});
 
-            // check if any sampleId is defined
-            var nccridFields = $('input[name^=ff_nsmpl_nccrid]', repetitionGroup);
-            var sampleIdUsed = false;
-            nccridFields.each(function () {
-                var fieldValue = $(this).val();
-                if (isEmpty(fieldValue) === false) {
-                    sampleIdUsed = true;
-                }
-            });
+        // serialize all input select and textarea fields in the given form
+        // we cannot use jquery.serializeArray since this will exclude
+        // disabled fields
+        var htmlFields = $('input,select,textarea', formID);
 
-            if (sampleIdUsed) {
-                alert(alertInfo);
+        // remove all numbers and underscore from the end of the name to 
+        // find the base name of the field
+        var trimRegExp = new RegExp("[0-9_]+$");
+
+        // initialize array to hold the field data in sorted order
+        var fields = [];
+
+        // go through each field
+        $(htmlFields).each(function () {
+
+            var field = $(this);
+
+            // define the base info required for every field
+            var info = {
+                fieldType: null,
+                baseName: null,
+                name: null,
+                value: null,
+                input: null
             }
 
-        }
+            // get the name of the field
+            info.name = field.attr('name');
 
-        var alertOnChangeSampleGroup = function (event) {
-            var triggeredOn = $(this);
-            // get the sample group for the storage type
-            var sampleGroup = triggeredOn.closest('div').next();
-            var nccrid = $('input[name^=ff_nsmpl_nccrid]', sampleGroup).val();
-
-            // nothing to do, if nccrid is empty
-            if (isEmpty(nccrid)) {
+            // nothing to do if the fiels has no name (special html elements)
+            if (!info.name) {
                 return;
             }
 
-            alert(alertInfo);
-        }
+            // extract the baseName of the field by trimming numbers and 
+            // underscore from the end of the name
+            // i.e. ff_nsmpl_nccrid14_58 > ff_nsmpl_nccrid
+            info.baseName = info.name.replace(trimRegExp, '');
 
+            // nothing to do, if the field is not in the list of relevant fields
+            // (if such a list was specified)
+            if (fieldFilter) {
 
-        // TODO: Refactor
-        // handle changes in the value of the select field to specify
-        // the number of samples, since this will result
-        // in new nccr id fields that need to be enhanced
-        var handleSampleChange = function (updateFn) {
-
-            // find all select fields where the name starts with the given text
-            var fields = document.querySelectorAll('select[name^=ff_nsmpl_amt]');
-
-            // filter out all items that do not match ^ff_nsmpl_amt_[0-9]+$
-            var nameMatcher = new RegExp('^ff_nsmpl_amt_[0-9]+$');
-            var selectedFields = [];
-
-            for (var i = 0; i < fields.length; i++) {
-
-                // nothing to do, if the field name does not match our criteria
-                if (nameMatcher.test(fields[i].name) == false) {
-                    continue;
+                if (fieldFilter.hasOwnProperty(info.baseName) == false) {
+                    return;
                 }
 
-                // react to field changes, as this changes the number of 
-                // available samples and accordingly the available sample id fields
-                fields[i].addEventListener('onchange', function () {
-                    updateFn();
+                // add the variable name to the item
+                Object.keys(fieldFilter[info.baseName]).forEach(function (key) {
+                    if (info[key]) return;
+                    info[key] = fieldFilter[info.baseName][key];
                 });
 
-                // watch select field for changes
-                selectedFields.push(fields[i]);
+            }
+
+            // get the type of the field
+            info.fieldType = _getFieldType(field);
+
+            // get text values for the fields. special functionality is required
+            // for select and radio fields
+            info.value = _extractTextValue(field, info.fieldType);
+
+            // store the reference to the field to access it later
+            info.input = field;
+
+            // add the information to our list of fields
+            fields.push(info);
+
+        });
+
+        dta.fields = fields;
+        return dta;
+
+    };
+
+    var _getFieldType = function (field) {
+
+        field = $(field);
+
+        // get the type of the field
+        var fieldType = field.prop('type');
+
+        var tag = field.prop('tagName').toLowerCase();
+        if (tag == 'select' || tag == 'radio') {
+            fieldType = tag;
+        }
+
+        return fieldType;
+    };
+
+    // extractTextValue will extract the text value from the given field
+    // this is specifically necesaary for select and radio fields
+    var _extractTextValue = function (field, tag) {
+
+        var fieldValue = '';
+
+        // extract the type of the field if not already defined
+        if (!tag) {
+            tag = _getFieldType(field);
+        }
+
+        // get the tag of regular input and textarea fields
+        if (tag == 'text' || tag == 'textarea') {
+            fieldValue = field.val();
+        }
+
+        // handle select fields. note: we cannot rely on the selected attribute
+        // since this is not changed if the value of the select is adapted
+        // programmatically (probably a bug in the browser)
+        if (tag == 'select') {
+            var selectedValue = field.val();
+            if (!selectedValue != 'WONoSelectionString') {
+                var selectedOption = $('option[value="' + selectedValue + '"]', field);
+                fieldValue = selectedOption.text();
+            }
+        }
+
+        // handle radio fields
+        if (tag == 'radio') {
+
+            // radio buttons have a strange setup with labels that use underscore
+            // and value in the for attribute, to set the corresponding field
+            // to the respective value. note: this is not a proper html setup
+            // and might be changed by the vendor in the future
+
+            var radioFieldValue = field.val();
+            var radioFieldName = field.attr('name');
+            var checked = field.attr('checked');
+
+            if (checked) {
+                var labelForSelection = $('label[for=' + radioFieldName + '_' + radioFieldValue + ']');
+                fieldValue = labelForSelection.text();
             }
 
         }
 
-    }
+        if (tag == 'checkbox') {
+            // note: checkboxes are not yet supported
+        }
+
+        // no selection string should be handled as empty values
+        if (fieldValue == 'WONoSelectionString' || fieldValue == '< Please choose >') {
+            return '';
+        }
+
+        return fieldValue;
+    };
+
+    // updateFormData will re-extract all given fields, to ensure that the values
+    // are up-to-date
+    var _updateFormData = function (fields) {
+        for (var i = 0; i < fields.length; i++) {
+            fields[i].value = _extractTextValue(fields[i].input, fields[i].fieldType);
+        }
+    };
+
+    // hasErrors will check if the given element has errors associated with it
+    var _hasErrors = function (element) {
+        if (!element._errors) return false;
+        return element._errors.length > 0;
+    };
+
+    // isEmpty will check if the given value is empty
+    var _isEmpty = function (value) {
+        if (!value) {
+            return true;
+        }
+        if (value === '') {
+            return true;
+        }
+        if (value === '< Please choose >') {
+            return true;
+        }
+        return false;
+    };
+
+    // initialize custom functionality as soon as the window is completely loaded
+    // note: secutrial is using the window load event itself, so we must
+    // ensure, that this does not overwrite the respective event listener
+    // note: jquery must be loaded beforehand, (loaded by secutrial)
+    $(window).load(function () {
+        _initialize();
+    });
 
 })();
