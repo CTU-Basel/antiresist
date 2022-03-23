@@ -318,6 +318,8 @@
 
             // extract the variables required to generate the episode id from
             // our field list
+            // important note: this must be adapted if we were to use radio
+            // or checkbox input fields
             var vars = fields.reduce(function (list, item) {
                 // skip all items that are part of a repetition group
                 if (item.scope != 'form') return list;
