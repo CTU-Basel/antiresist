@@ -430,12 +430,31 @@
 
             // go through all variables from the end and find the variables that
             // belong to this repetitiongroup or the complete form
+
+            // note: special care is required for radio buttons, which are 
+            // comprised of multiple input fields.
+            var nameIndex = {};
+
             for (var i = episodeFieldIndex; i >= 0; i--) {
                 var item = fields[i];
-                // nothing to do, if this item was already extracted
-                if (vars.hasOwnProperty(item.id)) {
+
+                // nothing to do, if this item was already extracted, unless
+                // it is a radio item with the same name and no value set yet
+                if (vars.hasOwnProperty(item.id)
+                    && nameIndex.hasOwnProperty(item.name) == false) {
+                    continue;
+
+                } else if (vars.hasOwnProperty(item.id)
+                    && nameIndex.hasOwnProperty(item.name)
+                    && vars[item.id] != '') {
                     continue;
                 }
+
+                // save the name of the item in the index, to later check if
+                // we have an input with the same name again (required for 
+                // radio buttons).
+                nameIndex[item.name] = item.id;
+
                 vars[item.id] = item.value;
             }
 
