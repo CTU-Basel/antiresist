@@ -206,16 +206,16 @@
 
         // define the default change warning
         var changeWarning = 'Attention: You changed a variable that is relevant for ' +
-            'the NCCR Sample ID, but an NCCR Sample ID was already generated. ' +
+            'the Episode ID, but an Episode ID was already generated. ' +
             'You now have two options:' +
             '<ol style="margin-top:8px;margin-bottom:8px;padding:0px 11px;list-style-position:outside">' +
-            '<li>If the NCCR Sample ID is already used (i.e., printed and pasted on ' +
-            'the sample), DO NOT generate the NCCR Sample ID again!!!</li>' +
-            '<li style="margin-top: 8px">If the NCCR Sample ID is NOT already used (i.e., printed and pasted on ' +
-            'the sample), you should generate the NCCR Sample ID again now by ' +
+            '<li>If the Episode ID has been generated the day before or earlier ' +
+            'the sample), DO NOT generate the Episode ID again!!!</li>' +
+            '<li style="margin-top: 8px">If the Episode ID has been generated on the same day ' +
+            'the sample), you should generate the Episode ID again now by ' +
             'clicking again on the "Generate ID" - Button.</li>' +
             '</ol>' +
-            'If in doubt about which applies (1 or 2), also DO NOT generate the NCCR Sample ID again.'
+            'If in doubt about which applies (1 or 2), also DO NOT generate the Episode ID again.'
 
         // add a link to remove the warning
         var clearWarning = '<span style="display:block;text-decoration:underline;cursor:pointer;font-style:italic;margin-top:8px" onclick="$(event.target).parent().remove()">Clear warning</span>'
