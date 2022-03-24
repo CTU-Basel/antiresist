@@ -210,9 +210,9 @@
             'You now have two options:' +
             '<ol style="margin-top:8px;margin-bottom:8px;padding:0px 11px;list-style-position:outside">' +
             '<li>If the Episode ID has been generated the day before or earlier ' +
-            'the sample), DO NOT generate the Episode ID again!!!</li>' +
+            ', DO NOT generate the Episode ID again!!!</li>' +
             '<li style="margin-top: 8px">If the Episode ID has been generated on the same day ' +
-            'the sample), you should generate the Episode ID again now by ' +
+            ', you should generate the Episode ID again now by ' +
             'clicking again on the "Generate ID" - Button.</li>' +
             '</ol>' +
             'If in doubt about which applies (1 or 2), also DO NOT generate the Episode ID again.'
