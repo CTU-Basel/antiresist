@@ -266,7 +266,7 @@
         if (_isEmpty(dta.samplingNo) || _isEmpty(dta.stType) || _isEmpty(dta.tapa) || _isEmpty(dta.sampleNo) ||
             (dta.tapa != 'No growth' && dta.tapa != 'No data from routine microbiology') && _isEmpty(dta.mopo) ||
             (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && _isEmpty(dta.ng) ||
-            (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && ng.startsWith('infection') && _isEmpty(dta.tapaNg)) {
+            (dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology') && dta.ng.startsWith('infection') && _isEmpty(dta.tapaNg)) {
 
             // check for each value if it is not empty (or < Please choose > )
             // and inform the user if the value is empty
@@ -418,7 +418,7 @@
                 '\n- Sample event control or infection: ' + dta.ng : '') +
 
             ((dta.tapa == 'No growth' || dta.tapa == 'No data from routine microbiology')
-                && ng.startsWith('infection') ?
+                && dta.ng.startsWith('infection') ?
 
                 '\n- Target pathogen responsible for infection: ' + dta.tapaNg : '') +
             '\n- Primary storage type: ' + dta.stType +
